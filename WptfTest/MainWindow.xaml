@@ -1,0 +1,103 @@
+﻿<Window x:Class="WptfTest.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:WptfTest"
+    mc:Ignorable="d"
+        
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+    xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:simpleChildWindow="clr-namespace:MahApps.Metro.SimpleChildWindow;assembly=MahApps.Metro.SimpleChildWindow"       
+                     
+    xmlns:userControl="clr-namespace:WptfTest.Views.GeneralUserControls"
+    xmlns:MainView="clr-namespace:WptfTest.Views.MainView"
+        
+    fw:AcrylicWindow.Enabled="True"
+    fw:AcrylicWindow.TintColor="White"
+    fw:AcrylicWindow.TintOpacity="0.25"
+    fw:AcrylicWindow.NoiseOpacity="0.025"
+    fw:AcrylicWindow.AcrylicWindowStyle="NoIcon"
+        
+        
+        
+    Title="Name here" Height="450" Width="800" WindowStartupLocation="CenterScreen" WindowState="Maximized" >
+
+
+
+	<DockPanel>
+
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="50"/>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="50"/>
+			</Grid.RowDefinitions>
+
+			<Grid Grid.Row="1">
+				<!--<userControl:UserControlBase/>-->
+				<MainView:MainView/>
+
+			</Grid>
+
+
+
+
+			<simpleChildWindow:ChildWindow 
+                
+                AllowMove="False"
+                       
+                Grid.ColumnSpan="999"
+                Grid.RowSpan="999"
+                        
+                CloseByEscape="False"
+                CloseOnOverlay ="False"
+                ShowCloseButton="True"
+            
+                ShowTitleBar="True"                   
+         
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                
+                Margin="0"
+            
+                IsModal="True"
+                                    
+                IsOpen="False">
+
+				<DockPanel Height="150" Width="150">
+
+
+				</DockPanel>
+			</simpleChildWindow:ChildWindow>
+			<mahapps:FlyoutsControl>
+				<mahapps:Flyout Position="Top"
+                            
+                            CloseButtonVisibility="Collapsed"
+                            TitleVisibility="Collapsed"
+                            mahapps:HeaderedControlHelper.HeaderMargin="0"
+                            mahapps:HeaderedControlHelper.HeaderVerticalContentAlignment="Top"
+                            mahapps:HeaderedControlHelper.HeaderFontWeight="Normal"
+                            IsOpen="True"
+                            AreAnimationsEnabled="True"
+                            AnimateOpacity="True"
+                            AnimateOnPositionChange="True"
+                            Theme="Dark"
+                        
+                            VerticalAlignment="Top"
+                            VerticalContentAlignment="Top"
+                            HorizontalContentAlignment="Stretch"
+                            Panel.ZIndex="9999"
+                            Height="80"
+                            IsAutoCloseEnabled="True"
+                            AutoCloseInterval="3000">
+
+
+				</mahapps:Flyout>
+			</mahapps:FlyoutsControl>
+			
+		</Grid>
+
+	</DockPanel>
+</Window>
