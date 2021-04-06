@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
+
 namespace DllModels.Models
 {
 
@@ -20,10 +21,16 @@ namespace DllModels.Models
         public int PersonId{ get; set; }
 
         private string _oficialName;
+
+        [MinLength(3, ErrorMessage = "{0} dígitos insuficientes.")]
+        [Display(Name = "Atributo 1")]
+        [Required(ErrorMessage = "{0} precisa ser informado.")]
         public string OficialName
         {
             get { return _oficialName; }
-            set { SetField(ref _oficialName, value); }
+            set { SetField(ref _oficialName, value);
+                ValidateProperty(value);
+            }
         }
 
         private string _alternativeName;
@@ -54,6 +61,9 @@ namespace DllModels.Models
             set { SetField(ref _alternativeDocumentNumber, value); }
         }
         #endregion
+
+
+
 
         #region METHODS
         public Person CreatePerson(string OficialName = null,

@@ -35,16 +35,24 @@
 			<StackPanel>
 
 				<TextBlock Margin="30"
-					   Text="{Binding Test}">
+					   Text="{Binding Test, Mode=TwoWay}">
 
 
 				</TextBlock>
-
+				<TextBox Text="{Binding Test, Mode=TwoWay,
+					UpdateSourceTrigger=PropertyChanged, 
+					ValidatesOnNotifyDataErrors=True}"></TextBox>
 				<TextBlock Margin="30"
-					   Text="aaaaaaaaaaaaaaaaaaaaaaaaaaaa">
+					   Text="{Binding Person.OficialName, Mode=TwoWay}">
 
 
 				</TextBlock>
+				<TextBox Text="{Binding Person.OficialName , Mode=TwoWay,
+					UpdateSourceTrigger=PropertyChanged, 
+					ValidatesOnNotifyDataErrors=True}">
+					
+
+				</TextBox>
 			</StackPanel>
 
 		</Grid>

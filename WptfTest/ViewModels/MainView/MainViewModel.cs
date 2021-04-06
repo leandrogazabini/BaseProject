@@ -7,14 +7,15 @@ using System.Windows.Ink;
 using DllModels;
 using MahApps.Metro.Controls.Dialogs;
 using BusinessLogic;
-
-
+using DllModels.Models;
+using DllModels.Models.ModelsValidators;
 
 namespace WptfTest.ViewModels.MainView
 {
 	class MainViewModel : DllModels.Models.Bases.BaseClass
 	{
-		//private IDialogCoordinator dialogCoordinator;
+		private IDialogCoordinator dialogCoordinator;
+
 
 		private string _test = "Isso é um teste";
 		public string Test
@@ -26,14 +27,20 @@ namespace WptfTest.ViewModels.MainView
 			}
 		}
 
+		public Person Person { get; set; }
+
 		public MainViewModel()
 		{
+			Person = new Person();
+
 
 			var bllCtx = new BusinessLogic.Methods();
-			
+
 			var connection = bllCtx.ConnectDb();
 			var qResult = bllCtx.FindPersonByName("Leandro Prandini Gazabini");
 			Test = qResult.OficialName;
+			Person.OficialName = "Leandro";
+
 		}
 
 
