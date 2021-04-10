@@ -14,11 +14,11 @@ using DllModels.Models.Bases;
 
 namespace WptfTest.ViewModels.MainView
 {
-	class MainViewModel : DllModels.Models.Bases.BaseClass
+	class TestViewModel : DllModels.Models.Bases.BaseClass
 	{
 		private IDialogCoordinator dialogCoordinator;
 
-		private string _test = "Isso é um teste";
+		private string _test = "Isso é um teste novo!";
 		public string Test
 		{
 			get { return _test; }
@@ -27,7 +27,6 @@ namespace WptfTest.ViewModels.MainView
 				SetField(ref _test, value);
 			}
 		}
-
 
 		public Person Person { get; set; }
 
@@ -42,7 +41,7 @@ namespace WptfTest.ViewModels.MainView
 			}
 		}
 
-		public MainViewModel()
+		public TestViewModel()
 		{
 			Person = new Person();
 

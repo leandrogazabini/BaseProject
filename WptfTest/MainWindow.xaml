@@ -16,35 +16,277 @@
         
     fw:AcrylicWindow.Enabled="True"
     fw:AcrylicWindow.TintColor="White"
-    fw:AcrylicWindow.TintOpacity="0.25"
-    fw:AcrylicWindow.NoiseOpacity="0.025"
-    fw:AcrylicWindow.AcrylicWindowStyle="NoIcon"
+    fw:AcrylicWindow.TintOpacity="0.65"
+    fw:AcrylicWindow.NoiseOpacity="0.05"
+    fw:AcrylicWindow.AcrylicWindowStyle="None"
         
-        
-        
-    Title="Name here" Height="450" Width="800" WindowStartupLocation="CenterScreen" WindowState="Maximized" >
+    xmlns:viewModel="clr-namespace:WptfTest"
+	xmlns:viewModel2="clr-namespace:WptfTest.ViewModels.MainView"
+    xmlns:view2="clr-namespace:WptfTest.Views.MainView"
+		
+    Title="Name here" Height="450" Width="800" WindowStartupLocation="CenterScreen" WindowState="Maximized" 
+	d:DataContext="{d:DesignInstance Type=viewModel:MainWindowViewModel, IsDesignTimeCreatable=True}">
+	<Window.DataContext>
+		<viewModel:MainWindowViewModel/>
+	</Window.DataContext>
+	<Window.Resources>
+		
+	</Window.Resources>
 
 
 
-	<DockPanel>
+		<DockPanel>
+	<materialDesign:DrawerHost
+            IsLeftDrawerOpen="{Binding IsMenuOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" OpenMode="Default"
+		>
+		<materialDesign:DrawerHost.LeftDrawerContent>
+				<StackPanel VerticalAlignment="Top">
 
-		<Grid>
-			<Grid.RowDefinitions>
-				<RowDefinition Height="50"/>
-				<RowDefinition Height="*"/>
-				<RowDefinition Height="50"/>
-			</Grid.RowDefinitions>
+					<ToggleButton 
+                        Style="{StaticResource MaterialDesignHamburgerToggleButton}" 
+                        HorizontalAlignment="Right" 
+                        Margin="16"
+                        IsChecked="{Binding IsMenuOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-			<Grid Grid.Row="1">
-				<!--<userControl:UserControlBase/>-->
-				<MainView:MainView/>
+					<TextBox 
+                        x:Name="DemoItemsSearchBox"
+						Text="{Binding SearchKeyword, UpdateSourceTrigger=PropertyChanged}"
+                        Margin="16"
+                        Width="200"
+                        Height="50"
+					    materialDesign:HintAssist.Hint="Search"
+                        materialDesign:HintAssist.IsFloating="True"
+                        materialDesign:TextFieldAssist.HasClearButton="True"
+                        materialDesign:TextFieldAssist.HasOutlinedTextField="True"
+                        materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
+                        materialDesign:TextFieldAssist.TextFieldCornerRadius="5"/>
+					<!--<materialDesign:Card Content="{Binding MenuItensList[0].MenuName}"/>-->
+					<ItemsControl ItemsSource="{Binding MenuItensList[0].MenuN1SubList}">
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
+									
+									<Expander Header="{Binding MenuN1Name}">
+										<ItemsControl ItemsSource="{Binding MenuN1ItensList}">
+											<ItemsControl.ItemTemplate>
+												<DataTemplate>
+													<Button Content="{Binding MenuN1ItemName}" ></Button>
+												</DataTemplate>
+												
+											</ItemsControl.ItemTemplate>
+										</ItemsControl>
+									</Expander>
 
-			</Grid>
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+						</ItemsControl>
+					
+
+				</StackPanel>
+			</materialDesign:DrawerHost.LeftDrawerContent>
+
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="auto"/>
+				</Grid.RowDefinitions>
+				
+				<Grid Grid.Row="0">
+					<materialDesign:ColorZone Mode="PrimaryMid"
+											  Padding="16">		
+						<DockPanel>
+
+							<StackPanel
+								  Orientation="Horizontal"
+								  materialDesign:RippleAssist.IsCentered="True">		
+								<ToggleButton
+        Style="{DynamicResource MaterialDesignHamburgerToggleButton}" 
+									IsChecked="{Binding IsMenuOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+								<ComboBox
+        SelectedIndex="0"
+        Margin="8 0 0 0"
+        BorderThickness="0"
+        materialDesign:ColorZoneAssist.Mode="Standard"
+        materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource MaterialDesignPaper}"
+        BorderBrush="{DynamicResource MaterialDesignPaper}">
+									<ComboBoxItem
+          Content="Android" />
+									<ComboBoxItem
+          Content="iOS" />
+									<ComboBoxItem
+          Content="Linux" />
+									<ComboBoxItem
+          Content="Windows" />
+								</ComboBox>
+								<materialDesign:ColorZone
+									Mode="Standard"
+									Padding="8 4 8 4"
+									CornerRadius="2"
+									Panel.ZIndex="1"
+									Margin="16 0 0 0"
+									materialDesign:ShadowAssist.ShadowDepth="Depth1">
+									<Grid>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition
+              Width="Auto" />
+											<ColumnDefinition
+              Width="*" />
+											<ColumnDefinition
+              Width="Auto" />
+										</Grid.ColumnDefinitions>
+										<Button
+            Style="{DynamicResource MaterialDesignToolButton}">
+											<materialDesign:PackIcon
+              Kind="Search"
+              Opacity=".56" />
+										</Button>
+										<TextBox
+            Grid.Column="1"
+            Margin="8 0 0 0"
+            materialDesign:HintAssist.Hint="Build a search bar"
+            materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+            BorderThickness="0"
+            MinWidth="200"
+            VerticalAlignment="Center" />
+										<Button
+            Style="{DynamicResource MaterialDesignToolButton}"
+            Grid.Column="2">
+											<materialDesign:PackIcon
+              Kind="Microphone"
+              Opacity=".56"
+              Margin="8 0 0 0" />
+										</Button>
+									</Grid>
+								</materialDesign:ColorZone>
+								<Button
+        Style="{DynamicResource MaterialDesignToolForegroundButton}"
+        Margin="8 0 0 0"
+        Panel.ZIndex="0">
+									<materialDesign:PackIcon
+          Kind="Send" />
+								</Button>
+							</StackPanel>
+						</DockPanel>
+					</materialDesign:ColorZone>
+				</Grid>
+				
+				<Grid Grid.Row="1">
+
+					<StackPanel>
+
+						<ListBox SelectedItem="{Binding SelectedViewToShow, UpdateSourceTrigger=PropertyChanged}"
+								 ItemsSource="{Binding ViewsToShow	}">
+							
+							<ListBox.ItemsPanel>
+								<ItemsPanelTemplate>
+									<WrapPanel Orientation="Horizontal" IsItemsHost="True"/>
+								</ItemsPanelTemplate>
+							</ListBox.ItemsPanel>
+
+						</ListBox>
+						<Grid>
+							<ContentControl DataContext="{Binding SelectedViewToShow}"
+											Margin="50"
+											Content="{Binding Viewww, UpdateSourceTrigger=PropertyChanged}">
+								<!--Content="{StaticResource myDataTemplateSelector}">-->
+								<ContentControl.Resources>
+
+									<!--<userControl:UserControlBase x:Key="myDataTemplateSelector"/>
+
+									--><!--<view2:MainView x:Key="myDataTemplateSelector2"/>-->
+
+									<DataTemplate DataType="{x:Type userControl:UserControlBase}">
+										<userControl:UserControlBase />
+									</DataTemplate>
+
+									<DataTemplate DataType="{x:Type viewModel2:TestViewModel}">
+										<view2:TestView />
+									</DataTemplate>
+
+									<DataTemplate DataType="{x:Type viewModel2:MainViewModel}">
+										<view2:MainView/>
+									</DataTemplate>
+
+
+								</ContentControl.Resources>
+
+							</ContentControl>
+
+						</Grid>
+
+					</StackPanel>
+					<!--<materialDesign:Card Margin="10">
+
+					<StackPanel Margin="0">
+						<Expander Header="Item" >
+							<StackPanel>
+								<Button></Button>
+								<Expander Header="Item2" Margin="10 5 5 5">
+									<Expander Header="Item3" Margin="10 0 0 0">
+										<StackPanel >
+											<Button>b</Button>
+										</StackPanel>
+
+									</Expander>
+								</Expander>
+							</StackPanel>
+						</Expander>
+						<Expander Header="Item">
+
+						</Expander>
+						<Expander Header="Item">
+
+						</Expander>
+						<Expander Header="Item">
+
+						</Expander>
+					</StackPanel>
+				</materialDesign:Card>-->
+					<!--<ContentControl Grid.Column="1"
+                            DataContext="{Binding }"
+						    Content="{Binding Path=Length, UpdateSourceTrigger=PropertyChanged}">
+					<ContentControl.Resources>
+						<DataTemplate DataType="{x:Type viewModel2:MainView}">
+							<Button>asdadas</Button>
+						</DataTemplate>
+						<DataTemplate DataType="jaca">
+							<UserControl>
+								<viewModel2:MainView></viewModel2:MainView>
+							</UserControl>
+						</DataTemplate>
+					</ContentControl.Resources>
+				</ContentControl>-->
+				</Grid>
+
+
+				<Grid Grid.Row="2">
+					<materialDesign:ColorZone
+  Mode="Custom"
+  Background="Black"
+  Foreground="White"
+  Padding="10"
+  ClipToBounds="False">
+						<StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="16 0 16 0"
+    Orientation="Horizontal">
+
+							<TextBlock
+      VerticalAlignment="Center"
+     
+      Text="Material Design In XAML Toolkit" />
+							<materialDesign:Badged
+      Badge="16"
+      VerticalAlignment="Center">
+								<Button
+        Content="Some action" />
+							</materialDesign:Badged>
+						</StackPanel>
+					</materialDesign:ColorZone>
+				</Grid>
 
 
 
 
-			<simpleChildWindow:ChildWindow 
+				<!--<simpleChildWindow:ChildWindow 
                 
                 AllowMove="False"
                        
@@ -62,7 +304,7 @@
                 
                 Margin="0"
             
-                IsModal="True"
+                IsModal="False"
                                     
                 IsOpen="False">
 
@@ -95,9 +337,10 @@
 
 
 				</mahapps:Flyout>
-			</mahapps:FlyoutsControl>
-			
-		</Grid>
+			</mahapps:FlyoutsControl>-->
 
-	</DockPanel>
+			</Grid>
+
+	</materialDesign:DrawerHost>
+		</DockPanel>
 </Window>
