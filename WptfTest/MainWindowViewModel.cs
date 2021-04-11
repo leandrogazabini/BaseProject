@@ -5,11 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Input;
 using DllModels;
 using DllModels.Models.Bases;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using WptfTest.Models;
+using WptfTest.ViewModels.MainView;
+using WptfTestWptfTest.Models;
 
 namespace WptfTest
 {
@@ -18,13 +21,14 @@ namespace WptfTest
 
 	class MainWindowViewModel : DllModels.Models.Bases.BaseClass
 	{
-		private IDialogCoordinator dialogCoordinator;
 		public class ViewModelBase
 		{
 			public BaseClass Viewww { get; set; }
 
 			public string blabla { get; set; }
 		}
+
+		//private IDialogCoordinator dialogCoordinator;
 
 		public ObservableCollection<string> StringTestToShow { get; set; }
 		private string _selectedStringTestToShow;
@@ -49,12 +53,16 @@ namespace WptfTest
 		}
 
 		public ObservableCollection<Models.MenuItens> MenuItensList { get; set; }
-		
 
+		public void Teste()
+		{
+			ViewModelBase mainViewx = new ViewModelBase();
+			mainViewx.Viewww = new ViewModels.MainView.MainViewModel();
+			mainViewx.blabla = "bla5";
+			if (ViewsToShow.Count > 0) ViewsToShow.Add(mainViewx);
 
-
-
-
+		}
+	
 		private bool _isMenuOpen = true;
 		public bool IsMenuOpen
 		{
@@ -64,6 +72,16 @@ namespace WptfTest
 				SetField(ref _isMenuOpen, value);
 			}
 		}
+
+
+		#region Commands
+		
+	
+		#endregion
+
+
+
+
 
 		public MainWindowViewModel()
 		{
@@ -99,7 +117,12 @@ namespace WptfTest
 			var objMenu = new MenuItens();
 			objMenu = objMenu.CreateMenu();
 			MenuItensList.Add(objMenu);
+
+			
+
 		}
+
+
 	}
 
 }

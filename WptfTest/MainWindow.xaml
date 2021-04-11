@@ -15,71 +15,169 @@
     xmlns:MainView="clr-namespace:WptfTest.Views.MainView"
         
     fw:AcrylicWindow.Enabled="True"
+    fw:AcrylicWindow.NoiseOpacity="0.001"
     fw:AcrylicWindow.TintColor="White"
     fw:AcrylicWindow.TintOpacity="0.65"
-    fw:AcrylicWindow.NoiseOpacity="0.05"
     fw:AcrylicWindow.AcrylicWindowStyle="None"
         
     xmlns:viewModel="clr-namespace:WptfTest"
 	xmlns:viewModel2="clr-namespace:WptfTest.ViewModels.MainView"
     xmlns:view2="clr-namespace:WptfTest.Views.MainView"
-		
+	
     Title="Name here" Height="450" Width="800" WindowStartupLocation="CenterScreen" WindowState="Maximized" 
 	d:DataContext="{d:DesignInstance Type=viewModel:MainWindowViewModel, IsDesignTimeCreatable=True}">
+
 	<Window.DataContext>
 		<viewModel:MainWindowViewModel/>
 	</Window.DataContext>
 	<Window.Resources>
-		
+		<viewModel:MainWindowViewModel x:Key="mainDataContext"/>
 	</Window.Resources>
 
 
 
-		<DockPanel>
-	<materialDesign:DrawerHost
-            IsLeftDrawerOpen="{Binding IsMenuOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" OpenMode="Default"
-		>
-		<materialDesign:DrawerHost.LeftDrawerContent>
+	<DockPanel>
+		<!-- Menu here -->
+		<materialDesign:DrawerHost IsLeftDrawerOpen="{Binding IsMenuOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+								   OpenMode="Default" >
+			<materialDesign:DrawerHost.LeftDrawerContent >
+
 				<StackPanel VerticalAlignment="Top">
+					<!--Menu title here-->
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
 
-					<ToggleButton 
-                        Style="{StaticResource MaterialDesignHamburgerToggleButton}" 
-                        HorizontalAlignment="Right" 
-                        Margin="16"
-                        IsChecked="{Binding IsMenuOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+						<TextBlock Text="MENU" Grid.Column="0" Grid.ColumnSpan="2"
+								   Style="{StaticResource MaterialDesignHeadline6TextBlock}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
-					<TextBox 
-                        x:Name="DemoItemsSearchBox"
-						Text="{Binding SearchKeyword, UpdateSourceTrigger=PropertyChanged}"
-                        Margin="16"
-                        Width="200"
-                        Height="50"
-					    materialDesign:HintAssist.Hint="Search"
-                        materialDesign:HintAssist.IsFloating="True"
-                        materialDesign:TextFieldAssist.HasClearButton="True"
-                        materialDesign:TextFieldAssist.HasOutlinedTextField="True"
-                        materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
-                        materialDesign:TextFieldAssist.TextFieldCornerRadius="5"/>
-					<!--<materialDesign:Card Content="{Binding MenuItensList[0].MenuName}"/>-->
-					<ItemsControl ItemsSource="{Binding MenuItensList[0].MenuN1SubList}">
-							<ItemsControl.ItemTemplate>
+
+						<ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"  Grid.Column="0"
+									  
+								  HorizontalAlignment="Left" 
+								  Margin="16"
+								  IsChecked="{Binding IsMenuOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+					</Grid>
+					<!--Menu itens here -->
+					<StackPanel>
+
+
+						<!--Menu search -->
+						<GroupBox Header="Search "
+								  Style="{DynamicResource MaterialDesignGroupBox}"
+								  Margin="16"
+								  materialDesign:ShadowAssist.ShadowDepth="Depth3"
+								  BorderThickness="0">
+							<GroupBox.HeaderTemplate>
 								<DataTemplate>
-									
-									<Expander Header="{Binding MenuN1Name}">
-										<ItemsControl ItemsSource="{Binding MenuN1ItensList}">
-											<ItemsControl.ItemTemplate>
-												<DataTemplate>
-													<Button Content="{Binding MenuN1ItemName}" ></Button>
-												</DataTemplate>
-												
-											</ItemsControl.ItemTemplate>
-										</ItemsControl>
-									</Expander>
-
+									<StackPanel Orientation="Horizontal">
+										<materialDesign:PackIcon Kind="ImageArea"
+																  Height="32"
+																  Width="32"
+																  VerticalAlignment="Center" />
+										<TextBlock Margin="8,0,0,0"
+													  VerticalAlignment="Center"
+													  Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+													  Text="{Binding}" />
+									</StackPanel>
 								</DataTemplate>
-							</ItemsControl.ItemTemplate>
-						</ItemsControl>
-					
+							</GroupBox.HeaderTemplate>
+							<StackPanel>
+
+								<TextBox  x:Name="DemoItemsSearchBox"
+										Text="{Binding SearchKeyword, UpdateSourceTrigger=PropertyChanged}"
+										Margin="16"
+										Width="200"
+										Height="50"
+										materialDesign:HintAssist.Hint="Search"
+										materialDesign:HintAssist.IsFloating="True"
+										materialDesign:TextFieldAssist.HasClearButton="True"
+										materialDesign:TextFieldAssist.HasOutlinedTextField="True"
+										materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
+										materialDesign:TextFieldAssist.TextFieldCornerRadius="3"/>
+								<ListView Margin="{Binding ElementName=DemoItemsSearchBox, Path=Margin}">
+									<ListViewItem Content="Hello" />
+									<ListViewItem Content="World" />
+									<ListViewItem Content=":)" />
+								</ListView>
+							</StackPanel>
+
+						</GroupBox>
+						<!--Menu collection -->
+
+						<GroupBox Header="{Binding MenuItensList[0].MenuName}"
+								  Style="{DynamicResource MaterialDesignGroupBox}"
+								  Margin="16"
+								  materialDesign:ShadowAssist.ShadowDepth="Depth3"
+								  BorderThickness="0">
+							<GroupBox.HeaderTemplate>
+								<DataTemplate>
+									<StackPanel Orientation="Horizontal">
+										<materialDesign:PackIcon Kind="ImageArea"
+																  Height="32"
+																  Width="32"
+																  VerticalAlignment="Center" />
+										<TextBlock Margin="8,0,0,0"
+													  VerticalAlignment="Center"
+													  Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+													  Text="{Binding}" />
+									</StackPanel>
+								</DataTemplate>
+							</GroupBox.HeaderTemplate>
+
+							<StackPanel>
+								<Button Content="Botao"  
+										CommandParameter=""
+										Command="{Binding DoExempleCommand}" >
+
+								</Button>
+								<ItemsControl ItemsSource="{Binding MenuItensList[0].MenuN1SubList}" 
+											  Name="Control"
+											  Padding="10 0 0 0" Background="{x:Null}"
+											  DataContext="{Binding Mode=OneWay}">
+									<ItemsControl.ItemTemplate>
+										<DataTemplate>
+
+											<Expander Header="{Binding MenuN1Name}" Background="{x:Null}">
+												<ItemsControl ItemsSource="{Binding MenuN1ItensList}" Padding=" 10 0 0 0">
+													<ItemsControl.ItemTemplate>
+														<DataTemplate>
+															<!--<Button Content="Botao"  
+																	CommandParameter="{Binding Source={StaticResource mainDataContext}}"
+																	Command="{Binding DoExempleCommand, Source={StaticResource mainDataContext}}" >
+
+															</Button>-->
+															<!--<Button Content="Botao"  
+																	CommandParameter="{Binding Mode=OneWay, RelativeSource={RelativeSource PreviousData}}"
+																	Command="{Binding DoExempleCommand, Source={StaticResource mainDataContext}}" >
+
+															</Button>-->
+															<!-- esse aqui ok <Button Content="Botao"  
+																	CommandParameter="teste"
+																	Command="{Binding DoExempleCommand, Source={StaticResource mainDataContext}}" >
+
+															</Button>-->
+															<Button Content="Botao"  
+																	CommandParameter="teste"
+																	Command="{Binding DoExempleCommand, Source={StaticResource mainDataContext}}" >
+
+															</Button>
+														</DataTemplate>
+
+													</ItemsControl.ItemTemplate>
+												</ItemsControl>
+											</Expander>
+
+										</DataTemplate>
+									</ItemsControl.ItemTemplate>
+								</ItemsControl>
+							</StackPanel>
+						</GroupBox>
+
+
+					</StackPanel>
 
 				</StackPanel>
 			</materialDesign:DrawerHost.LeftDrawerContent>
@@ -90,100 +188,49 @@
 					<RowDefinition Height="*"/>
 					<RowDefinition Height="auto"/>
 				</Grid.RowDefinitions>
-				
+
 				<Grid Grid.Row="0">
-					<materialDesign:ColorZone Mode="PrimaryMid"
-											  Padding="16">		
+					<materialDesign:ColorZone Mode="Standard"
+											  Padding="16">
 						<DockPanel>
 
-							<StackPanel
-								  Orientation="Horizontal"
-								  materialDesign:RippleAssist.IsCentered="True">		
-								<ToggleButton
-        Style="{DynamicResource MaterialDesignHamburgerToggleButton}" 
-									IsChecked="{Binding IsMenuOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-								<ComboBox
-        SelectedIndex="0"
-        Margin="8 0 0 0"
-        BorderThickness="0"
-        materialDesign:ColorZoneAssist.Mode="Standard"
-        materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource MaterialDesignPaper}"
-        BorderBrush="{DynamicResource MaterialDesignPaper}">
-									<ComboBoxItem
-          Content="Android" />
-									<ComboBoxItem
-          Content="iOS" />
-									<ComboBoxItem
-          Content="Linux" />
-									<ComboBoxItem
-          Content="Windows" />
-								</ComboBox>
-								<materialDesign:ColorZone
-									Mode="Standard"
-									Padding="8 4 8 4"
-									CornerRadius="2"
-									Panel.ZIndex="1"
-									Margin="16 0 0 0"
-									materialDesign:ShadowAssist.ShadowDepth="Depth1">
-									<Grid>
-										<Grid.ColumnDefinitions>
-											<ColumnDefinition
-              Width="Auto" />
-											<ColumnDefinition
-              Width="*" />
-											<ColumnDefinition
-              Width="Auto" />
-										</Grid.ColumnDefinitions>
-										<Button
-            Style="{DynamicResource MaterialDesignToolButton}">
-											<materialDesign:PackIcon
-              Kind="Search"
-              Opacity=".56" />
-										</Button>
-										<TextBox
-            Grid.Column="1"
-            Margin="8 0 0 0"
-            materialDesign:HintAssist.Hint="Build a search bar"
-            materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-            BorderThickness="0"
-            MinWidth="200"
-            VerticalAlignment="Center" />
-										<Button
-            Style="{DynamicResource MaterialDesignToolButton}"
-            Grid.Column="2">
-											<materialDesign:PackIcon
-              Kind="Microphone"
-              Opacity=".56"
-              Margin="8 0 0 0" />
-										</Button>
-									</Grid>
-								</materialDesign:ColorZone>
-								<Button
-        Style="{DynamicResource MaterialDesignToolForegroundButton}"
-        Margin="8 0 0 0"
-        Panel.ZIndex="0">
-									<materialDesign:PackIcon
-          Kind="Send" />
-								</Button>
+							<StackPanel Orientation="Horizontal"
+										materialDesign:RippleAssist.IsCentered="True">
+								<ToggleButton Style="{DynamicResource MaterialDesignHamburgerToggleButton}"
+											  IsChecked="{Binding IsMenuOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+								<ListBox SelectedItem="{Binding SelectedViewToShow, UpdateSourceTrigger=PropertyChanged}"
+											 ItemsSource="{Binding ViewsToShow	}"
+											 Style="{StaticResource MaterialDesignChoiceChipPrimaryListBox}"
+											 materialDesign:ThemeAssist.Theme="Inherit"
+											 
+											>
+
+									<ListBox.ItemsPanel>
+										<ItemsPanelTemplate>
+											<WrapPanel Orientation="Horizontal" IsItemsHost="True" Margin="10 0 0 0"/>
+										</ItemsPanelTemplate>
+									</ListBox.ItemsPanel>
+									<ListBox.ItemTemplate>
+										<DataTemplate>
+											<TextBlock Text="{Binding blabla}" Margin=" 10 0 10 0"/>
+										</DataTemplate>
+									</ListBox.ItemTemplate>
+
+
+
+
+								</ListBox>
+
 							</StackPanel>
 						</DockPanel>
 					</materialDesign:ColorZone>
 				</Grid>
-				
+
 				<Grid Grid.Row="1">
 
 					<StackPanel>
 
-						<ListBox SelectedItem="{Binding SelectedViewToShow, UpdateSourceTrigger=PropertyChanged}"
-								 ItemsSource="{Binding ViewsToShow	}">
-							
-							<ListBox.ItemsPanel>
-								<ItemsPanelTemplate>
-									<WrapPanel Orientation="Horizontal" IsItemsHost="True"/>
-								</ItemsPanelTemplate>
-							</ListBox.ItemsPanel>
-
-						</ListBox>
 						<Grid>
 							<ContentControl DataContext="{Binding SelectedViewToShow}"
 											Margin="50"
@@ -193,7 +240,8 @@
 
 									<!--<userControl:UserControlBase x:Key="myDataTemplateSelector"/>
 
-									--><!--<view2:MainView x:Key="myDataTemplateSelector2"/>-->
+									-->
+									<!--<view2:MainView x:Key="myDataTemplateSelector2"/>-->
 
 									<DataTemplate DataType="{x:Type userControl:UserControlBase}">
 										<userControl:UserControlBase />
@@ -261,7 +309,7 @@
 
 				<Grid Grid.Row="2">
 					<materialDesign:ColorZone
-  Mode="Custom"
+  Mode="Dark"
   Background="Black"
   Foreground="White"
   Padding="10"
@@ -341,6 +389,6 @@
 
 			</Grid>
 
-	</materialDesign:DrawerHost>
-		</DockPanel>
+		</materialDesign:DrawerHost>
+	</DockPanel>
 </Window>

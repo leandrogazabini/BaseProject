@@ -11,12 +11,12 @@ using DllModels.Models;
 using DllModels.Models.ModelsValidators;
 using System.Collections.ObjectModel;
 using DllModels.Models.Bases;
+using WptfTestWptfTest.Models;
 
 namespace WptfTest.ViewModels.MainView
 {
 	class MainViewModel : DllModels.Models.Bases.BaseClass
 	{
-		private IDialogCoordinator dialogCoordinator;
 
 		private string _test = "Isso é um teste";
 		public string Test
@@ -54,9 +54,7 @@ namespace WptfTest.ViewModels.MainView
 			Test = qResult.OficialName;
 			Person.OficialName = "Leandro";
 		}
-
-
-
+	
 
 	}
 }
