@@ -9,9 +9,7 @@
         
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
-             xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:simpleChildWindow="clr-namespace:MahApps.Metro.SimpleChildWindow;assembly=MahApps.Metro.SimpleChildWindow"       
-                     
+                    
         
              fw:AcrylicWindow.Enabled="True"
              fw:AcrylicWindow.TintColor="White"
@@ -23,9 +21,9 @@
 			 d:DataContext="{d:DesignInstance Type=viewModel:MainViewModel, IsDesignTimeCreatable=True}"
 			 
 			 >
-	<UserControl.DataContext>
+	<!--<UserControl.DataContext>
 		<viewModel:MainViewModel/>
-	</UserControl.DataContext>
+	</UserControl.DataContext>-->
 
 
 

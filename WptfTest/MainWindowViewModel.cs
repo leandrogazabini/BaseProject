@@ -1,14 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
+using System.IO.Packaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using DllModels;
 using DllModels.Models.Bases;
-using MahApps.Metro.Controls.Dialogs;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
+
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using WptfTest.Models;
 using WptfTest.ViewModels.MainView;
@@ -17,16 +23,11 @@ using WptfTestWptfTest.Models;
 namespace WptfTest
 {
 
-	
+
 
 	class MainWindowViewModel : DllModels.Models.Bases.BaseClass
 	{
-		public class ViewModelBase
-		{
-			public BaseClass Viewww { get; set; }
-
-			public string blabla { get; set; }
-		}
+	
 
 		//private IDialogCoordinator dialogCoordinator;
 
@@ -41,9 +42,9 @@ namespace WptfTest
 			}
 		}
 
-		public ObservableCollection<ViewModelBase> ViewsToShow { get; set; }
-		private ViewModelBase _selectedViewToShow;
-		public ViewModelBase SelectedViewToShow
+		public ObservableCollection<BaseClass> ViewsToShow { get; set; }
+		private BaseClass _selectedViewToShow;
+		public BaseClass SelectedViewToShow
 		{
 			get { return _selectedViewToShow; }
 			set
@@ -56,9 +57,9 @@ namespace WptfTest
 
 		public void Teste()
 		{
-			ViewModelBase mainViewx = new ViewModelBase();
-			mainViewx.Viewww = new ViewModels.MainView.MainViewModel();
-			mainViewx.blabla = "bla5";
+			
+			var mainViewx = new ViewModels.MainView.MainViewModel();
+			//mainViewx.blabla = "bla5";
 			if (ViewsToShow.Count > 0) ViewsToShow.Add(mainViewx);
 
 		}
@@ -75,8 +76,27 @@ namespace WptfTest
 
 
 		#region Commands
-		
-	
+		public class ExempleCommand : BaseCommand
+		{
+			public override bool CanExecute(object parameter)
+			{
+				return true;
+			}
+
+			public override async void Execute(object parameter)
+			{
+				var viewModel = (MainWindowViewModel)parameter;
+				//if (viewModel.TesteBool == false) viewModel.TesteBool = true;
+				//else viewModel.TesteBool = true;
+
+				//using (var db = new DBL.db())
+				//{
+				//}
+				viewModel.Teste();
+			}
+		}
+		public ExempleCommand DoExempleCommand { get; private set; } = new ExempleCommand();
+
 		#endregion
 
 
@@ -97,21 +117,15 @@ namespace WptfTest
 			StringTestToShow.Add("Jaca");
 
 
-			ViewsToShow = new ObservableCollection<ViewModelBase>();
-			ViewModelBase  mainView = new ViewModelBase();
-			mainView.Viewww = new ViewModels.MainView.MainViewModel();
-			mainView.blabla = "bla1";
-			ViewsToShow.Add(mainView);
-			
-			mainView = new ViewModelBase();
-			mainView.Viewww = new ViewModels.MainView.MainViewModel();
-			mainView.blabla = "bla2";
+			ViewsToShow = new ObservableCollection<BaseClass>();
+			var mainView = new MainViewModel();
 			ViewsToShow.Add(mainView);
 
-			mainView = new ViewModelBase();
-			mainView.Viewww = new ViewModels.MainView.TestViewModel();
-			mainView.blabla = "teste";
+			mainView = new MainViewModel();
 			ViewsToShow.Add(mainView);
+
+			var mainView2 = new TestViewModel();
+			ViewsToShow.Add(mainView2);
 
 			MenuItensList = new ObservableCollection<Models.MenuItens>();
 			var objMenu = new MenuItens();

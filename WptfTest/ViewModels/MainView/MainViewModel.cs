@@ -12,13 +12,15 @@ using DllModels.Models.ModelsValidators;
 using System.Collections.ObjectModel;
 using DllModels.Models.Bases;
 using WptfTestWptfTest.Models;
+using System.Windows.Controls;
+using System.Windows;
 
 namespace WptfTest.ViewModels.MainView
 {
 	class MainViewModel : DllModels.Models.Bases.BaseClass
 	{
 
-		private string _test = "Isso é um teste";
+		private string _test= "aa";
 		public string Test
 		{
 			get { return _test; }
@@ -42,20 +44,20 @@ namespace WptfTest.ViewModels.MainView
 			}
 		}
 
-		public MainViewModel()
+public MainViewModel()
 		{
-			Person = new Person();
+			//Person = new Person();
 
 
-			var bllCtx = new BusinessLogic.Methods();
+			//var bllCtx = new BusinessLogic.Methods();
 
-			var connection = bllCtx.ConnectDb();
-			var qResult = bllCtx.FindPersonByName("Leandro Prandini Gazabini");
-			Test = qResult.OficialName;
-			Person.OficialName = "Leandro";
+			//var connection = bllCtx.ConnectDb();
+			//var qResult = bllCtx.FindPersonByName("Leandro Prandini Gazabini");
+			//Test = qResult.OficialName;
+			//Person.OficialName = "Leandro";
 		}
-	
 
+		
 	}
 }
 

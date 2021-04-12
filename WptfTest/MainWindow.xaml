@@ -8,9 +8,7 @@
         
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
-    xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
-    xmlns:simpleChildWindow="clr-namespace:MahApps.Metro.SimpleChildWindow;assembly=MahApps.Metro.SimpleChildWindow"       
-                     
+                    
     xmlns:userControl="clr-namespace:WptfTest.Views.GeneralUserControls"
     xmlns:MainView="clr-namespace:WptfTest.Views.MainView"
         
@@ -24,56 +22,77 @@
 	xmlns:viewModel2="clr-namespace:WptfTest.ViewModels.MainView"
     xmlns:view2="clr-namespace:WptfTest.Views.MainView"
 	
-    Title="Name here" Height="450" Width="800" WindowStartupLocation="CenterScreen" WindowState="Maximized" 
-	d:DataContext="{d:DesignInstance Type=viewModel:MainWindowViewModel, IsDesignTimeCreatable=True}">
+    Title="Name here" MinHeight="450" Width="800" WindowStartupLocation="CenterScreen" WindowState="Maximized" 
+	d:DataContext="{d:DesignInstance Type=viewModel:MainWindowViewModel, IsDesignTimeCreatable=True}"
+		
+		x:Name="mainWindow"
+		>
+	<!--<Window.Resources>
+		<DataTemplate x:Key="TabControlContentTemplate1">
+			<view2:MainView/>
+		</DataTemplate>
+	</Window.Resources>-->
 
 	<Window.DataContext>
 		<viewModel:MainWindowViewModel/>
 	</Window.DataContext>
+	<!-- it seens to use another instance of my view model and I don't whant it.
+	it's a try about my commands into a item control, that is in another item control, i was losing my data context
+	i solved it using another aproach: i use 'find antecestor' in binding ... it works fine :) -->
+	<!--
 	<Window.Resources>
 		<viewModel:MainWindowViewModel x:Key="mainDataContext"/>
-	</Window.Resources>
-
+	</Window.Resources>-->
 
 
 	<DockPanel>
 		<!-- Menu here -->
 		<materialDesign:DrawerHost IsLeftDrawerOpen="{Binding IsMenuOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-								   OpenMode="Default" >
+								   OpenMode="Default" MaxHeight="{Binding ElementName=mainWindow, Path=ActualHeight}"
+								   VerticalContentAlignment="Top"
+								   materialDesign:ShadowAssist.ShadowDepth="Depth5">
 			<materialDesign:DrawerHost.LeftDrawerContent >
 
 				<StackPanel VerticalAlignment="Top">
 					<!--Menu title here-->
-					<Grid>
+					<Grid Height="{Binding ElementName=mainWindow, Path=ActualHeight}">
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="*"/>
 							<ColumnDefinition Width="*"/>
 						</Grid.ColumnDefinitions>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="auto"/>
+							<RowDefinition Height="auto"/>
+							<RowDefinition Height="*"/>
+						</Grid.RowDefinitions>
 
-						<TextBlock Text="MENU" Grid.Column="0" Grid.ColumnSpan="2"
+						<TextBlock Text="MENU" 
+								   Grid.Column="0" 
+								   Grid.ColumnSpan="2"
+								   Grid.Row="0"
 								   Style="{StaticResource MaterialDesignHeadline6TextBlock}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
 
-						<ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"  Grid.Column="0"
-									  
-								  HorizontalAlignment="Left" 
-								  Margin="16"
-								  IsChecked="{Binding IsMenuOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-					</Grid>
-					<!--Menu itens here -->
-					<StackPanel>
+						<ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"  
+									  Grid.Column="0"
+									  Grid.Row="0"
+									  HorizontalAlignment="Left" 
+									  Margin="16"
+									  IsChecked="{Binding IsMenuOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-
+						<!--Menu itens here -->
 						<!--Menu search -->
 						<GroupBox Header="Search "
+								  Grid.Row="1"
+								  Grid.Column="0"
 								  Style="{DynamicResource MaterialDesignGroupBox}"
-								  Margin="16"
+								  Margin="8"
 								  materialDesign:ShadowAssist.ShadowDepth="Depth3"
 								  BorderThickness="0">
 							<GroupBox.HeaderTemplate>
 								<DataTemplate>
 									<StackPanel Orientation="Horizontal">
-										<materialDesign:PackIcon Kind="ImageArea"
+										<materialDesign:PackIcon Kind="Search"
 																  Height="32"
 																  Width="32"
 																  VerticalAlignment="Center" />
@@ -99,17 +118,18 @@
 										materialDesign:TextFieldAssist.TextFieldCornerRadius="3"/>
 								<ListView Margin="{Binding ElementName=DemoItemsSearchBox, Path=Margin}">
 									<ListViewItem Content="Hello" />
-									<ListViewItem Content="World" />
-									<ListViewItem Content=":)" />
+
 								</ListView>
 							</StackPanel>
 
 						</GroupBox>
-						<!--Menu collection -->
 
+						<!--Menu collection -->
 						<GroupBox Header="{Binding MenuItensList[0].MenuName}"
+								  Grid.Row="2"
 								  Style="{DynamicResource MaterialDesignGroupBox}"
-								  Margin="16"
+								  Margin="8"
+								  Name="GrouBoxMenuCollection"
 								  materialDesign:ShadowAssist.ShadowDepth="Depth3"
 								  BorderThickness="0">
 							<GroupBox.HeaderTemplate>
@@ -127,57 +147,68 @@
 								</DataTemplate>
 							</GroupBox.HeaderTemplate>
 
-							<StackPanel>
-								<Button Content="Botao"  
-										CommandParameter=""
-										Command="{Binding DoExempleCommand}" >
+							<ScrollViewer Margin="0 0 -8 0">
+								<StackPanel>
+									<ItemsControl ItemsSource="{Binding MenuItensList[0].MenuN1SubList}" 
+												  x:Name="MyItems"
+												  Padding="0"
+												  Background="{x:Null}">
+										<ItemsControl.ItemTemplate>
+											<DataTemplate>
 
-								</Button>
-								<ItemsControl ItemsSource="{Binding MenuItensList[0].MenuN1SubList}" 
-											  Name="Control"
-											  Padding="10 0 0 0" Background="{x:Null}"
-											  DataContext="{Binding Mode=OneWay}">
-									<ItemsControl.ItemTemplate>
-										<DataTemplate>
+												<Expander Header="{Binding MenuN1Name}" Background="{x:Null}">
+													<ItemsControl x:Name="MyItems2" 
+																  ItemsSource="{Binding Path=MenuN1ItensList}" 
+																  Padding=" 10 0 0 0">
+														<ItemsControl.ItemTemplate>
+															<DataTemplate>
+																<!-- i will keep it to remember me how to use, when i need to use an other instance of viewModel
+																and a in a paramether a new instance too-->
+																<!--<Button Content="Button"  
+																		CommandParameter="{Binding Source={StaticResource mainDataContext}}"
+																		Command="{Binding DoExempleCommand, Source={StaticResource mainDataContext}}" >
 
-											<Expander Header="{Binding MenuN1Name}" Background="{x:Null}">
-												<ItemsControl ItemsSource="{Binding MenuN1ItensList}" Padding=" 10 0 0 0">
-													<ItemsControl.ItemTemplate>
-														<DataTemplate>
-															<!--<Button Content="Botao"  
-																	CommandParameter="{Binding Source={StaticResource mainDataContext}}"
-																	Command="{Binding DoExempleCommand, Source={StaticResource mainDataContext}}" >
+																</Button>-->
+																<!--here i use a new instance of viewModel, but in parameter i send a relative source
+																it's not what i want too-->
+																<!--<Button Margin="10"
+																			Content="Funcionou, mas instancio outra viewmode"
+																			CommandParameter="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+																			Command="{Binding DoExempleCommand, Source={StaticResource mainDataContext}}"
+																			/>-->
+																<StackPanel>
+																	<!-- HERE!! -->
+																	<!-- It's what im look for. i use a command by relative source, 
+																	and the data context too!-->
 
-															</Button>-->
-															<!--<Button Content="Botao"  
-																	CommandParameter="{Binding Mode=OneWay, RelativeSource={RelativeSource PreviousData}}"
-																	Command="{Binding DoExempleCommand, Source={StaticResource mainDataContext}}" >
+																	<Button Margin="16 4 "
+																		Content="Botao2"
+																		CommandParameter="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+																		Command="{Binding Path=DataContext.DoExempleCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}} }"
+																		Style="{StaticResource MaterialDesignFlatButton}"
+																			HorizontalContentAlignment="Stretch"
+																			/>
 
-															</Button>-->
-															<!-- esse aqui ok <Button Content="Botao"  
-																	CommandParameter="teste"
-																	Command="{Binding DoExempleCommand, Source={StaticResource mainDataContext}}" >
 
-															</Button>-->
-															<Button Content="Botao"  
-																	CommandParameter="teste"
-																	Command="{Binding DoExempleCommand, Source={StaticResource mainDataContext}}" >
+																</StackPanel>
 
-															</Button>
-														</DataTemplate>
+															</DataTemplate>
 
-													</ItemsControl.ItemTemplate>
-												</ItemsControl>
-											</Expander>
+														</ItemsControl.ItemTemplate>
+													</ItemsControl>
+												</Expander>
 
-										</DataTemplate>
-									</ItemsControl.ItemTemplate>
-								</ItemsControl>
-							</StackPanel>
+											</DataTemplate>
+										</ItemsControl.ItemTemplate>
+									</ItemsControl>
+
+								</StackPanel>
+							</ScrollViewer>
+
 						</GroupBox>
 
 
-					</StackPanel>
+					</Grid>
 
 				</StackPanel>
 			</materialDesign:DrawerHost.LeftDrawerContent>
@@ -188,81 +219,159 @@
 					<RowDefinition Height="*"/>
 					<RowDefinition Height="auto"/>
 				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="auto"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="auto"/>
+				</Grid.ColumnDefinitions>
 
-				<Grid Grid.Row="0">
-					<materialDesign:ColorZone Mode="Standard"
-											  Padding="16">
-						<DockPanel>
 
-							<StackPanel Orientation="Horizontal"
-										materialDesign:RippleAssist.IsCentered="True">
-								<ToggleButton Style="{DynamicResource MaterialDesignHamburgerToggleButton}"
-											  IsChecked="{Binding IsMenuOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+				<materialDesign:ColorZone Mode="Standard"
+										  Padding="16"
+										  Grid.ColumnSpan="99">
 
-								<ListBox SelectedItem="{Binding SelectedViewToShow, UpdateSourceTrigger=PropertyChanged}"
+
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="auto"/>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="auto"/>
+						</Grid.ColumnDefinitions>
+						<ToggleButton Grid.Column="0"
+									  Style="{DynamicResource MaterialDesignHamburgerToggleButton}"
+									  IsChecked="{Binding IsMenuOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+
+
+						<TextBlock Grid.Column="1" HorizontalAlignment="Center " VerticalAlignment="Center"
+								   Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+								   Text="{Binding SelectedViewToShow.blabla, UpdateSourceTrigger=PropertyChanged}"/>
+						<!--ListBox with Content Control is nice, and i probally not using in the best practice, it seens consume a lot of ram
+						and instance a new viewmodel everytime i select a item. I'm going to use tabcontrol to display views-->
+
+						<!--<ListBox Grid.Column="1"
+								 SelectedItem="{Binding SelectedViewToShow, UpdateSourceTrigger=PropertyChanged}"
 											 ItemsSource="{Binding ViewsToShow	}"
 											 Style="{StaticResource MaterialDesignChoiceChipPrimaryListBox}"
-											 materialDesign:ThemeAssist.Theme="Inherit"
-											 
-											>
+											 materialDesign:ThemeAssist.Theme="Inherit">
 
-									<ListBox.ItemsPanel>
-										<ItemsPanelTemplate>
-											<WrapPanel Orientation="Horizontal" IsItemsHost="True" Margin="10 0 0 0"/>
-										</ItemsPanelTemplate>
-									</ListBox.ItemsPanel>
-									<ListBox.ItemTemplate>
-										<DataTemplate>
-											<TextBlock Text="{Binding blabla}" Margin=" 10 0 10 0"/>
-										</DataTemplate>
-									</ListBox.ItemTemplate>
+							<ListBox.ItemsPanel>
+								<ItemsPanelTemplate>
+									<WrapPanel Orientation="Horizontal" IsItemsHost="True" Margin="10 0 0 0"/>
+								</ItemsPanelTemplate>
+							</ListBox.ItemsPanel>
+							<ListBox.ItemTemplate>
+								<DataTemplate>
+									<TextBlock Text="{Binding blabla}" Margin=" 10 0 10 0"/>
+								</DataTemplate>
+							</ListBox.ItemTemplate>
 
-
-
-
-								</ListBox>
+						</ListBox>-->
+						<materialDesign:PopupBox Grid.Column="2" 
+												 StaysOpen="True"
+												 IsEnabled="True">
+							<StackPanel Height="200"
+										Width="100">
 
 							</StackPanel>
-						</DockPanel>
-					</materialDesign:ColorZone>
-				</Grid>
+						</materialDesign:PopupBox>
 
-				<Grid Grid.Row="1">
 
-					<StackPanel>
 
-						<Grid>
-							<ContentControl DataContext="{Binding SelectedViewToShow}"
+					</Grid>
+
+				</materialDesign:ColorZone>
+
+
+				<Grid Grid.Row="1"
+					  Grid.ColumnSpan="99">
+
+					<TabControl Name="Menu"
+									ItemsSource="{Binding ViewsToShow}"
+									
+									TabStripPlacement="Top"
+									
+									Margin="0" Background="{x:Null}"
+									BorderThickness="0"
+									Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
+									ItemContainerStyle="{StaticResource MaterialDesignNavigationRailTabItem}" 
+								IsSynchronizedWithCurrentItem="True"
+									
+									>
+
+
+						<TabControl.ItemTemplate>
+							<DataTemplate>
+								<TextBlock Text="nome"/>
+							</DataTemplate>
+						</TabControl.ItemTemplate>
+
+						<!--<TabControl.ContentTemplate>
+
+							<DataTemplate>
+								<view2:MainView/>
+							</DataTemplate>
+
+						</TabControl.ContentTemplate>-->
+						<!--<TabControl.ContentTemplate>
+
+							<DataTemplate>
+								<ContentControl Content="{Binding Viewww}" Margin="16"/>
+							</DataTemplate>
+
+						</TabControl.ContentTemplate>-->
+						<!--<TabControl.ContentTemplate>
+
+								<DataTemplate>
+								<ContentControl Content="{Binding Viewww}" Margin="16">
+									<ContentControl.Resources>
+										<DataTemplate DataType="{x:Type viewModel2:TestViewModel}">
+											<view2:TestView/>
+										</DataTemplate>
+										<DataTemplate DataType="{x:Type viewModel2:MainViewModel}">
+											<view2:MainView/>
+										</DataTemplate>
+									</ContentControl.Resources>
+								</ContentControl>
+							</DataTemplate>
+							
+							</TabControl.ContentTemplate>-->
+
+
+						<TabControl.Resources>
+							<DataTemplate DataType="{x:Type viewModel2:TestViewModel}">
+								<view2:TestView/>
+							</DataTemplate>
+							<DataTemplate DataType="{x:Type viewModel2:MainViewModel}">
+								<view2:MainView/>
+							</DataTemplate>
+						</TabControl.Resources>
+
+					</TabControl>
+
+
+
+					<!--It works like a iframe in html, but seen use a lot of ram, and seens to instance a new viewmodel 
+							everu time i select a diferent item in the listview "views to show"
+							instead content control, i'll try to adapt tab control-->
+					<!--<ContentControl x:Name="contentControl" DataContext="{Binding SelectedViewToShow}"
 											Margin="50"
 											Content="{Binding Viewww, UpdateSourceTrigger=PropertyChanged}">
-								<!--Content="{StaticResource myDataTemplateSelector}">-->
 								<ContentControl.Resources>
-
-									<!--<userControl:UserControlBase x:Key="myDataTemplateSelector"/>
-
-									-->
-									<!--<view2:MainView x:Key="myDataTemplateSelector2"/>-->
-
 									<DataTemplate DataType="{x:Type userControl:UserControlBase}">
 										<userControl:UserControlBase />
 									</DataTemplate>
-
 									<DataTemplate DataType="{x:Type viewModel2:TestViewModel}">
 										<view2:TestView />
 									</DataTemplate>
-
 									<DataTemplate DataType="{x:Type viewModel2:MainViewModel}">
 										<view2:MainView/>
 									</DataTemplate>
-
-
 								</ContentControl.Resources>
 
-							</ContentControl>
+							</ContentControl>-->
 
-						</Grid>
 
-					</StackPanel>
 					<!--<materialDesign:Card Margin="10">
 
 					<StackPanel Margin="0">
@@ -307,25 +416,26 @@
 				</Grid>
 
 
-				<Grid Grid.Row="2">
+				<Grid Grid.Row="2"
+					  Grid.ColumnSpan="99">
 					<materialDesign:ColorZone
-  Mode="Dark"
-  Background="Black"
-  Foreground="White"
-  Padding="10"
-  ClipToBounds="False">
+											  Mode="Dark"
+											  Background="Black"
+											  Foreground="White"
+											  Padding="10"
+											  ClipToBounds="False">
 						<StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="16 0 16 0"
-    Orientation="Horizontal">
+										Orientation="Horizontal">
 
 							<TextBlock
-      VerticalAlignment="Center"
+										 VerticalAlignment="Center"
      
-      Text="Material Design In XAML Toolkit" />
+											 Text="Material Design In XAML Toolkit" />
 							<materialDesign:Badged
-      Badge="16"
-      VerticalAlignment="Center">
+													  Badge="{Binding ViewsToShow.Count}"
+													  VerticalAlignment="Top">
 								<Button
-        Content="Some action" />
+											 Content="Some action" />
 							</materialDesign:Badged>
 						</StackPanel>
 					</materialDesign:ColorZone>

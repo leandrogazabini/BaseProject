@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WptfTest.ViewModels.MainView;
 
 namespace WptfTest.Views.MainView
 {
@@ -22,6 +23,7 @@ namespace WptfTest.Views.MainView
 		public MainView()
 		{
 			InitializeComponent();
+			//this.DataContext = new MainViewModel();
 		}
 	}
 }
