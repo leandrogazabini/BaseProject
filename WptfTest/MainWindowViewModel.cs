@@ -12,11 +12,11 @@ using System.Windows.Data;
 using System.Windows.Input;
 using DllModels;
 using DllModels.Models.Bases;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.CommandWpf;
+
 
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using WptfTest.Models;
+using WptfTest.Models.BaseViewModels;
 using WptfTest.ViewModels.MainView;
 using WptfTestWptfTest.Models;
 
@@ -25,7 +25,7 @@ namespace WptfTest
 
 
 
-	class MainWindowViewModel : DllModels.Models.Bases.BaseClass
+	class MainWindowViewModel : BaseViewModel
 	{
 	
 
@@ -42,7 +42,7 @@ namespace WptfTest
 			}
 		}
 
-		public ObservableCollection<BaseClass> ViewsToShow { get; set; }
+		public ObservableCollection<BaseViewModel> ViewsToShow { get; set; }
 		private BaseClass _selectedViewToShow;
 		public BaseClass SelectedViewToShow
 		{
@@ -117,7 +117,7 @@ namespace WptfTest
 			StringTestToShow.Add("Jaca");
 
 
-			ViewsToShow = new ObservableCollection<BaseClass>();
+			ViewsToShow = new ObservableCollection<BaseViewModel>();
 			var mainView = new MainViewModel();
 			ViewsToShow.Add(mainView);
 
@@ -129,7 +129,7 @@ namespace WptfTest
 
 			MenuItensList = new ObservableCollection<Models.MenuItens>();
 			var objMenu = new MenuItens();
-			objMenu = objMenu.CreateMenu();
+			//objMenu = objMenu.CreateMenu();
 			MenuItensList.Add(objMenu);
 
 			

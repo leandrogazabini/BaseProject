@@ -14,13 +14,14 @@ using DllModels.Models.Bases;
 using WptfTestWptfTest.Models;
 using System.Windows.Controls;
 using System.Windows;
+using WptfTest.Models.BaseViewModels;
 
 namespace WptfTest.ViewModels.MainView
 {
-	class MainViewModel : DllModels.Models.Bases.BaseClass
+	class MainViewModel : BaseViewModel
 	{
 
-		private string _test= "aa";
+		private string _test = "aa";
 		public string Test
 		{
 			get { return _test; }
@@ -44,7 +45,7 @@ namespace WptfTest.ViewModels.MainView
 			}
 		}
 
-public MainViewModel()
+		public MainViewModel()
 		{
 			//Person = new Person();
 
@@ -57,7 +58,7 @@ public MainViewModel()
 			//Person.OficialName = "Leandro";
 		}
 
-		
+
 	}
 }
 

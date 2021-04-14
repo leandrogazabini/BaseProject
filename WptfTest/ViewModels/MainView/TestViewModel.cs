@@ -11,10 +11,11 @@ using DllModels.Models;
 using DllModels.Models.ModelsValidators;
 using System.Collections.ObjectModel;
 using DllModels.Models.Bases;
+using WptfTest.Models.BaseViewModels;
 
 namespace WptfTest.ViewModels.MainView
 {
-	class TestViewModel : DllModels.Models.Bases.BaseClass
+	class TestViewModel : BaseViewModel
 	{
 		private IDialogCoordinator dialogCoordinator;
 

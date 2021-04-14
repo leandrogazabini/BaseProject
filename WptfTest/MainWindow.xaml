@@ -11,8 +11,10 @@
                     
     xmlns:userControl="clr-namespace:WptfTest.Views.GeneralUserControls"
     xmlns:MainView="clr-namespace:WptfTest.Views.MainView"
-        
-    fw:AcrylicWindow.Enabled="True"
+    xmlns:converters="clr-namespace:WptfTest.Converters"
+
+    
+	fw:AcrylicWindow.Enabled="True"
     fw:AcrylicWindow.NoiseOpacity="0.001"
     fw:AcrylicWindow.TintColor="White"
     fw:AcrylicWindow.TintOpacity="0.65"
@@ -43,6 +45,9 @@
 	<Window.Resources>
 		<viewModel:MainWindowViewModel x:Key="mainDataContext"/>
 	</Window.Resources>-->
+	<Window.Resources>
+		<converters:MenuVisibility  x:Key="menuVisibility"/>
+	</Window.Resources>
 
 
 	<DockPanel>
@@ -156,7 +161,8 @@
 										<ItemsControl.ItemTemplate>
 											<DataTemplate>
 
-												<Expander Header="{Binding MenuN1Name}" Background="{x:Null}">
+												<Expander Header="{Binding MenuN1Name}" Background="{x:Null}"
+														  Visibility="{Binding Path=Visibility, Converter={StaticResource menuVisibility}}">
 													<ItemsControl x:Name="MyItems2" 
 																  ItemsSource="{Binding Path=MenuN1ItensList}" 
 																  Padding=" 10 0 0 0">
@@ -182,12 +188,16 @@
 																	and the data context too!-->
 
 																	<Button Margin="16 4 "
-																		Content="Botao2"
+																		Content="{Binding Path=Visibility}"
+																		IsEnabled="{Binding Path=Visibility}"
+																		Visibility="{Binding Path=Visibility, Converter={StaticResource menuVisibility}}"
+
 																		CommandParameter="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
 																		Command="{Binding Path=DataContext.DoExempleCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}} }"
 																		Style="{StaticResource MaterialDesignFlatButton}"
-																			HorizontalContentAlignment="Stretch"
-																			/>
+																		HorizontalContentAlignment="Stretch"
+																			>
+																	</Button>
 
 
 																</StackPanel>
@@ -294,48 +304,37 @@
 									Margin="0" Background="{x:Null}"
 									BorderThickness="0"
 									Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
-									ItemContainerStyle="{StaticResource MaterialDesignNavigationRailTabItem}" 
-								IsSynchronizedWithCurrentItem="True"
+								    IsSynchronizedWithCurrentItem="True"
 									
 									>
 
 
 						<TabControl.ItemTemplate>
 							<DataTemplate>
-								<TextBlock Text="nome"/>
+								
+
+								<TextBlock Text="nome" Margin="16 8"/>
+								
+								
 							</DataTemplate>
+
+
 						</TabControl.ItemTemplate>
-
-						<!--<TabControl.ContentTemplate>
-
-							<DataTemplate>
-								<view2:MainView/>
-							</DataTemplate>
-
-						</TabControl.ContentTemplate>-->
-						<!--<TabControl.ContentTemplate>
-
-							<DataTemplate>
-								<ContentControl Content="{Binding Viewww}" Margin="16"/>
-							</DataTemplate>
-
-						</TabControl.ContentTemplate>-->
-						<!--<TabControl.ContentTemplate>
-
-								<DataTemplate>
-								<ContentControl Content="{Binding Viewww}" Margin="16">
-									<ContentControl.Resources>
-										<DataTemplate DataType="{x:Type viewModel2:TestViewModel}">
-											<view2:TestView/>
-										</DataTemplate>
-										<DataTemplate DataType="{x:Type viewModel2:MainViewModel}">
-											<view2:MainView/>
-										</DataTemplate>
-									</ContentControl.Resources>
-								</ContentControl>
-							</DataTemplate>
-							
-							</TabControl.ContentTemplate>-->
+						
+						<TabControl.Template>
+							<ControlTemplate TargetType="{x:Type TabControl}">
+								<Grid>
+									<Grid.RowDefinitions>
+										<RowDefinition Height="Auto"/>
+										<RowDefinition/>
+									</Grid.RowDefinitions>
+									<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+										<TabPanel x:Name="HeaderPanel" IsItemsHost="True" Margin="0,4,0,0"/>
+									</ScrollViewer>
+									<ContentPresenter x:Name="PART_SelectedContentHost" Margin="4" ContentSource="SelectedContent" Grid.Row="1"/>
+								</Grid>
+							</ControlTemplate>
+						</TabControl.Template>
 
 
 						<TabControl.Resources>
@@ -345,6 +344,23 @@
 							<DataTemplate DataType="{x:Type viewModel2:MainViewModel}">
 								<view2:MainView/>
 							</DataTemplate>
+
+
+							<Style TargetType="{x:Type TabItem}">
+								<Setter Property="Template">
+									<Setter.Value>
+										<ControlTemplate TargetType="{x:Type TabItem}">
+											<Grid>
+												
+												<ContentPresenter x:Name="ContentSite" ContentSource="Header" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2,2,12,2" RecognizesAccessKey="True">
+													
+												</ContentPresenter>
+												
+											</Grid>
+										</ControlTemplate>
+									</Setter.Value>
+								</Setter>
+							</Style>
 						</TabControl.Resources>
 
 					</TabControl>
