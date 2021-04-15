@@ -27,24 +27,10 @@ namespace WptfTest
 
 	class MainWindowViewModel : BaseViewModel
 	{
-	
-
-		//private IDialogCoordinator dialogCoordinator;
-
-		public ObservableCollection<string> StringTestToShow { get; set; }
-		private string _selectedStringTestToShow;
-		public string SelectedStringTestToShow
-		{
-			get { return _selectedStringTestToShow; }
-			set
-			{
-				SetField(ref _selectedStringTestToShow, value);
-			}
-		}
 
 		public ObservableCollection<BaseViewModel> ViewsToShow { get; set; }
-		private BaseClass _selectedViewToShow;
-		public BaseClass SelectedViewToShow
+		private BaseViewModel _selectedViewToShow;
+		public BaseViewModel SelectedViewToShow
 		{
 			get { return _selectedViewToShow; }
 			set
@@ -54,16 +40,6 @@ namespace WptfTest
 		}
 
 		public ObservableCollection<Models.MenuItens> MenuItensList { get; set; }
-
-		public void Teste()
-		{
-			
-			var mainViewx = new ViewModels.MainView.MainViewModel();
-			//mainViewx.blabla = "bla5";
-			if (ViewsToShow.Count > 0) ViewsToShow.Add(mainViewx);
-
-		}
-	
 		private bool _isMenuOpen = true;
 		public bool IsMenuOpen
 		{
@@ -75,7 +51,52 @@ namespace WptfTest
 		}
 
 
+		#region General Methods
+		public void OpenNewViewInMainTab()
+		{
+			var newViewTab = new MainViewModel();
+			newViewTab.Visibility = true;
+			if (ViewsToShow.Any()) ViewsToShow.Add(newViewTab);
+
+		}
+
+
+
+		#endregion
+		public MainWindowViewModel()
+		{
+
+			TestNewCommand = new SimpleCommand<string>(TestNew);
+
+			ViewsToShow = new ObservableCollection<BaseViewModel>();
+
+			var mainView = new MainViewModel();
+			mainView.Visibility = true;
+			ViewsToShow.Add(mainView);
+
+			mainView = new MainViewModel();
+			mainView.Visibility = true;
+
+			ViewsToShow.Add(mainView);
+
+			var mainView2 = new TestViewModel();
+			mainView2.Visibility = false;
+			ViewsToShow.Add(mainView2);
+
+			MenuItensList = new ObservableCollection<Models.MenuItens>();
+			var objMenu = new MenuItens();
+			//objMenu = objMenu.CreateMenu();
+			MenuItensList.Add(objMenu);
+
+
+
+		}
 		#region Commands
+
+		public ICommand TestNewCommand { get; private set; }
+		private void TestNew(string open = "") { this.OpenNewViewInMainTab(); }
+
+
 		public class ExempleCommand : BaseCommand
 		{
 			public override bool CanExecute(object parameter)
@@ -92,7 +113,7 @@ namespace WptfTest
 				//using (var db = new DBL.db())
 				//{
 				//}
-				viewModel.Teste();
+				viewModel.OpenNewViewInMainTab();
 			}
 		}
 		public ExempleCommand DoExempleCommand { get; private set; } = new ExempleCommand();
@@ -103,40 +124,10 @@ namespace WptfTest
 
 
 
-		public MainWindowViewModel()
-		{
-			
 
-
-			StringTestToShow = new ObservableCollection<string>();
-
-			StringTestToShow.Add("Banana");
-			StringTestToShow.Add("Batata");
-			StringTestToShow.Add("Arroz");
-			StringTestToShow.Add("Maça");
-			StringTestToShow.Add("Jaca");
-
-
-			ViewsToShow = new ObservableCollection<BaseViewModel>();
-			var mainView = new MainViewModel();
-			ViewsToShow.Add(mainView);
-
-			mainView = new MainViewModel();
-			ViewsToShow.Add(mainView);
-
-			var mainView2 = new TestViewModel();
-			ViewsToShow.Add(mainView2);
-
-			MenuItensList = new ObservableCollection<Models.MenuItens>();
-			var objMenu = new MenuItens();
-			//objMenu = objMenu.CreateMenu();
-			MenuItensList.Add(objMenu);
-
-			
-
-		}
 
 
 	}
-
 }
+
+

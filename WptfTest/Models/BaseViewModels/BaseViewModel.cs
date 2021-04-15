@@ -5,11 +5,14 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace WptfTest.Models.BaseViewModels
 {
 	class BaseViewModel : BaseClass
 	{
+
+
 		private string _viewTitle = "Not implemented";
 		public string ViewTitle
 		{
@@ -30,6 +33,15 @@ namespace WptfTest.Models.BaseViewModels
 			}
 		}
 
+
+		private bool _visibility = false;
+		public bool Visibility
+		{
+			get { return _visibility; }
+			set { SetField(ref _visibility, value); }
+		}
+
+
 		public ViewModelPermissions ViewModelPermissions { get; set; }
 
 		public BaseViewModel()
@@ -37,5 +49,7 @@ namespace WptfTest.Models.BaseViewModels
 			this.ViewModelPermissions = new ViewModelPermissions();
 		}
 
+
+		
 	}
 }

@@ -9,7 +9,7 @@ using System.Windows.Data;
 
 namespace WptfTest.Converters
 {
-    public class MenuVisibility : IValueConverter
+    public class ViewItemVisibility : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

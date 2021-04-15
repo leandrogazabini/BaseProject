@@ -139,6 +139,13 @@ namespace WptfTest.Models
 				get { return _visibility; }
 				set { SetField(ref _visibility, value); }
 			}
+
+			private string _viewName = "Undefined";
+			public string ViewName
+			{
+				get { return _viewName; }
+				set { SetField(ref _viewName, value); }
+			}
 		}
 		#endregion
 

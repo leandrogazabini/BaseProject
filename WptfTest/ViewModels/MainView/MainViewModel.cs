@@ -15,6 +15,7 @@ using WptfTestWptfTest.Models;
 using System.Windows.Controls;
 using System.Windows;
 using WptfTest.Models.BaseViewModels;
+using WptfTest.Models;
 
 namespace WptfTest.ViewModels.MainView
 {
@@ -47,6 +48,7 @@ namespace WptfTest.ViewModels.MainView
 
 		public MainViewModel()
 		{
+			
 			//Person = new Person();
 
 

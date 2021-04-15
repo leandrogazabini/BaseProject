@@ -46,7 +46,7 @@
 		<viewModel:MainWindowViewModel x:Key="mainDataContext"/>
 	</Window.Resources>-->
 	<Window.Resources>
-		<converters:MenuVisibility  x:Key="menuVisibility"/>
+		<converters:ViewItemVisibility  x:Key="viewItemVisibility"/>
 	</Window.Resources>
 
 
@@ -125,6 +125,8 @@
 									<ListViewItem Content="Hello" />
 
 								</ListView>
+								<Button CommandParameter="{Binding ViewHelpMessage}"
+										Command="{Binding TestNewCommand}" Content="test"/>
 							</StackPanel>
 
 						</GroupBox>
@@ -162,7 +164,7 @@
 											<DataTemplate>
 
 												<Expander Header="{Binding MenuN1Name}" Background="{x:Null}"
-														  Visibility="{Binding Path=Visibility, Converter={StaticResource menuVisibility}}">
+														  Visibility="{Binding Path=Visibility, Converter={StaticResource viewItemVisibility}}">
 													<ItemsControl x:Name="MyItems2" 
 																  ItemsSource="{Binding Path=MenuN1ItensList}" 
 																  Padding=" 10 0 0 0">
@@ -190,10 +192,21 @@
 																	<Button Margin="16 4 "
 																		Content="{Binding Path=Visibility}"
 																		IsEnabled="{Binding Path=Visibility}"
-																		Visibility="{Binding Path=Visibility, Converter={StaticResource menuVisibility}}"
+																		Visibility="{Binding Path=Visibility, Converter={StaticResource viewItemVisibility}}"
 
 																		CommandParameter="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
 																		Command="{Binding Path=DataContext.DoExempleCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}} }"
+																		Style="{StaticResource MaterialDesignFlatButton}"
+																		HorizontalContentAlignment="Stretch"
+																			>
+																	</Button>
+																	<Button Margin="16 4 "
+																		Content="Button 2"
+																		IsEnabled="{Binding Path=Visibility}"
+																		Visibility="{Binding Path=Visibility, Converter={StaticResource viewItemVisibility}}"
+
+																		CommandParameter="{Binding Path=ViewName, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+																		Command="{Binding Path=DataContext.TestNewCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}} }"
 																		Style="{StaticResource MaterialDesignFlatButton}"
 																		HorizontalContentAlignment="Stretch"
 																			>
@@ -255,7 +268,7 @@
 
 						<TextBlock Grid.Column="1" HorizontalAlignment="Center " VerticalAlignment="Center"
 								   Style="{StaticResource MaterialDesignHeadline6TextBlock}"
-								   Text="{Binding SelectedViewToShow.blabla, UpdateSourceTrigger=PropertyChanged}"/>
+								   Text="{Binding SelectedViewToShow.ViewTitle, UpdateSourceTrigger=PropertyChanged}"/>
 						<!--ListBox with Content Control is nice, and i probally not using in the best practice, it seens consume a lot of ram
 						and instance a new viewmodel everytime i select a item. I'm going to use tabcontrol to display views-->
 
@@ -313,7 +326,8 @@
 							<DataTemplate>
 								
 
-								<TextBlock Text="nome" Margin="16 8"/>
+								<TextBlock Text="{Binding Visibility}" Margin="16 8"
+										   Visibility="{Binding Visibility, Converter={StaticResource viewItemVisibility}}"/>
 								
 								
 							</DataTemplate>
