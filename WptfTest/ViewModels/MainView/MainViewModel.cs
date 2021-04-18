@@ -22,7 +22,7 @@ namespace WptfTest.ViewModels.MainView
 	class MainViewModel : BaseViewModel
 	{
 
-		private string _test = "aa";
+		private string _test = "Test string.";
 		public string Test
 		{
 			get { return _test; }
@@ -50,6 +50,7 @@ namespace WptfTest.ViewModels.MainView
 		{			
 			SetViewModelPermissions(viewModelPermissions);
 			this.Visibility = visibility;
+			this.MenuN1ItemParameter = MenuItens.MenuN1Item.MenuN1ItemParameters.MainViewModel;
 		}
 
 

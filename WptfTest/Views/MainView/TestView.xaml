@@ -6,37 +6,78 @@
              xmlns:local="clr-namespace:WptfTest"
              mc:Ignorable="d"
         
-        
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
-
-                     
-        
-             fw:AcrylicWindow.Enabled="True"
-             fw:AcrylicWindow.TintColor="red"
-             fw:AcrylicWindow.TintOpacity="0.25"
-             fw:AcrylicWindow.NoiseOpacity="0.025"
-             fw:AcrylicWindow.AcrylicWindowStyle="None"
-        
+			 xmlns:converters="clr-namespace:WptfTest.Converters"
+			 
 			 xmlns:viewModel="clr-namespace:WptfTest.ViewModels.MainView"
+			 d:DataContext="{d:DesignInstance Type=viewModel:TestViewModel, IsDesignTimeCreatable=True}"
 			 >
 	<!--<UserControl.DataContext>
 		<viewModel:MainViewModel/>
 	</UserControl.DataContext>-->
+	<UserControl.Resources>
+		<converters:ViewItemVisibility  x:Key="viewItemVisibility"/>
+	</UserControl.Resources>
 
 
-
-	<DockPanel>
+	<DockPanel Visibility="{Binding Path=ViewModelPermissions.canRead, Converter={StaticResource viewItemVisibility}}">
 		
 
-		<Grid>
-			<StackPanel>
+		<Grid VerticalAlignment="Top" HorizontalAlignment="Center">
+			<StackPanel Orientation="Horizontal">
+				
+				
+				<!--<TextBlock Text="canDeleteData?"/>
+				<TextBlock Text="{Binding ViewModelPermissions.canDeleteData}"/>
+				<TextBlock Text="              "/>
 
-				<Button>a</Button>
-				<Button>a</Button>
-				<Button>a</Button>
-				<Button>a</Button>
-				<Button>a</Button>
+				<TextBlock Text="canDeleteLogic?"/>
+				<TextBlock Text="{Binding ViewModelPermissions.canDeleteLogic}"/>
+				<TextBlock Text="              "/>
+
+				<TextBlock Text="canExecute?"/>
+				<TextBlock Text="{Binding ViewModelPermissions.canExecute}"/>
+				<TextBlock Text="              "/>
+
+				<TextBlock Text="canRead?"/>
+				<TextBlock Text="{Binding ViewModelPermissions.canRead}"/>
+				<TextBlock Text="              "/>
+
+				<TextBlock Text="canSaveChanges?"/>
+				<TextBlock Text="{Binding ViewModelPermissions.canSaveChanges}"/>
+				<TextBlock Text="              "/>
+
+				<TextBlock Text="canWrite?"/>
+				<TextBlock Text="{Binding ViewModelPermissions.canWrite}"/>-->
+
+				<Button IsEnabled="{Binding ViewModelPermissions.canDeleteData}"
+						Content="canDeleteData?"
+						Margin="16"/>
+
+				<Button IsEnabled="{Binding ViewModelPermissions.canDeleteLogic}"
+						Content="canDeleteLogic?"
+						Margin="16"/>
+
+				<Button IsEnabled="{Binding ViewModelPermissions.canExecute}"
+						Content="canExecute?"
+						Margin="16"/>
+				
+				<Button IsEnabled="{Binding ViewModelPermissions.canRead}"
+						Content="canRead?"
+						Margin="16"/>
+
+				<Button IsEnabled="{Binding ViewModelPermissions.canSaveChanges}"
+						Content="canSaveChanges?"
+						Margin="16"/>
+
+				<Button IsEnabled="{Binding ViewModelPermissions.canWrite}"
+						Content="canWrite?"
+						Margin="16"/>
+
+				<TextBox IsManipulationEnabled="True" Text="Isso é um teste."/>
+
+
 			</StackPanel>
 
 		</Grid>

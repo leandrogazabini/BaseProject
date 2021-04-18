@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WptfTest.Models.BaseViewModels
+﻿namespace WptfTest.Models
 {
 	public class ViewModelPermissions
 	{
+		//permission ID
+		public int? Id { get;}
+		//type of user
+		public UserProfiles.UserProfileTypes userProfileType { get; }
+		//view name
+
+		public MenuItens.MenuN1Item.MenuN1ItemParameters viewName { get; }
 		//can logged user read content of view?
 		public bool canRead { get; } = false;
 		//can logged user write anything in view?
@@ -23,13 +23,17 @@ namespace WptfTest.Models.BaseViewModels
 		public bool canDeleteData { get; } = false;
 
 
-		public ViewModelPermissions(bool _canRead = false,
+		public ViewModelPermissions( UserProfiles.UserProfileTypes _userProfileType  = UserProfiles.UserProfileTypes.ordinaryUser,
+									MenuItens.MenuN1Item.MenuN1ItemParameters _viewName = 0,
+									bool _canRead = false,
 									bool _canWrite = false,
 									bool _canExecute = false,
 									bool _canSaveChanges = false,
 									bool _canDeleteLogic = false,
 									bool _canDeleteData = false)
 		{
+			userProfileType = _userProfileType;
+			viewName = _viewName;
 			canRead = _canRead;
 			canWrite = _canWrite;
 			canExecute = _canExecute;

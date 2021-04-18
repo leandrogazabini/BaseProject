@@ -1,23 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.DirectoryServices.ActiveDirectory;
-using System.Globalization;
-using System.IO.Packaging;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
-using DllModels;
-using DllModels.Models.Bases;
-
-
-using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using WptfTest.Models;
 using WptfTest.Models.BaseViewModels;
 using WptfTest.ViewModels.MainView;
@@ -31,10 +14,20 @@ namespace WptfTest
 
 	class MainWindowViewModel : BaseViewModel
 	{
-		bool isDebugMode = false;
+		static bool isDebugMode = false;
+
+		//general permission - move to bata base in future, is here just for test.
+		public ObservableCollection<ViewModelPermissions> AllPersmissionsList { get; set; }
+
+		//logged user details
+		public User loggedUser { get; set; }
+
+		//collection that i will use to check user permission to open a view
+		public ObservableCollection<ViewModelPermissions> loggedUserPermissions { get; set; }
+
+
+
 		#region Properties
-		//it is used always when a new view will be iniciated
-		public ViewModelPermissions viewModelPermissions { get; set; }
 
 		//Collection of views to display in main tab
 		public ObservableCollection<BaseViewModel> ViewsToShow { get; set; }
@@ -60,6 +53,9 @@ namespace WptfTest
 				SetField(ref _isMenuOpen, value);
 			}
 		}
+
+		//Collection of menu itens in search
+		public ObservableCollection<MenuN1Item> MenuItensFoundInSearch { get; set; }
 		#endregion
 
 		#region General Methods
@@ -69,10 +65,8 @@ namespace WptfTest
 		{
 			var menuItemReceived = (MenuN1Item)param;
 
-			//when it want to open a new tab, it checks permissns to the view 
-			viewModelPermissions = VerifyPermission(menuItemReceived.MenuN1ItemParameter);
 
-			//after permission verified, 
+			//the permission about the VM will be verified when instance the VM
 			switch (menuItemReceived.MenuN1ItemType)
 			{
 				case MenuN1Item.MenuN1ItemTypes.MainTabNewItem: // if type is request a new main tab
@@ -89,16 +83,15 @@ namespace WptfTest
 		public bool IncludeNewItemInMainTab(MenuN1Item.MenuN1ItemParameters parameter = 0)
 		{
 			// a dynamic object that is used to set the view that will be included in tab
-			dynamic newViewModel;
+			BaseViewModel newViewModel;
 			switch (parameter)
 			{
 				case MenuN1Item.MenuN1ItemParameters.TestViewModel:
-					newViewModel = new TestViewModel();
-					newViewModel.Visibility = true;
+					newViewModel = new TestViewModel(VerifyPermission(parameter), visibility: true);
 					break;
 
 				case MenuN1Item.MenuN1ItemParameters.MainViewModel:
-					newViewModel = new MainViewModel(viewModelPermissions, visibility: true);
+					newViewModel = new MainViewModel(VerifyPermission(parameter), visibility: true);
 					break;
 
 				default:
@@ -107,13 +100,13 @@ namespace WptfTest
 			}
 			int viewsToShowTotalTabs = ViewsToShow.Count();
 
-			if (viewsToShowTotalTabs > 0)
+			if (viewsToShowTotalTabs >= 0)
 			{
+				//verify if tab is already open, but now nothing is done.
+				bool tabAlreadyOpen = ViewsToShow.Any(t => t.MenuN1ItemParameter.Equals(newViewModel.MenuN1ItemParameter));
 				ViewsToShow.Add(newViewModel);
-				
 				SelectedViewToShow = newViewModel;
 			}
-
 
 
 			return true;
@@ -124,7 +117,7 @@ namespace WptfTest
 		public ViewModelPermissions VerifyPermission(MenuN1Item.MenuN1ItemParameters itemParam)
 		{
 			//nedd to improve this feature, to check the permission to view selected
-			var result = new ViewModelPermissions(true, true);
+			var result = loggedUserPermissions.Where(x => x.viewName.Equals(itemParam)).FirstOrDefault();
 			return result;
 		}
 		#endregion
@@ -136,6 +129,34 @@ namespace WptfTest
 			//nedd to impleimprovement this feature, to check the menus itens allowed to user
 			var result = new MenuItens();
 			return result;
+		}
+
+		public bool SearchMenuItemsNow(string query)
+		{
+			foreach (var item in MenuItensList)
+			{
+				foreach (var subItem in item.MenuN1SubList)
+				{
+					foreach (var menuItem in subItem.MenuN1ItensList)
+					{
+						bool itemExistisInCollection = MenuItensFoundInSearch.Any(i => i.MenuN1ItemName.Equals(menuItem.MenuN1ItemName));
+						bool itemNameContainsQuery = menuItem.MenuN1ItemName.Contains(query);
+						bool itemTagsContainQuery = menuItem.MenuN1ITags.Any(x => x.Contains(query));
+						bool itemIsVisible = menuItem.Visibility.Equals(true);
+						if ((itemNameContainsQuery ||
+							itemTagsContainQuery) &&
+							itemIsVisible &&
+							!itemExistisInCollection)
+						{
+							MenuItensFoundInSearch.Add(menuItem);
+						}
+						else { }
+
+					}
+				}
+			}
+
+			return true;
 		}
 		#endregion
 
@@ -155,34 +176,93 @@ namespace WptfTest
 
 			ViewsToShow = new ObservableCollection<BaseViewModel>();
 
+			//commands instance
 			TestNewCommand = new SimpleCommand<object>(TestNew);
 
+			SearchMenuItemsCommand = new SimpleCommand<string>(SearchMenuItems);
 
 			// data population for tests... 
 			if (isDebugMode)
 			{
-				var mainView = new MainViewModel(viewModelPermissions);
-				mainView.Visibility = true;
-				ViewsToShow.Add(mainView);
+				//var mainView = new MainViewModel();
+				//mainView.Visibility = true;
+				//ViewsToShow.Add(mainView);
 
-				mainView = new MainViewModel(viewModelPermissions);
-				mainView.Visibility = true;
+				//mainView = new MainViewModel();
+				//mainView.Visibility = true;
 
-				ViewsToShow.Add(mainView);
+				//ViewsToShow.Add(mainView);
 
-				var mainView2 = new MainViewModel();
-				mainView2.Visibility = false;
-				ViewsToShow.Add(mainView2);
+				//var mainView2 = new TestViewModel();
+				//mainView2.Visibility = false;
+				//ViewsToShow.Add(mainView2);
 
+
+				// creating list of permissions
+				AllPersmissionsList = new ObservableCollection<ViewModelPermissions>();
+				ViewModelPermissions vmp = new ViewModelPermissions(
+					UserProfiles.UserProfileTypes.sysAdmim,
+					MenuN1Item.MenuN1ItemParameters.MainViewModel,
+					true,
+					true,
+					true,
+					true,
+					true,
+					false
+					);
+				AllPersmissionsList.Add(vmp);
+				ViewModelPermissions vmp2 = new ViewModelPermissions(
+					UserProfiles.UserProfileTypes.ordinaryUser,
+					MenuN1Item.MenuN1ItemParameters.MainViewModel,
+					true,
+					false,
+					true,
+					false,
+					true,
+					false
+					);
+				AllPersmissionsList.Add(vmp2);
+				ViewModelPermissions vmp3 = new ViewModelPermissions(
+					UserProfiles.UserProfileTypes.sysAdmim,
+					MenuN1Item.MenuN1ItemParameters.TestViewModel,
+					true,
+					true,
+					true,
+					true,
+					false,
+					false
+					);
+				AllPersmissionsList.Add(vmp3);
 
 
 
 			}
+			//Loading user properties
+			loggedUser = new User();
+			loggedUser.UserName = "Leandro";
+			loggedUser.UserProfile = UserProfiles.UserProfileTypes.sysAdmim;
+
 
 			// Menu request 
 			MenuItensList = new ObservableCollection<Models.MenuItens>();
 			var objMenu = CreateMainMenu("MainMenu");
 			MenuItensList.Add(objMenu);
+
+			//Collection to display itens in menu search items
+			MenuItensFoundInSearch = new ObservableCollection<MenuN1Item>();
+
+			//User permissions
+			loggedUserPermissions = new ObservableCollection<ViewModelPermissions>();
+			var tempUserPermissions = AllPersmissionsList.Where(x => x.userProfileType.Equals(loggedUser.UserProfile));
+			{
+				foreach (var item in tempUserPermissions)
+				{
+					loggedUserPermissions.Add(item);
+				}
+
+			}
+
+
 
 		}
 
@@ -201,6 +281,19 @@ namespace WptfTest
 		{
 			this.OpenNewViewInMainTab(open);
 			IsMenuOpen = false;
+		}
+
+		//search engine for menu itens
+		public ICommand SearchMenuItemsCommand { get; private set; }
+		private void SearchMenuItems(string query = null)
+		{
+			MenuItensFoundInSearch.Clear();
+
+			if (!string.IsNullOrWhiteSpace(query))
+			{
+				SearchMenuItemsNow(query);
+			}
+
 		}
 
 		//Command usin a class for each command. In this case nedd to use parameter to send the object to command,

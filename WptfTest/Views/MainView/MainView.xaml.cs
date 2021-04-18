@@ -23,7 +23,6 @@ namespace WptfTest.Views.MainView
 		public MainView()
 		{
 			InitializeComponent();
-			//this.DataContext = new MainViewModel();
 		}
 	}
 }

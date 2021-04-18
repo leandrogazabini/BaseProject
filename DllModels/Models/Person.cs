@@ -1,13 +1,5 @@
 ﻿using DllModels.Models.Bases;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
 
 
 
@@ -15,10 +7,12 @@ namespace DllModels.Models
 {
 
 
-    public class Person : BaseClass
+	public class Person : BaseClass
     {
         #region PROPERTIES
-        public int PersonId{ get; set; }
+        public int PersonId { get; set; }
+
+        //public int RegisterVersion { get; set; }
 
         private string _oficialName;
 

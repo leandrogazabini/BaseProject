@@ -1,10 +1,7 @@
 ﻿using DllModels.Models.Bases;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Documents;
 
 namespace WptfTest.Models
 {
@@ -29,66 +26,58 @@ namespace WptfTest.Models
 
 		public ObservableCollection<MenuN1Sub> MenuN1SubList { get; set; }
 
+		 // menu
+		 //		menun1sublist
+		 //			menun1item
 		#endregion
-
 		#region METHODS
-		//public MenuItens CreateMenu(string menuName = "sem nome de menu")
-		//{
-		//	MenuN1Item MenuN1Item = new MenuN1Item { MenuN1ItemName = "nome do item do menu 1" };
-		//	var MenuN1ItensList = new ObservableCollection<MenuN1Item>();
-		//	var MenuN1Sub = new MenuN1Sub();
-		//	MenuN1Sub.MenuN1Name = "Name do menu 1";
-		//	MenuN1Sub.MenuN1ItensList = new ObservableCollection<MenuN1Item>();
-		//	MenuN1Sub.MenuN1ItensList.Add(MenuN1Item);
-		//	MenuN1Sub.MenuN1ItensList.Add(MenuN1Item);
-		//	MenuN1Sub.MenuN1ItensList.Add(MenuN1Item);
-		//	MenuN1Sub.MenuN1ItensList.Add(MenuN1Item);
-		//	var MenuN1SubList = new ObservableCollection<MenuN1Sub>();
-		//	var MenuItens = new MenuItens();
-		//	MenuItens.MenuName = menuName;
-		//	MenuItens.MenuN1SubList = new ObservableCollection<MenuN1Sub>();
-		//	MenuItens.MenuN1SubList.Add(MenuN1Sub);
-		//	MenuItens.MenuN1SubList.Add(MenuN1Sub);
-		//	MenuItens.MenuN1SubList.Add(MenuN1Sub);
-
-		//	return MenuItens;
-		//}
-		public MenuItens(string menuName = "sem nome de menu")
+		
+		public MenuItens(string menuName = "Not implemented")
 		{
-			var MenuN1Sub = new MenuN1Sub();
 
-			var MenuN1ItensList = new ObservableCollection<MenuN1Item>();
-			MenuN1Item MenuN1Item = new MenuN1Item { MenuN1ItemName = "nome do item do menu 1", Visibility = true, MenuN1ItemType = MenuN1Item.MenuN1ItemTypes.MainTabNewItem, MenuN1ItemParameter = MenuN1Item.MenuN1ItemParameters.MainViewModel };
-			MenuN1Item MenuN1Item2 = new MenuN1Item { MenuN1ItemName = "Vibibility false", Visibility = false };
-			MenuN1Sub.MenuN1Name = "Item 1 name here";
-			MenuN1Sub.Visibility = true;
-			MenuN1Sub.MenuN1ItensList = new ObservableCollection<MenuN1Item>();
-			MenuN1Sub.MenuN1ItensList.Add(MenuN1Item);
-			MenuN1Sub.MenuN1ItensList.Add(MenuN1Item2);
-			MenuN1Sub.MenuN1ItensList.Add(MenuN1Item);
-			MenuN1Sub.MenuN1ItensList.Add(MenuN1Item2);
-			var MenuN1SubList = new ObservableCollection<MenuN1Sub>();
-			//var MenuItens = new MenuItens();
+
+			MenuN1Item MenuN1Item = new MenuN1Item
+			{
+				MenuN1ItemName = "Open Main View!",
+				MenuN1ITags = {"example","tag", "main", "view" },
+				MenuN1IToolTip = "Tooltip come here, and a lot of information cam be placed here.",
+				Visibility = true,
+				MenuN1ItemType = MenuN1Item.MenuN1ItemTypes.MainTabNewItem,
+				MenuN1ItemParameter = MenuN1Item.MenuN1ItemParameters.MainViewModel
+			};
+
+			MenuN1Item MenuN1Item2 = new MenuN1Item
+			{
+				MenuN1ItemName = "Open Test View!",
+				MenuN1ITags = { "test" },
+				MenuN1IToolTip = "Another Tooltip come here, and a lot of information cam be placed here.",
+				Visibility = true,
+				MenuN1ItemType = MenuN1Item.MenuN1ItemTypes.MainTabNewItem,
+				MenuN1ItemParameter = MenuN1Item.MenuN1ItemParameters.TestViewModel
+			};
+			
 			this.MenuName = menuName;
 			this.MenuN1SubList = new ObservableCollection<MenuN1Sub>();
-			this.MenuN1SubList.Add(MenuN1Sub);
+			
+			var MenuN1Sub = new MenuN1Sub();
+			MenuN1Sub.MenuN1ItensList = new ObservableCollection<MenuN1Item>();
+			MenuN1Sub.MenuN1Name = "Submenu 1 here";
+			MenuN1Sub.Visibility = true;
 
 			var MenuN1Sub2 = new MenuN1Sub();
-			MenuN1Sub2.MenuN1Name = "Item 2 name here";
-			MenuN1Sub2.Visibility = false;
 			MenuN1Sub2.MenuN1ItensList = new ObservableCollection<MenuN1Item>();
-			MenuN1Sub2.MenuN1ItensList.Add(MenuN1Item);
+			MenuN1Sub2.MenuN1Name = "Submenu 2 here";
+			MenuN1Sub2.Visibility = true;
+			
+			MenuN1Sub.MenuN1ItensList.Add(MenuN1Item);
 			MenuN1Sub2.MenuN1ItensList.Add(MenuN1Item2);
-			MenuN1Sub2.MenuN1ItensList.Add(MenuN1Item);
-			MenuN1Sub2.MenuN1ItensList.Add(MenuN1Item2);
-			var MenuN1SubList2 = new ObservableCollection<MenuN1Sub>();
-			//var MenuItens = new MenuItens();
-			this.MenuName = menuName;
-
-			this.MenuN1SubList.Add(MenuN1Sub2);
-
+		
 			this.MenuN1SubList.Add(MenuN1Sub);
-
+			this.MenuN1SubList.Add(MenuN1Sub2);
+			
+			
+		
+			//var MenuItens = new MenuItens();
 
 
 		}
@@ -124,6 +113,7 @@ namespace WptfTest.Models
 		#region FIRST CLASS ITEMS
 		public class MenuN1Item : BaseClass, IConvertible
 		{
+			
 			#region IConvertible
 			public TypeCode GetTypeCode()
 			{
@@ -218,6 +208,15 @@ namespace WptfTest.Models
 				set { SetField(ref _menuN1ItemName, value); }
 			}
 
+			public ObservableCollection<string> MenuN1ITags { get; set; }
+
+			private string _menuN1IToolTip;
+			public string MenuN1IToolTip
+			{
+				get { return _menuN1IToolTip; }
+				set { SetField(ref _menuN1IToolTip, value); }
+			}
+
 			//VIsibility property in menu
 			private bool _visibility = false;
 			public bool Visibility
@@ -253,11 +252,16 @@ namespace WptfTest.Models
 				set { SetField(ref _menuN1ItemParameter, value); }
 			}
 
+
+			public MenuN1Item()
+			{
+				MenuN1ITags = new ObservableCollection<string>();
+			}
 		}
 		#endregion
 
 		#region MenuPermissionsToViewModel
-			
+
 		#endregion
 
 	}

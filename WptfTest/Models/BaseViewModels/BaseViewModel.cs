@@ -1,12 +1,6 @@
 ﻿using DllModels.Models.Bases;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
+using static WptfTest.Models.MenuItens.MenuN1Item;
 
 namespace WptfTest.Models.BaseViewModels
 {
@@ -24,6 +18,9 @@ namespace WptfTest.Models.BaseViewModels
 			}
 		}
 
+		public MenuN1ItemParameters MenuN1ItemParameter { get; set; }
+		
+
 		private string _viewHelpMessage = "Not implemented";
 		public string ViewHelpMessage
 		{
@@ -35,7 +32,7 @@ namespace WptfTest.Models.BaseViewModels
 		}
 
 
-		private bool _visibility = false;
+		private bool _visibility = true;
 		public bool Visibility
 		{
 			get { return _visibility; }
@@ -59,9 +56,10 @@ namespace WptfTest.Models.BaseViewModels
 			return true;
 		}
 
-		public BaseViewModel(ViewModelPermissions viewModelPermissions = null)
+		public BaseViewModel(ViewModelPermissions viewModelPermissions = null, bool visibility = false)
 		{
 			SetViewModelPermissions();
+			this.Visibility = visibility;
 		}
 
 

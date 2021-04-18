@@ -6,33 +6,26 @@
              xmlns:local="clr-namespace:WptfTest"
              mc:Ignorable="d"
         
-        
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
-                    
-        
-             fw:AcrylicWindow.Enabled="True"
-             fw:AcrylicWindow.TintColor="White"
-             fw:AcrylicWindow.TintOpacity="0.25"
-             fw:AcrylicWindow.NoiseOpacity="0.025"
-             fw:AcrylicWindow.AcrylicWindowStyle="None"
-        
+             xmlns:converters="clr-namespace:WptfTest.Converters"
+			 
 			 xmlns:viewModel="clr-namespace:WptfTest.ViewModels.MainView"
 			 d:DataContext="{d:DesignInstance Type=viewModel:MainViewModel, IsDesignTimeCreatable=True}"
-			 
 			 >
 	<!--<UserControl.DataContext>
 		<viewModel:MainViewModel/>
 	</UserControl.DataContext>-->
-
-
+	<UserControl.Resources>
+		<converters:ViewItemVisibility  x:Key="viewItemVisibility"/>
+	</UserControl.Resources>
 
 	<DockPanel>
 		
 
-		<Grid>
+		<Grid Visibility="{Binding Visibility}">
 			<StackPanel>
-
+				
 				<TextBlock Margin="30"
 					   Text="{Binding ViewModelPermissions.canDeleteData}">
 				</TextBlock>
