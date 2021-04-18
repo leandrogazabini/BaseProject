@@ -55,15 +55,15 @@
 		<materialDesign:DrawerHost IsLeftDrawerOpen="{Binding IsMenuOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
 								   OpenMode="Default" MaxHeight="{Binding ElementName=mainWindow, Path=ActualHeight}"
 								   VerticalContentAlignment="Top"
-								   materialDesign:ShadowAssist.ShadowDepth="Depth5">
-			<materialDesign:DrawerHost.LeftDrawerContent >
+								   materialDesign:ShadowAssist.ShadowDepth="Depth5"
+								   >
+			<materialDesign:DrawerHost.LeftDrawerContent>
 
-				<StackPanel VerticalAlignment="Top">
+				<StackPanel VerticalAlignment="Top" MaxWidth="300">
 					<!--Menu title here-->
 					<Grid Height="{Binding ElementName=mainWindow, Path=ActualHeight}">
 						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="*" MaxWidth="300"/>
 						</Grid.ColumnDefinitions>
 						<Grid.RowDefinitions>
 							<RowDefinition Height="auto"/>
@@ -121,12 +121,12 @@
 										materialDesign:TextFieldAssist.HasOutlinedTextField="True"
 										materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
 										materialDesign:TextFieldAssist.TextFieldCornerRadius="3"/>
-								<ListView Margin="{Binding ElementName=DemoItemsSearchBox, Path=Margin}">
-									<ListViewItem Content="Hello" />
 
-								</ListView>
-								<Button CommandParameter="{Binding ViewHelpMessage}"
-										Command="{Binding TestNewCommand}" Content="test"/>
+									<ListView Margin="{Binding ElementName=DemoItemsSearchBox, Path=Margin}">
+										<ListViewItem Content="Fake item here" />
+										<ListViewItem Content="Fake item here" />
+									</ListView>
+								
 							</StackPanel>
 
 						</GroupBox>
@@ -189,29 +189,19 @@
 																	<!-- It's what im look for. i use a command by relative source, 
 																	and the data context too!-->
 
-																	<Button Margin="16 4 "
-																		Content="{Binding Path=Visibility}"
-																		IsEnabled="{Binding Path=Visibility}"
-																		Visibility="{Binding Path=Visibility, Converter={StaticResource viewItemVisibility}}"
 
-																		CommandParameter="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-																		Command="{Binding Path=DataContext.DoExempleCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}} }"
-																		Style="{StaticResource MaterialDesignFlatButton}"
-																		HorizontalContentAlignment="Stretch"
+																	<Button Margin="16 4 "
+																			Content="{Binding Path=MenuN1ItemName}"
+																			IsEnabled="{Binding Path=Visibility}"
+																			Visibility="{Binding Path=Visibility, Converter={StaticResource viewItemVisibility}}"
+
+																			CommandParameter="{Binding}"
+																			Command="{Binding Path=DataContext.TestNewCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}} }"
+																		
+																			Style="{StaticResource MaterialDesignFlatButton}"
+																			HorizontalContentAlignment="Stretch"
 																			>
 																	</Button>
-																	<Button Margin="16 4 "
-																		Content="Button 2"
-																		IsEnabled="{Binding Path=Visibility}"
-																		Visibility="{Binding Path=Visibility, Converter={StaticResource viewItemVisibility}}"
-
-																		CommandParameter="{Binding Path=ViewName, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-																		Command="{Binding Path=DataContext.TestNewCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}} }"
-																		Style="{StaticResource MaterialDesignFlatButton}"
-																		HorizontalContentAlignment="Stretch"
-																			>
-																	</Button>
-
 
 																</StackPanel>
 
@@ -309,32 +299,26 @@
 				<Grid Grid.Row="1"
 					  Grid.ColumnSpan="99">
 
-					<TabControl Name="Menu"
-									ItemsSource="{Binding ViewsToShow}"
+					<TabControl ItemsSource="{Binding ViewsToShow}"
+								SelectedItem="{Binding SelectedViewToShow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+								SelectedIndex="{Binding SelectedViewToShowTabIndex, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+								TabStripPlacement="Top"
 									
-									TabStripPlacement="Top"
-									
-									Margin="0" Background="{x:Null}"
-									BorderThickness="0"
-									Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
-								    IsSynchronizedWithCurrentItem="True"
-									
-									>
+								Margin="0" Background="{x:Null}"
+								BorderThickness="0"
+								Style="{StaticResource MaterialDesignNavigatilRailTabControl}"
+								IsSynchronizedWithCurrentItem="True"
+								>
 
 
 						<TabControl.ItemTemplate>
 							<DataTemplate>
-								
-
-								<TextBlock Text="{Binding Visibility}" Margin="16 8"
-										   Visibility="{Binding Visibility, Converter={StaticResource viewItemVisibility}}"/>
-								
-								
+								<TextBlock Text="{Binding ViewTitle}" Margin="16 8"
+										   Visibility="{Binding Visibility, Converter={StaticResource viewItemVisibility}}"
+										   />
 							</DataTemplate>
-
-
 						</TabControl.ItemTemplate>
-						
+
 						<TabControl.Template>
 							<ControlTemplate TargetType="{x:Type TabControl}">
 								<Grid>
@@ -359,22 +343,28 @@
 								<view2:MainView/>
 							</DataTemplate>
 
+							<!--<Style TargetType="{x:Type TabControl}">
+								<Style.Resources>
+									<Style TargetType="{x:Type TabItem}" x:Key="MaterialDesignNavigatilRailTabControl">
+									</Style>
+								</Style.Resources>
+							</Style>-->
 
-							<Style TargetType="{x:Type TabItem}">
+							<!--<Style TargetType="{x:Type TabItem}">
 								<Setter Property="Template">
 									<Setter.Value>
 										<ControlTemplate TargetType="{x:Type TabItem}">
 											<Grid>
-												
+
 												<ContentPresenter x:Name="ContentSite" ContentSource="Header" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2,2,12,2" RecognizesAccessKey="True">
-													
+
 												</ContentPresenter>
-												
+
 											</Grid>
 										</ControlTemplate>
 									</Setter.Value>
 								</Setter>
-							</Style>
+							</Style>-->
 						</TabControl.Resources>
 
 					</TabControl>
@@ -448,8 +438,7 @@
 
 				<Grid Grid.Row="2"
 					  Grid.ColumnSpan="99">
-					<materialDesign:ColorZone
-											  Mode="Dark"
+					<materialDesign:ColorZone Mode="Inverted"
 											  Background="Black"
 											  Foreground="White"
 											  Padding="10"

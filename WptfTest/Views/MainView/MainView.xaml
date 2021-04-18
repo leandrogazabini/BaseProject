@@ -34,9 +34,22 @@
 			<StackPanel>
 
 				<TextBlock Margin="30"
-					   Text="{Binding Test, Mode=TwoWay}">
-
-
+					   Text="{Binding ViewModelPermissions.canDeleteData}">
+				</TextBlock>
+				<TextBlock Margin="30"
+					   Text="{Binding ViewModelPermissions.canDeleteLogic}">
+				</TextBlock>
+				<TextBlock Margin="30"
+					   Text="{Binding ViewModelPermissions.canExecute}">
+				</TextBlock>
+				<TextBlock Margin="30"
+					   Text="{Binding ViewModelPermissions.canRead}">
+				</TextBlock>
+				<TextBlock Margin="30"
+					   Text="{Binding ViewModelPermissions.canSaveChanges}">
+				</TextBlock>
+				<TextBlock Margin="30"
+					   Text="{Binding ViewModelPermissions.canWrite}">
 				</TextBlock>
 				<TextBox Text="{Binding Test, Mode=TwoWay,
 					UpdateSourceTrigger=PropertyChanged, 

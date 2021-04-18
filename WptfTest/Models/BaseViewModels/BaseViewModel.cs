@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace WptfTest.Models.BaseViewModels
@@ -44,12 +45,26 @@ namespace WptfTest.Models.BaseViewModels
 
 		public ViewModelPermissions ViewModelPermissions { get; set; }
 
-		public BaseViewModel()
+		public bool SetViewModelPermissions(ViewModelPermissions viewModelPermissions = null)
 		{
-			this.ViewModelPermissions = new ViewModelPermissions();
+			if (viewModelPermissions == null)
+			{
+				this.ViewModelPermissions = new ViewModelPermissions();
+			}
+			else
+			{
+				this.ViewModelPermissions = viewModelPermissions;
+			}
+
+			return true;
+		}
+
+		public BaseViewModel(ViewModelPermissions viewModelPermissions = null)
+		{
+			SetViewModelPermissions();
 		}
 
 
-		
+
 	}
 }

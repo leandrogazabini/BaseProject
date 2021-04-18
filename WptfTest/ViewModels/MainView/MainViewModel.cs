@@ -46,18 +46,10 @@ namespace WptfTest.ViewModels.MainView
 			}
 		}
 
-		public MainViewModel()
-		{
-			
-			//Person = new Person();
-
-
-			//var bllCtx = new BusinessLogic.Methods();
-
-			//var connection = bllCtx.ConnectDb();
-			//var qResult = bllCtx.FindPersonByName("Leandro Prandini Gazabini");
-			//Test = qResult.OficialName;
-			//Person.OficialName = "Leandro";
+		public MainViewModel(ViewModelPermissions viewModelPermissions = null, bool visibility = false)
+		{			
+			SetViewModelPermissions(viewModelPermissions);
+			this.Visibility = visibility;
 		}
 
 

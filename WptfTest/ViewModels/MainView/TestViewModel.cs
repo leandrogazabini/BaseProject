@@ -17,9 +17,8 @@ namespace WptfTest.ViewModels.MainView
 {
 	class TestViewModel : BaseViewModel
 	{
-		private IDialogCoordinator dialogCoordinator;
 
-		private string _test = "Isso é um teste novo!";
+		private string _test = "This is a simple test.";
 		public string Test
 		{
 			get { return _test; }
