@@ -22,12 +22,12 @@
 
 
 	<DockPanel Visibility="{Binding Path=ViewModelPermissions.canRead, Converter={StaticResource viewItemVisibility}}">
-		
+
 
 		<Grid VerticalAlignment="Top" HorizontalAlignment="Center">
 			<StackPanel Orientation="Horizontal">
-				
-				
+
+
 				<!--<TextBlock Text="canDeleteData?"/>
 				<TextBlock Text="{Binding ViewModelPermissions.canDeleteData}"/>
 				<TextBlock Text="              "/>
@@ -62,7 +62,7 @@
 				<Button IsEnabled="{Binding ViewModelPermissions.canExecute}"
 						Content="canExecute?"
 						Margin="16"/>
-				
+
 				<Button IsEnabled="{Binding ViewModelPermissions.canRead}"
 						Content="canRead?"
 						Margin="16"/>
@@ -75,7 +75,7 @@
 						Content="canWrite?"
 						Margin="16"/>
 
-				<TextBox IsManipulationEnabled="True" Text="Isso é um teste."/>
+				<TextBox IsManipulationEnabled="True" Text="{Binding Test}"/>
 
 
 			</StackPanel>
