@@ -9,8 +9,23 @@ using static WptfTest.Models.MenuItens;
 
 namespace WptfTest
 {
+	// EVERY new view need to:
+	//	Implement some constructor as "MainViewModel" and "MainViewModel"
+	//  Crete a data template in MainWIndowViewModel
+	//  Create permissions in MainWIndowViewModel
+	//  Crete route in method "Open in tab"
 
-
+	// I nedd implement: 
+	// [  ]	Dynamic menu generator relationed with permissions, 
+	//		Maybe crete a new atribute in model "baseviewmodel" -> "canUsarOpenThis"
+	// [  ] Base view to default dispay in tab with headers, like "close", "save", "edit this" and some default actions.
+	// [  ] general user control for "quick search" to any collection/model
+	// [  ] Dialog windows
+	// [  ] context menu for main window
+	// [  ] login screen
+	// [  ] splash screen
+	// [  ] auto update pattern
+	// [  ] code refactoring: VerifyPermission -> move it to class User as method
 
 	class MainWindowViewModel : BaseViewModel
 	{

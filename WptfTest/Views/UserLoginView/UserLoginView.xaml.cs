@@ -12,19 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using MahApps;
-using MahApps.Metro.Controls;
 
-namespace WptfTest
+namespace WptfTest.Views.UserLoginView
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : UserControl
-    {
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
-    }
+	/// <summary>
+	/// Interaction logic for UserLoginView.xaml
+	/// </summary>
+	public partial class UserLoginView : Window
+	{
+		public UserLoginView()
+		{
+			InitializeComponent();
+		}
+	}
 }
