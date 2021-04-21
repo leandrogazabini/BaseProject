@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using MaterialDesignThemes.Wpf.Transitions;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using WptfTest.Models;
@@ -22,13 +23,31 @@ namespace WptfTest
 	// [  ] general user control for "quick search" to any collection/model
 	// [  ] Dialog windows
 	// [  ] context menu for main window
-	// [  ] login screen
-	// [  ] splash screen
+	// [X ] login screen
+	// [- ] splash screen
 	// [  ] auto update pattern
 	// [  ] code refactoring: VerifyPermission -> move it to class User as method
 
 	class MainWindowViewModel : BaseViewModel
 	{
+		public enum MainMaterialTransitioner
+		{
+			loginView = 0,
+			mainView = 1
+		}
+
+		private MainMaterialTransitioner _selectedMainMaterialTransitionerIndex = MainMaterialTransitioner.loginView;
+		public int SelectedMainMaterialTransitionerIndex
+		{
+			get {
+				var result = (int)_selectedMainMaterialTransitionerIndex;
+				return result; }
+			set
+			{
+				SetField(ref _selectedMainMaterialTransitionerIndex, (MainMaterialTransitioner)value);
+			}
+		}
+
 		static bool isDebugMode = false;
 
 		//general permission - move to bata base in future, is here just for test.
@@ -173,6 +192,22 @@ namespace WptfTest
 
 			return true;
 		}
+
+
+		public bool LoginDesktopWinAppNow(object user = null)
+		{
+			//check user sent
+			if (isDebugMode)
+			{
+				var userSent = (User)user;
+				
+
+				return true;
+			}
+
+			else return false;
+
+		}
 		#endregion
 
 		#endregion
@@ -195,6 +230,8 @@ namespace WptfTest
 			TestNewCommand = new SimpleCommand<object>(TestNew);
 
 			SearchMenuItemsCommand = new SimpleCommand<string>(SearchMenuItems);
+
+			LoginDesktopWinAppCommand = new SimpleCommand<object>(LoginDesktopWinApp);
 
 			// data population for tests... 
 			if (isDebugMode)
@@ -308,6 +345,16 @@ namespace WptfTest
 			{
 				SearchMenuItemsNow(query);
 			}
+
+		}
+
+		//login action for win desktop app
+		public ICommand LoginDesktopWinAppCommand { get; private set; }
+		private void LoginDesktopWinApp(object user = null)
+		{
+
+			var result = LoginDesktopWinAppNow(user);
+			if (result) SelectedMainMaterialTransitionerIndex = (int)MainMaterialTransitioner.mainView;
 
 		}
 

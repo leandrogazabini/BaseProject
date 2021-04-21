@@ -1,0 +1,76 @@
+﻿<Window x:Class="WptfTest.Views.SplashView.SplashView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:local="clr-namespace:WptfTest"
+          
+		mc:Ignorable="d" 
+       
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center" 
+        Topmost="True" 
+        WindowStartupLocation="CenterScreen"
+        AllowsTransparency="True"
+        WindowStyle="None"
+           
+		xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+         Background="{x:Null}"
+		 fw:AcrylicWindow.Enabled="True"
+		 fw:AcrylicWindow.NoiseOpacity="0.1"
+		 fw:AcrylicWindow.TintColor="Black"
+		 fw:AcrylicWindow.TintOpacity="0.6"
+		fw:AcrylicWindow.AcrylicWindowStyle="None" WindowState="Maximized"
+        >
+	
+
+	<Grid VerticalAlignment="Center" HorizontalAlignment="Center"
+		  Background="{x:Null}">
+
+		<StackPanel VerticalAlignment="Center"
+					Background="{x:Null}"
+					Height="220"
+					Width="440" >
+			<materialDesign:ColorZone Mode="PrimaryDark"
+									  Padding="16"
+									  CornerRadius="10"
+									  materialDesign:ShadowAssist.ShadowDepth="Depth3"
+									  ClipToBounds="False">
+				
+			
+
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+
+
+				<TextBlock Grid.Row="0" 
+						   HorizontalAlignment="Center" 
+						   FontSize="60">
+               Application
+				</TextBlock>
+
+				<TextBlock Grid.Row="1"
+						   HorizontalAlignment="Center"
+						   FontSize="24" >
+               Loading...
+				</TextBlock>
+				<StackPanel Grid.Row="3">
+					<ProgressBar Value="0"
+								 IsIndeterminate="True" 
+								 Margin="32"/>
+				</StackPanel>
+			</Grid>
+
+			</materialDesign:ColorZone>
+		</StackPanel>
+
+
+
+
+	</Grid>
+</Window>

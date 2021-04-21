@@ -3,8 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:WptfTest"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             StartupUri="Views/UserLoginView/UserLoginView.xaml">
-	<!--MainWindow.xaml">-->
+             StartupUri="Views/SplashView/SplashView.xaml">
+	<!--MainWindow.xaml">
+	
+	 StartupUri="Views/UserLoginView/UserLoginView.xaml">-->
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

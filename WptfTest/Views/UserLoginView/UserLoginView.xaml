@@ -36,9 +36,10 @@
 		</DataTemplate>
 
 	</Window.Resources>-->
-	
-	
-	<materialDesign:Transitioner SelectedIndex="0" AutoApplyTransitionOrigins="True">
+
+
+	<materialDesign:Transitioner SelectedIndex="{Binding SelectedMainMaterialTransitionerIndex,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+								 AutoApplyTransitionOrigins="True">
 		<materialDesign:Transitioner.InputBindings>
 			<KeyBinding Key="Left" Command="{x:Static materialDesign:Transitioner.MovePreviousCommand}" />
 			<KeyBinding Key="Right" Command="{x:Static materialDesign:Transitioner.MoveNextCommand}" />
@@ -113,10 +114,18 @@
 									</Button>
 
 									<Button Style="{StaticResource MaterialDesignRaisedAccentButton}"
+											Visibility="Collapsed" 
 											ToolTip="Resource name: MaterialDesignRaisedAccentButton"
 											Margin="8"
 											Width="100"
 											Command="{x:Static materialDesign:Transitioner.MoveNextCommand}">
+										<materialDesign:PackIcon Kind="Check" />
+									</Button>
+									<Button Style="{StaticResource MaterialDesignRaisedAccentButton}"
+											ToolTip="Resource name: MaterialDesignRaisedAccentButton"
+											Margin="8"
+											Width="100"
+											Command="{Binding LoginDesktopWinAppCommand}">
 										<materialDesign:PackIcon Kind="Check" />
 									</Button>
 
