@@ -1,25 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Ink;
-using DllModels;
-using MahApps.Metro.Controls.Dialogs;
-using BusinessLogic;
-using DllModels.Models;
-using DllModels.Models.ModelsValidators;
-using System.Collections.ObjectModel;
-using DllModels.Models.Bases;
-using WptfTest.Models.BaseViewModels;
+﻿using DllModels.Models;
 using WptfTest.Models;
+using WptfTest.Models.BaseViewModels;
 
 namespace WptfTest.ViewModels.MainView
 {
 	class TestViewModel : BaseViewModel
 	{
 
-		private string _test = "This is a simple test.";
+		private string _test;
 		public string Test
 		{
 			get { return _test; }
@@ -28,6 +16,7 @@ namespace WptfTest.ViewModels.MainView
 				SetField(ref _test, value);
 			}
 		}
+
 
 		public Person Person { get; set; }
 

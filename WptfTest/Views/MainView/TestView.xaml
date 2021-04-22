@@ -12,6 +12,8 @@
 			 
 			 xmlns:viewModel="clr-namespace:WptfTest.ViewModels.MainView"
 			 d:DataContext="{d:DesignInstance Type=viewModel:TestViewModel, IsDesignTimeCreatable=True}"
+			 VerticalAlignment="Stretch"
+			 HorizontalAlignment="Stretch"
 			 >
 	<!--<UserControl.DataContext>
 		<viewModel:MainViewModel/>
@@ -21,37 +23,66 @@
 	</UserControl.Resources>
 
 
-	<DockPanel Visibility="{Binding Path=ViewModelPermissions.canRead, Converter={StaticResource viewItemVisibility}}">
+
+		<Grid VerticalAlignment="Top" HorizontalAlignment="Stretch"
+			  Visibility="{Binding Path=ViewModelPermissions.canRead, Converter={StaticResource viewItemVisibility}}">
+			
+			<Grid.RowDefinitions>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			<materialDesign:ColorZone Mode="PrimaryLight"
+									  Margin="8 16 8 8"
+									  Padding="8"
+									  CornerRadius="10"
+									  materialDesign:ShadowAssist.ShadowDepth="Depth5"
+									  ClipToBounds="False">
+				<Grid >
+					<TextBlock VerticalAlignment="Center"
+							    Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+							   HorizontalAlignment="Center"
+									  Margin="8"
+									  Text="Some text here that explains the objective of view." />
+
+				<Button HorizontalAlignment="Right" Style="{StaticResource WindowCloseButtonStyle}"
+						>
+					<materialDesign:PackIcon Kind="WindowClose"/>
+				</Button>
+
+				<!--<ToggleButton Height="40" Width="40" HorizontalAlignment="Right" Margin="0 0 64 0"
+  Style="{StaticResource MaterialDesignActionToggleButton}"
+  Content="{materialDesign:PackIcon Kind=FileDocumentEditOutline}"
+  materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Kind=PencilOffOutline}" >-->
+				<ToggleButton Height="50" Width="50" HorizontalAlignment="Right" Margin="0 0 64 0"
+							  IsEnabled="{Binding ViewModelPermissions.canWrite, UpdateSourceTrigger=PropertyChanged}"
+							  Style="{StaticResource MaterialDesignSwitchDarkToggleButton}" >
+					<materialDesign:PackIcon Kind="PencilOffOutline" >
+					</materialDesign:PackIcon>
+					<materialDesign:ToggleButtonAssist.OnContent>
+						<materialDesign:PackIcon Kind="PencilOutline" />
+					</materialDesign:ToggleButtonAssist.OnContent>
+
+					<materialDesign:ToggleButtonAssist.SwitchTrackOnBackground>
+						<SolidColorBrush Color="Green" />
+					</materialDesign:ToggleButtonAssist.SwitchTrackOnBackground>
+					<materialDesign:ToggleButtonAssist.SwitchTrackOffBackground>
+						<SolidColorBrush Color="Red" />
+					</materialDesign:ToggleButtonAssist.SwitchTrackOffBackground>
+
+				</ToggleButton>
 
 
-		<Grid VerticalAlignment="Top" HorizontalAlignment="Center">
-			<StackPanel Orientation="Horizontal">
+				<!--</ToggleButton>-->
+			</Grid>
+			</materialDesign:ColorZone>
+			
+			<StackPanel Grid.Row="1"
+						Orientation="Horizontal"
+						HorizontalAlignment="Center">
 
 
-				<!--<TextBlock Text="canDeleteData?"/>
-				<TextBlock Text="{Binding ViewModelPermissions.canDeleteData}"/>
-				<TextBlock Text="              "/>
-
-				<TextBlock Text="canDeleteLogic?"/>
-				<TextBlock Text="{Binding ViewModelPermissions.canDeleteLogic}"/>
-				<TextBlock Text="              "/>
-
-				<TextBlock Text="canExecute?"/>
-				<TextBlock Text="{Binding ViewModelPermissions.canExecute}"/>
-				<TextBlock Text="              "/>
-
-				<TextBlock Text="canRead?"/>
-				<TextBlock Text="{Binding ViewModelPermissions.canRead}"/>
-				<TextBlock Text="              "/>
-
-				<TextBlock Text="canSaveChanges?"/>
-				<TextBlock Text="{Binding ViewModelPermissions.canSaveChanges}"/>
-				<TextBlock Text="              "/>
-
-				<TextBlock Text="canWrite?"/>
-				<TextBlock Text="{Binding ViewModelPermissions.canWrite}"/>-->
-
-				<Button IsEnabled="{Binding ViewModelPermissions.canDeleteData}"
+			<Button IsEnabled="{Binding ViewModelPermissions.canDeleteData}"
 						Content="canDeleteData?"
 						Margin="16"/>
 
@@ -75,12 +106,13 @@
 						Content="canWrite?"
 						Margin="16"/>
 
-				<TextBox IsManipulationEnabled="True" Text="{Binding Test}"/>
+				<TextBox IsManipulationEnabled="True" 
+						 SpellCheck.IsEnabled="True"
+						 Text="{Binding Test}"/>
 
 
 			</StackPanel>
 
 		</Grid>
 
-	</DockPanel>
 </UserControl>

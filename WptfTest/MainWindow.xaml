@@ -31,31 +31,19 @@
 		
 		x:Name="mainWindow"
 		>
-	<!--<Window.Resources>
-	Title="Name here" MinHeight="450" Width="800" WindowStartupLocation="CenterScreen" WindowState="Maximized" 
-	
-		<DataTemplate x:Key="TabControlContentTemplate1">
-			<view2:MainView/>
-		</DataTemplate>
-	</Window.Resources>-->
+
 
 	<UserControl.DataContext>
 		<viewModel:MainWindowViewModel/>
 	</UserControl.DataContext>
-	<!-- it seens to use another instance of my view model and I don't whant it.
-	it's a try about my commands into a item control, that is in another item control, i was losing my data context
-	i solved it using another aproach: i use 'find antecestor' in binding ... it works fine :) -->
-	<!--
-	<Window.Resources>
-		<viewModel:MainWindowViewModel x:Key="mainDataContext"/>
-	</Window.Resources>-->
+
 	<UserControl.Resources>
 		<converters:ViewItemVisibility  x:Key="viewItemVisibility"/>
 	</UserControl.Resources>
 
 
 	<DockPanel>
-		<!-- Menu here -->
+	
 		<materialDesign:DrawerHost IsLeftDrawerOpen="{Binding IsMenuOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
 								   OpenMode="Default" MaxHeight="{Binding ElementName=mainWindow, Path=ActualHeight}"
 								   VerticalContentAlignment="Top"
@@ -283,27 +271,7 @@
 						<TextBlock Grid.Column="1" HorizontalAlignment="Center " VerticalAlignment="Center"
 								   Style="{StaticResource MaterialDesignHeadline6TextBlock}"
 								   Text="{Binding SelectedViewToShow.ViewTitle, UpdateSourceTrigger=PropertyChanged}"/>
-						<!--ListBox with Content Control is nice, and i probally not using in the best practice, it seens consume a lot of ram
-						and instance a new viewmodel everytime i select a item. I'm going to use tabcontrol to display views-->
-
-						<!--<ListBox Grid.Column="1"
-								 SelectedItem="{Binding SelectedViewToShow, UpdateSourceTrigger=PropertyChanged}"
-											 ItemsSource="{Binding ViewsToShow	}"
-											 Style="{StaticResource MaterialDesignChoiceChipPrimaryListBox}"
-											 materialDesign:ThemeAssist.Theme="Inherit">
-
-							<ListBox.ItemsPanel>
-								<ItemsPanelTemplate>
-									<WrapPanel Orientation="Horizontal" IsItemsHost="True" Margin="10 0 0 0"/>
-								</ItemsPanelTemplate>
-							</ListBox.ItemsPanel>
-							<ListBox.ItemTemplate>
-								<DataTemplate>
-									<TextBlock Text="{Binding blabla}" Margin=" 10 0 10 0"/>
-								</DataTemplate>
-							</ListBox.ItemTemplate>
-
-						</ListBox>-->
+						
 						<materialDesign:PopupBox Grid.Column="2" 
 												 StaysOpen="True"
 												 IsEnabled="True">
@@ -324,11 +292,7 @@
 
 				<Grid Grid.Row="1"
 					  Grid.ColumnSpan="99">
-					<!--<TabControl Style="{StaticResource MaterialDesignTabControl}">
-						<TabItem Header="ANIMALS"></TabItem>
-						<TabItem Header="PLANTS"></TabItem>
-						<TabItem Header="VEHICLES"></TabItem>
-					</TabControl>-->
+				
 					<materialDesign:ColorZone>
 						
 						<TabControl ItemsSource="{Binding ViewsToShow}"
@@ -364,42 +328,7 @@
 
 						
 
-					<!--It works like a iframe in html, but seen use a lot of ram, and seens to instance a new viewmodel 
-							everu time i select a diferent item in the listview "views to show"
-							instead content control, i'll try to adapt tab control-->
-					<!--<ContentControl x:Name="contentControl" DataContext="{Binding SelectedViewToShow}"
-											Margin="50"
-											Content="{Binding  UpdateSourceTrigger=PropertyChanged}">
-								<ContentControl.Resources>
-									<DataTemplate DataType="{x:Type userControl:UserControlBase}">
-										<userControl:UserControlBase />
-									</DataTemplate>
-									<DataTemplate DataType="{x:Type viewModel2:TestViewModel}">
-										<view2:TestView />
-									</DataTemplate>
-									<DataTemplate DataType="{x:Type viewModel2:MainViewModel}">
-										<view2:MainView/>
-									</DataTemplate>
-								</ContentControl.Resources>
-
-							</ContentControl>-->
-
-
 				
-					<!--<ContentControl Grid.Column="1"
-							DataContext="{Binding }"
-							Content="{Binding Path=Length, UpdateSourceTrigger=PropertyChanged}">
-					<ContentControl.Resources>
-						<DataTemplate DataType="{x:Type viewModel2:MainView}">
-							<Button>asdadas</Button>
-						</DataTemplate>
-						<DataTemplate DataType="jaca">
-							<UserControl>
-								<viewModel2:MainView></viewModel2:MainView>
-							</UserControl>
-						</DataTemplate>
-					</ContentControl.Resources>
-				</ContentControl>-->
 				</Grid>
 
 
@@ -416,9 +345,9 @@
 
 							<TextBlock>
 								<Run Text="USER:"/>
-								<Run Text="{Binding loggedUser.UserName}"/>
+								<Run Text="{Binding loggedUser.UserName, UpdateSourceTrigger=PropertyChanged}"/>
 								<Run Text="    |    PROFILE:"/>
-								<Run Text="{Binding loggedUser.UserProfile}"/>
+								<Run Text="{Binding loggedUser.UserProfile, UpdateSourceTrigger=PropertyChanged}"/>
 								<Run Text="    "/>
 							</TextBlock>
 
@@ -434,58 +363,6 @@
 
 
 
-				<!--<simpleChildWindow:ChildWindow 
-				
-				AllowMove="False"
-					   
-				Grid.ColumnSpan="999"
-				Grid.RowSpan="999"
-						
-				CloseByEscape="False"
-				CloseOnOverlay ="False"
-				ShowCloseButton="True"
-			
-				ShowTitleBar="True"                   
-		 
-				HorizontalAlignment="Stretch"
-				VerticalAlignment="Stretch"
-				
-				Margin="0"
-			
-				IsModal="False"
-									
-				IsOpen="False">
-
-				<DockPanel Height="150" Width="150">
-
-
-				</DockPanel>
-			</simpleChildWindow:ChildWindow>
-			<mahapps:FlyoutsControl>
-				<mahapps:Flyout Position="Top"
-							
-							CloseButtonVisibility="Collapsed"
-							TitleVisibility="Collapsed"
-							mahapps:HeaderedControlHelper.HeaderMargin="0"
-							mahapps:HeaderedControlHelper.HeaderVerticalContentAlignment="Top"
-							mahapps:HeaderedControlHelper.HeaderFontWeight="Normal"
-							IsOpen="True"
-							AreAnimationsEnabled="True"
-							AnimateOpacity="True"
-							AnimateOnPositionChange="True"
-							Theme="Dark"
-						
-							VerticalAlignment="Top"
-							VerticalContentAlignment="Top"
-							HorizontalContentAlignment="Stretch"
-							Panel.ZIndex="9999"
-							Height="80"
-							IsAutoCloseEnabled="True"
-							AutoCloseInterval="3000">
-
-
-				</mahapps:Flyout>
-			</mahapps:FlyoutsControl>-->
 
 			</Grid>
 

@@ -14,8 +14,8 @@ namespace WptfTest.Models
 		}
 
 
-		private UserProfiles.UserProfileTypes _userProfile;
-		public UserProfiles.UserProfileTypes UserProfile
+		private UserProfiles.UserProfileTypes? _userProfile;
+		public UserProfiles.UserProfileTypes? UserProfile
 		{
 			get { return _userProfile; }
 			set { SetField(ref _userProfile, value); }

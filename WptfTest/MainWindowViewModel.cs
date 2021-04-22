@@ -17,14 +17,14 @@ namespace WptfTest
 	//  Crete route in method "Open in tab"
 
 	// I nedd implement: 
-	// [  ]	Dynamic menu generator relationed with permissions, 
+	// [  ]	Dynamic menu generator relationed based on permissions, 
 	//		Maybe crete a new atribute in model "baseviewmodel" -> "canUsarOpenThis"
-	// [  ] Base view to default dispay in tab with headers, like "close", "save", "edit this" and some default actions.
+	// [  ] Base view to default display in tab with headers, like "close", "save", "edit this" and some default actions.
 	// [  ] general user control for "quick search" to any collection/model
 	// [  ] Dialog windows
 	// [  ] context menu for main window
 	// [X ] login screen
-	// [- ] splash screen
+	// [X ] splash screen
 	// [  ] auto update pattern
 	// [  ] code refactoring: VerifyPermission -> move it to class User as method
 
@@ -199,8 +199,34 @@ namespace WptfTest
 			//check user sent
 			if (isDebugMode)
 			{
-				var userSent = (User)user;
-				
+				if ((loggedUser.UserName).ToUpper() == "admin".ToUpper())
+				{
+					//Loading user properties
+					
+					loggedUser.UserName = "Leandro Admin";
+					loggedUser.UserProfile = UserProfiles.UserProfileTypes.sysAdmim;
+
+				}
+				else
+				{
+					
+					loggedUser.UserName = "Leandro ORDINARY USER";
+					loggedUser.UserProfile = UserProfiles.UserProfileTypes.ordinaryUser;
+
+				}
+
+				//User permissions
+				loggedUserPermissions = new ObservableCollection<ViewModelPermissions>();
+				var tempUserPermissions = AllPersmissionsList.Where(x =>
+				x.userProfileType.Equals(loggedUser.UserProfile));
+				{
+					foreach (var item in tempUserPermissions)
+					{
+						loggedUserPermissions.Add(item);
+					}
+
+				}
+
 
 				return true;
 			}
@@ -281,19 +307,29 @@ namespace WptfTest
 					true,
 					true,
 					true,
-					false,
-					false
+					true,
+					true
 					);
 				AllPersmissionsList.Add(vmp3);
+
+				ViewModelPermissions vmp4 = new ViewModelPermissions(
+				UserProfiles.UserProfileTypes.ordinaryUser,
+				MenuN1Item.MenuN1ItemParameters.TestViewModel,
+				true,
+				false,
+				false,
+				false,
+				false,
+				false
+				);
+				AllPersmissionsList.Add(vmp4);
 
 
 
 			}
-			//Loading user properties
-			loggedUser = new User();
-			loggedUser.UserName = "Leandro";
-			loggedUser.UserProfile = UserProfiles.UserProfileTypes.sysAdmim;
 
+			//instace logged user
+			loggedUser = new User();
 
 			// Menu request 
 			MenuItensList = new ObservableCollection<Models.MenuItens>();
@@ -303,16 +339,7 @@ namespace WptfTest
 			//Collection to display itens in menu search items
 			MenuItensFoundInSearch = new ObservableCollection<MenuN1Item>();
 
-			//User permissions
-			loggedUserPermissions = new ObservableCollection<ViewModelPermissions>();
-			var tempUserPermissions = AllPersmissionsList.Where(x => x.userProfileType.Equals(loggedUser.UserProfile));
-			{
-				foreach (var item in tempUserPermissions)
-				{
-					loggedUserPermissions.Add(item);
-				}
-
-			}
+			
 
 
 

@@ -87,6 +87,7 @@
 									Grid.ColumnSpan="2">
 
 									<TextBox Margin="8 32 8 8" 
+											 Text="{Binding loggedUser.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 												Style="{StaticResource MaterialDesignFilledTextBox}"
 												materialDesign:TextFieldAssist.HasClearButton="True"
 												materialDesign:HintAssist.Hint="User Account"/>
