@@ -45,16 +45,12 @@
 									  Margin="8"
 									  Text="Some text here that explains the objective of view." />
 
-				<Button HorizontalAlignment="Right" Style="{StaticResource WindowCloseButtonStyle}"
-						>
-					<materialDesign:PackIcon Kind="WindowClose"/>
-				</Button>
 
 				<!--<ToggleButton Height="40" Width="40" HorizontalAlignment="Right" Margin="0 0 64 0"
   Style="{StaticResource MaterialDesignActionToggleButton}"
   Content="{materialDesign:PackIcon Kind=FileDocumentEditOutline}"
   materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Kind=PencilOffOutline}" >-->
-				<ToggleButton Height="50" Width="50" HorizontalAlignment="Right" Margin="0 0 64 0"
+				<!--<ToggleButton Height="50" Width="50" HorizontalAlignment="Right" Margin="0 0 64 0"
 							  IsEnabled="{Binding ViewModelPermissions.canWrite, UpdateSourceTrigger=PropertyChanged}"
 							  Style="{StaticResource MaterialDesignSwitchDarkToggleButton}" >
 					<materialDesign:PackIcon Kind="PencilOffOutline" >
@@ -70,10 +66,29 @@
 						<SolidColorBrush Color="Red" />
 					</materialDesign:ToggleButtonAssist.SwitchTrackOffBackground>
 
+				</ToggleButton>-->
+				<ToggleButton Content="{materialDesign:PackIcon Kind=PencilOffOutline, Size=21}"
+							  Name="EditButton" Margin="0 0 50 0"
+							  materialDesign:ToggleButtonAssist.OnContent="{materialDesign:PackIcon Kind=PencilOutline, Size=21}"
+							  HorizontalAlignment="Right"
+							  Style="{StaticResource MaterialDesignActionAccentToggleButton}"
+							  ToolTip="MaterialDesignFlatPrimaryToggleButton"
+							  IsChecked="True"
+							  IsEnabled="{Binding ViewModelPermissions.canWrite, UpdateSourceTrigger=PropertyChanged}">
+					
 				</ToggleButton>
+				<Button Style="{StaticResource MaterialDesignFloatingActionAccentButton}"
+						Height="{Binding ElementName=EditButton, Path=Height}"
+						Width="{Binding ElementName=EditButton, Path=Width}"
+						HorizontalAlignment="Right" Margin="0 0 0 0"
+						materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
+						materialDesign:ButtonProgressAssist.Value="-1"
+						materialDesign:ButtonProgressAssist.IsIndeterminate="True"
+						Content="{materialDesign:PackIcon Kind=ContentSave, Size=25}" 
+						IsEnabled="{Binding ViewModelPermissions.canSaveChanges, UpdateSourceTrigger=PropertyChanged}"/>
 
 
-				<!--</ToggleButton>-->
+				<!--</ToggleButton>   Style="{StaticResource MaterialDesignActionAccentToggleButton}"-->
 			</Grid>
 			</materialDesign:ColorZone>
 			

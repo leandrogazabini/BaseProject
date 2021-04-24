@@ -36,113 +36,116 @@
 		</DataTemplate>
 
 	</Window.Resources>-->
+	<materialDesign:DialogHost
+        Identifier="MainDialog"
+        DialogTheme="Inherit">
 
 
-	<materialDesign:Transitioner SelectedIndex="{Binding SelectedMainMaterialTransitionerIndex,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+		<materialDesign:Transitioner SelectedIndex="{Binding SelectedMainMaterialTransitionerIndex,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 								 AutoApplyTransitionOrigins="True">
-		<materialDesign:Transitioner.InputBindings>
-			<KeyBinding Key="Left" Command="{x:Static materialDesign:Transitioner.MovePreviousCommand}" />
-			<KeyBinding Key="Right" Command="{x:Static materialDesign:Transitioner.MoveNextCommand}" />
-		</materialDesign:Transitioner.InputBindings>
-		<materialDesign:TransitionerSlide OpeningEffect="{materialDesign:TransitionEffect FadeIn}">
-			<Grid HorizontalAlignment="Center"
+			<materialDesign:Transitioner.InputBindings>
+				<KeyBinding Key="Left" Command="{x:Static materialDesign:Transitioner.MovePreviousCommand}" />
+				<KeyBinding Key="Right" Command="{x:Static materialDesign:Transitioner.MoveNextCommand}" />
+			</materialDesign:Transitioner.InputBindings>
+			<materialDesign:TransitionerSlide OpeningEffect="{materialDesign:TransitionEffect FadeIn}">
+				<Grid HorizontalAlignment="Center"
 		  VerticalAlignment="Center">
 
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="10"/>
-					<ColumnDefinition Width="*"/>
-					<ColumnDefinition Width="10"/>
-				</Grid.ColumnDefinitions>
-				<Grid.RowDefinitions>
-					<RowDefinition Height="5"/>
-					<RowDefinition Height="*"/>
-					<RowDefinition Height="*"/>
-					<RowDefinition Height="*"/>
-					<RowDefinition Height="*"/>
-					<RowDefinition Height="10"/>
-				</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="10"/>
+						<ColumnDefinition Width="*"/>
+						<ColumnDefinition Width="10"/>
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="5"/>
+						<RowDefinition Height="*"/>
+						<RowDefinition Height="*"/>
+						<RowDefinition Height="*"/>
+						<RowDefinition Height="*"/>
+						<RowDefinition Height="10"/>
+					</Grid.RowDefinitions>
 
 
 
-				<Grid Grid.Column="1" 
+					<Grid Grid.Column="1" 
 				Grid.Row="2"
 				Grid.RowSpan="99">
-					<materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth5">
-						<Grid Height="250"
+						<materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth5">
+							<Grid Height="250"
 					Width="200"
 					Margin="16 32 16 16" VerticalAlignment="Center">
 
-							<Grid>
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="*"/>
-									<ColumnDefinition Width="*"/>
-								</Grid.ColumnDefinitions>
-								<Grid.RowDefinitions>
-									<RowDefinition Height="3*"/>
-									<RowDefinition Height="*"/>
-								</Grid.RowDefinitions>
+								<Grid>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="*"/>
+										<ColumnDefinition Width="*"/>
+									</Grid.ColumnDefinitions>
+									<Grid.RowDefinitions>
+										<RowDefinition Height="3*"/>
+										<RowDefinition Height="*"/>
+									</Grid.RowDefinitions>
 
-								<StackPanel VerticalAlignment="Center"
+									<StackPanel VerticalAlignment="Center"
 									Grid.Row="0"
 									Grid.ColumnSpan="2">
 
-									<TextBox Margin="8 32 8 8" 
+										<TextBox Margin="8 32 8 8" 
 											 Text="{Binding loggedUser.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 												Style="{StaticResource MaterialDesignFilledTextBox}"
 												materialDesign:TextFieldAssist.HasClearButton="True"
 												materialDesign:HintAssist.Hint="User Account"/>
 
-									<PasswordBox Margin="8"
+										<PasswordBox Margin="8"
 												 Style="{StaticResource MaterialDesignFilledPasswordBox}"
 												 materialDesign:TextFieldAssist.HasClearButton="True"
 												 materialDesign:HintAssist.Hint="Password"/>
 
-									<Button Margin="8" Style="{StaticResource MaterialDesignFlatButton}"
+										<Button Margin="8" Style="{StaticResource MaterialDesignFlatButton}"
 											Name="btnFortgotPassword"
 											ToolTip="MaterialDesignFlatButton"
 											Content="forgot password?" />
-								</StackPanel>
-								<StackPanel VerticalAlignment="Center"
+									</StackPanel>
+									<StackPanel VerticalAlignment="Center"
 											HorizontalAlignment="Center"
 											Orientation="Horizontal"
 											Grid.Row="1"
 											Grid.ColumnSpan="2">
 
-									<Button Style="{StaticResource MaterialDesignOutlinedButton}"
+										<Button Style="{StaticResource MaterialDesignOutlinedButton}"
 											ToolTip="Resource name: MaterialDesignRaisedAccentButton"
 											Margin="8">
-										<materialDesign:PackIcon Kind="Close" />
-									</Button>
+											<materialDesign:PackIcon Kind="Close" />
+										</Button>
 
-									<Button Style="{StaticResource MaterialDesignRaisedAccentButton}"
+										<Button Style="{StaticResource MaterialDesignRaisedAccentButton}"
 											Visibility="Collapsed" 
 											ToolTip="Resource name: MaterialDesignRaisedAccentButton"
 											Margin="8"
 											Width="100"
 											Command="{x:Static materialDesign:Transitioner.MoveNextCommand}">
-										<materialDesign:PackIcon Kind="Check" />
-									</Button>
-									<Button Style="{StaticResource MaterialDesignRaisedAccentButton}"
+											<materialDesign:PackIcon Kind="Check" />
+										</Button>
+										<Button Style="{StaticResource MaterialDesignRaisedAccentButton}"
 											ToolTip="Resource name: MaterialDesignRaisedAccentButton"
 											Margin="8"
 											Width="100"
 											Command="{Binding LoginDesktopWinAppCommand}">
-										<materialDesign:PackIcon Kind="Check" />
-									</Button>
+											<materialDesign:PackIcon Kind="Check" />
+										</Button>
 
-								</StackPanel>
+									</StackPanel>
+
+
+								</Grid>
 
 
 							</Grid>
+						</materialDesign:Card>
+						<Grid VerticalAlignment="Top">
 
-
-						</Grid>
-					</materialDesign:Card>
-					<Grid VerticalAlignment="Top">
-
-						<Ellipse Height="100" Width="100" 
+							<Ellipse Height="100" Width="100" 
 						 materialDesign:ShadowAssist.ShadowDepth="Depth5" Margin="-64" Fill="{Binding ElementName=btnFortgotPassword, Path=Foreground}"/>
-						<materialDesign:PackIcon Kind="AccountCheck" Margin="-64"
+							<materialDesign:PackIcon Kind="AccountCheck" Margin="-64"
 										  Height="80"
 										  Width="80"
 										 Foreground="White"
@@ -152,21 +155,22 @@
 
 
 
+						</Grid>
+
 					</Grid>
 
+
+
+
+
 				</Grid>
+			</materialDesign:TransitionerSlide>
+
+			<local:MainWindow DataContext="{Binding }">
+
+			</local:MainWindow>
 
 
-
-
-
-			</Grid>
-		</materialDesign:TransitionerSlide>
-
-		<local:MainWindow DataContext="{Binding }">
-			
-		</local:MainWindow>
-
-
-	</materialDesign:Transitioner>
+		</materialDesign:Transitioner>
+	</materialDesign:DialogHost>
 </Window>

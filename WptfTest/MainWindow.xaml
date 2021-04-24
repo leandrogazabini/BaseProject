@@ -43,7 +43,7 @@
 
 
 	<DockPanel>
-	
+
 		<materialDesign:DrawerHost IsLeftDrawerOpen="{Binding IsMenuOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
 								   OpenMode="Default" MaxHeight="{Binding ElementName=mainWindow, Path=ActualHeight}"
 								   VerticalContentAlignment="Top"
@@ -117,9 +117,9 @@
 										<KeyBinding CommandParameter="{Binding ElementName=MenuSearch, Path=Text}" 
 													Command="{Binding SearchMenuItemsCommand}" 
 													Key="Return" />
-										
+
 									</TextBox.InputBindings>
-								
+
 								</TextBox>
 
 								<ItemsControl ItemsSource="{Binding MenuItensFoundInSearch, UpdateSourceTrigger=PropertyChanged}"
@@ -271,7 +271,7 @@
 						<TextBlock Grid.Column="1" HorizontalAlignment="Center " VerticalAlignment="Center"
 								   Style="{StaticResource MaterialDesignHeadline6TextBlock}"
 								   Text="{Binding SelectedViewToShow.ViewTitle, UpdateSourceTrigger=PropertyChanged}"/>
-						
+
 						<materialDesign:PopupBox Grid.Column="2" 
 												 StaysOpen="True"
 												 IsEnabled="True">
@@ -292,7 +292,7 @@
 
 				<Grid Grid.Row="1"
 					  Grid.ColumnSpan="99">
-				
+
 					<materialDesign:ColorZone>
 						
 						<TabControl ItemsSource="{Binding ViewsToShow}"
@@ -302,33 +302,42 @@
 								Margin="0" Background="{x:Null}"
 								BorderThickness="0"
 								IsSynchronizedWithCurrentItem="True"
-								Style="{StaticResource MaterialDesignTabControl}"
-								>
-				
-						<TabControl.ItemTemplate>
-							<DataTemplate >
-								<TextBlock Text="{Binding ViewTitle}" Margin="16 8"
+								Style="{StaticResource MaterialDesignTabControl}">
+
+							<TabControl.ItemTemplate>
+								<DataTemplate >
+									<DockPanel>
+										<Button HorizontalAlignment="Right" Style="{StaticResource WindowCloseButtonStyle}"
+												CommandParameter="{Binding }"
+												Command="{Binding Path=DataContext.RemoveIntemFromMainTabCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}} }"
+																		
+												Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}">
+											<materialDesign:PackIcon Kind="WindowClose"/>
+										</Button>
+
+										<TextBlock Text="{Binding ViewTitle}" Margin="8"
 										   Visibility="{Binding Visibility, Converter={StaticResource viewItemVisibility}}"
 										   />
-							</DataTemplate>
-						</TabControl.ItemTemplate>
-						
+									</DockPanel>
+								</DataTemplate>
+							</TabControl.ItemTemplate>
 
-						<TabControl.Resources>
-							<DataTemplate DataType="{x:Type viewModel2:TestViewModel}">
-								<view2:TestView/>
-							</DataTemplate>
-							<DataTemplate DataType="{x:Type viewModel2:MainViewModel}">
-								<view2:MainView/>
-							</DataTemplate>
-						</TabControl.Resources>
 
-					</TabControl>
+							<TabControl.Resources>
+								<DataTemplate DataType="{x:Type viewModel2:TestViewModel}">
+									<view2:TestView/>
+								</DataTemplate>
+								<DataTemplate DataType="{x:Type viewModel2:MainViewModel}">
+									<view2:MainView/>
+								</DataTemplate>
+							</TabControl.Resources>
+
+						</TabControl>
 					</materialDesign:ColorZone>
 
-						
 
-				
+
+
 				</Grid>
 
 
