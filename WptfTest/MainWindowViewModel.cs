@@ -10,6 +10,10 @@ using MaterialDesignThemes.Wpf;
 using static WptfTest.Models.MenuItens;
 using WptfTest.Views.Dialogs;
 using WptfTest.ViewModels.Dialogs;
+using System.Windows;
+using System.Threading.Tasks;
+using WptfTest.Views.LoggedUserView;
+using WptfTest.ViewModels.LoggedUserViewModel;
 
 namespace WptfTest
 {
@@ -33,6 +37,7 @@ namespace WptfTest
 
 	class MainWindowViewModel : BaseViewModel
 	{
+		#region Properties
 		public enum MainMaterialTransitioner
 		{
 			loginView = 0,
@@ -64,13 +69,9 @@ namespace WptfTest
 		//collection that i will use to check user permission to open a view
 		public ObservableCollection<ViewModelPermissions> loggedUserPermissions { get; set; }
 
-
-
-		#region Properties
-
 		//Collection of views to display in main tab
 		public ObservableCollection<BaseViewModel> ViewsToShow { get; set; }
-		public int SelectedViewToShowTabIndex { get; set; }
+		public int SelectedViewToShowTabIndex { get; set; } 
 		private BaseViewModel _selectedViewToShow;
 		public BaseViewModel SelectedViewToShow
 		{
@@ -152,7 +153,40 @@ namespace WptfTest
 		}
 		#endregion
 
+		#region GenericDialogs
+		public async void CreateGenericOneIconDialog()
+		{
+			var dialog = new OneIconDialog
+			{
+				DataContext = new OneIconDialogViewModel
+				{
+					TitleDialog = "Icon dialog test",
+					MessageDialog = "Message test here",
+					IconName = "LanguageCsharp",
+				}
+			};
+			await DialogHost.Show(dialog, "MainDialog");
+		}
 
+
+		public async Task<bool> CreateGenericYesNoDialog(string title = null, string message = null, string trueButton = null, string falseButton = null)
+		{
+			var sampleMessageDialog = new YesNoDialog
+			{
+				DataContext = new YesNoDialogViewModel
+				{
+					TitleDialog = title,
+					MessageDialog = message,
+					TrueButtonDialog = trueButton,
+					FalseButtonDialog = falseButton,
+				}
+			};
+			var dialogResult = await DialogHost.Show(sampleMessageDialog, "MainDialog");
+			return (bool)dialogResult;
+		}
+
+
+		#endregion
 		#region Removing item in main tab collection
 		public async void RemoveItemInMainTabCollection(object parameter = null)
 		{
@@ -177,7 +211,7 @@ namespace WptfTest
 				{
 					//var tabToRemove = ViewsToShow.FirstOrDefault();
 					var tabToRemove = (BaseViewModel)parameter;
-					ViewsToShow.Remove(tabToRemove);
+					if (tabToRemove.CanCloseIt) ViewsToShow.Remove(tabToRemove);
 					//SelectedViewToShow = ;
 				}
 			}
@@ -185,9 +219,9 @@ namespace WptfTest
 			{
 				DataContext = new OneIconDialogViewModel
 				{
-					TitleDialog = "Icon dialog test",
-					MessageDialog = "Message test here",
-					IconName = "LanguageCsharp",
+					TitleDialog = "Done!",
+					MessageDialog = "Item closed ;)",
+					IconName = "Check",
 				}
 			};
 			await DialogHost.Show(dialog, "MainDialog");
@@ -200,290 +234,355 @@ namespace WptfTest
 			//var result = await DialogHost.Show("a", "MainDialog");
 			//return true;
 		}
-	#endregion
+		#endregion
 
 
-
-	#region Verifing logged user 
-	public ViewModelPermissions VerifyPermission(MenuN1Item.MenuN1ItemParameters itemParam)
-	{
-		//nedd to improve this feature, to check the permission to view selected
-		var result = loggedUserPermissions.Where(x => x.viewName.Equals(itemParam)).FirstOrDefault();
-		return result;
-	}
-	#endregion
-
-
-	#region Others
-	public MenuItens CreateMainMenu(string menuName = null)
-	{
-		//nedd to impleimprovement this feature, to check the menus itens allowed to user
-		var result = new MenuItens();
-		return result;
-	}
-
-	public bool SearchMenuItemsNow(string query)
-	{
-		foreach (var item in MenuItensList)
+		#region Verifing logged user 
+		public ViewModelPermissions VerifyPermission(MenuN1Item.MenuN1ItemParameters itemParam)
 		{
-			foreach (var subItem in item.MenuN1SubList)
-			{
-				foreach (var menuItem in subItem.MenuN1ItensList)
-				{
-					bool itemExistisInCollection = MenuItensFoundInSearch.Any(i => i.MenuN1ItemName.Equals(menuItem.MenuN1ItemName));
-					bool itemNameContainsQuery = menuItem.MenuN1ItemName.Contains(query);
-					bool itemTagsContainQuery = menuItem.MenuN1ITags.Any(x => x.Contains(query));
-					bool itemIsVisible = menuItem.Visibility.Equals(true);
-					if ((itemNameContainsQuery ||
-						itemTagsContainQuery) &&
-						itemIsVisible &&
-						!itemExistisInCollection)
-					{
-						MenuItensFoundInSearch.Add(menuItem);
-					}
-					else { }
+			//nedd to improve this feature, to check the permission to view selected
+			var result = loggedUserPermissions.Where(x => x.viewName.Equals(itemParam)).FirstOrDefault();
+			return result;
+		}
+		#endregion
 
-				}
-			}
+
+		#region Others
+		public MenuItens CreateMainMenu(string menuName = null)
+		{
+			//nedd to impleimprovement this feature, to check the menus itens allowed to user
+			var result = new MenuItens();
+			return result;
 		}
 
-		return true;
-	}
-
-
-	public bool LoginDesktopWinAppNow(object user = null)
-	{
-		//check user sent
-		if (isDebugMode)
+		public bool SearchMenuItemsNow(string query)
 		{
-			if ((loggedUser.UserName).ToUpper() == "admin".ToUpper())
+			foreach (var item in MenuItensList)
 			{
-				//Loading user properties
-
-				loggedUser.UserName = "Leandro Admin";
-				loggedUser.UserProfile = UserProfiles.UserProfileTypes.sysAdmim;
-
-			}
-			else
-			{
-
-				loggedUser.UserName = "Leandro ORDINARY USER";
-				loggedUser.UserProfile = UserProfiles.UserProfileTypes.ordinaryUser;
-
-			}
-
-			//User permissions
-			loggedUserPermissions = new ObservableCollection<ViewModelPermissions>();
-			var tempUserPermissions = AllPersmissionsList.Where(x =>
-			x.userProfileType.Equals(loggedUser.UserProfile));
-			{
-				foreach (var item in tempUserPermissions)
+				foreach (var subItem in item.MenuN1SubList)
 				{
-					loggedUserPermissions.Add(item);
+					foreach (var menuItem in subItem.MenuN1ItensList)
+					{
+						bool itemExistisInCollection = MenuItensFoundInSearch.Any(i => i.MenuN1ItemName.Equals(menuItem.MenuN1ItemName));
+						bool itemNameContainsQuery = menuItem.MenuN1ItemName.Contains(query);
+						bool itemTagsContainQuery = menuItem.MenuN1ITags.Any(x => x.Contains(query));
+						bool itemIsVisible = menuItem.Visibility.Equals(true);
+						if ((itemNameContainsQuery ||
+							itemTagsContainQuery) &&
+							itemIsVisible &&
+							!itemExistisInCollection)
+						{
+							MenuItensFoundInSearch.Add(menuItem);
+						}
+						else { }
+
+					}
 				}
-
 			}
-
 
 			return true;
 		}
 
-		else return false;
 
-	}
-	#endregion
+		public bool LoginDesktopWinAppNow(object user = null)
+		{
+			//check user sent
+			if (isDebugMode)
+			{
+				if ((loggedUser.UserName).ToUpper() == "admin".ToUpper())
+				{
+					//Loading user properties
 
-	#endregion
+					loggedUser.UserName = "Leandro Admin";
+					loggedUser.UserProfile = UserProfiles.UserProfileTypes.sysAdmim;
+
+				}
+				else
+				{
+
+					loggedUser.UserName = "Leandro ORDINARY USER";
+					loggedUser.UserProfile = UserProfiles.UserProfileTypes.ordinaryUser;
+
+				}
+
+				//User permissions
+				loggedUserPermissions = new ObservableCollection<ViewModelPermissions>();
+				var tempUserPermissions = AllPersmissionsList.Where(x =>
+				x.userProfileType.Equals(loggedUser.UserProfile));
+				{
+					foreach (var item in tempUserPermissions)
+					{
+						loggedUserPermissions.Add(item);
+					}
+
+				}
 
 
-	public MainWindowViewModel()
-	{
-		// can use this bool to identify if the app is running in debug
-		// ... and then make some stuffs work only if debug easier
+				
+			}
+
+			var loggedUserViewModel = new LoggedUserViewModel(VerifyPermission(MenuN1Item.MenuN1ItemParameters.LoggedUserViewModel), visibility: true);
+			ViewsToShow.Add(loggedUserViewModel);
+			SelectedViewToShowTabIndex = 0;
+			return true;
+
+		}
+
+
+		public void CloseWindowNow(object window = null)
+		{
+
+			if (window != null)
+			{
+				Window windowToCLose = (Window)window;
+				windowToCLose.Close();
+
+			}
+
+		}
+		#endregion
+
+		#endregion
+
+
+		public MainWindowViewModel()
+		{
+			// can use this bool to identify if the app is running in debug
+			// ... and then make some stuffs work only if debug easier
 #if DEBUG
-		isDebugMode = true;
+			isDebugMode = true;
 #endif
 
-		// delete ater 17/04/2021 if no bug detected. the perissions is a new instance every time new action requires.
-		//viewModelPermissions = new ViewModelPermissions();
+			// delete ater 17/04/2021 if no bug detected. the perissions is a new instance every time new action requires.
+			//viewModelPermissions = new ViewModelPermissions();
 
-		ViewsToShow = new ObservableCollection<BaseViewModel>();
+			ViewsToShow = new ObservableCollection<BaseViewModel>();
+			//commands instance
+			TestNewCommand = new SimpleCommand<object>(TestNew);
+			RemoveIntemFromMainTabCommand = new SimpleCommand<object>(RemoveIntemFromMainTab);
+			CloseWindowCommand = new SimpleCommand<object>(CloseWindow);
 
-		//commands instance
-		TestNewCommand = new SimpleCommand<object>(TestNew);
-		RemoveIntemFromMainTabCommand = new SimpleCommand<object>(RemoveIntemFromMainTab);
+			SearchMenuItemsCommand = new SimpleCommand<string>(SearchMenuItems);
 
-		SearchMenuItemsCommand = new SimpleCommand<string>(SearchMenuItems);
+			LoginDesktopWinAppCommand = new SimpleCommand<object>(LoginDesktopWinApp);
 
-		LoginDesktopWinAppCommand = new SimpleCommand<object>(LoginDesktopWinApp);
+			// data population for tests... 
+			if (isDebugMode)
+			{
+				//var mainView = new MainViewModel();
+				//mainView.Visibility = true;
+				//ViewsToShow.Add(mainView);
 
-		// data population for tests... 
-		if (isDebugMode)
-		{
-			//var mainView = new MainViewModel();
-			//mainView.Visibility = true;
-			//ViewsToShow.Add(mainView);
+				//mainView = new MainViewModel();
+				//mainView.Visibility = true;
 
-			//mainView = new MainViewModel();
-			//mainView.Visibility = true;
+				//ViewsToShow.Add(mainView);
 
-			//ViewsToShow.Add(mainView);
-
-			//var mainView2 = new TestViewModel();
-			//mainView2.Visibility = false;
-			//ViewsToShow.Add(mainView2);
+				//var mainView2 = new TestViewModel();
+				//mainView2.Visibility = false;
+				//ViewsToShow.Add(mainView2);
 
 
-			// creating list of permissions
-			AllPersmissionsList = new ObservableCollection<ViewModelPermissions>();
-			ViewModelPermissions vmp = new ViewModelPermissions(
-				UserProfiles.UserProfileTypes.sysAdmim,
-				MenuN1Item.MenuN1ItemParameters.MainViewModel,
-				true,
-				true,
-				true,
-				true,
-				true,
-				false
-				);
-			AllPersmissionsList.Add(vmp);
-			ViewModelPermissions vmp2 = new ViewModelPermissions(
+				// creating list of permissions
+				AllPersmissionsList = new ObservableCollection<ViewModelPermissions>();
+				ViewModelPermissions vmp = new ViewModelPermissions(
+					UserProfiles.UserProfileTypes.sysAdmim,
+					MenuN1Item.MenuN1ItemParameters.MainViewModel,
+					true,
+					true,
+					true,
+					true,
+					true,
+					false
+					);
+				AllPersmissionsList.Add(vmp);
+				ViewModelPermissions vmp2 = new ViewModelPermissions(
+					UserProfiles.UserProfileTypes.ordinaryUser,
+					MenuN1Item.MenuN1ItemParameters.MainViewModel,
+					true,
+					false,
+					true,
+					false,
+					true,
+					false
+					);
+				AllPersmissionsList.Add(vmp2);
+				ViewModelPermissions vmp3 = new ViewModelPermissions(
+					UserProfiles.UserProfileTypes.sysAdmim, 
+					MenuN1Item.MenuN1ItemParameters.TestViewModel,
+					true,
+					true,
+					true,
+					true,
+					true,
+					true
+					);
+				AllPersmissionsList.Add(vmp3);
+
+				ViewModelPermissions vmp4 = new ViewModelPermissions(
 				UserProfiles.UserProfileTypes.ordinaryUser,
-				MenuN1Item.MenuN1ItemParameters.MainViewModel,
-				true,
-				false,
-				true,
-				false,
-				true,
-				false
-				);
-			AllPersmissionsList.Add(vmp2);
-			ViewModelPermissions vmp3 = new ViewModelPermissions(
-				UserProfiles.UserProfileTypes.sysAdmim,
 				MenuN1Item.MenuN1ItemParameters.TestViewModel,
 				true,
-				true,
-				true,
-				true,
-				true,
-				true
+				false,
+				false,
+				false,
+				false,
+				false
 				);
-			AllPersmissionsList.Add(vmp3);
+				AllPersmissionsList.Add(vmp4);
 
-			ViewModelPermissions vmp4 = new ViewModelPermissions(
-			UserProfiles.UserProfileTypes.ordinaryUser,
-			MenuN1Item.MenuN1ItemParameters.TestViewModel,
-			true,
-			false,
-			false,
-			false,
-			false,
-			false
-			);
-			AllPersmissionsList.Add(vmp4);
+				ViewModelPermissions vmp5 = new ViewModelPermissions(
+					UserProfiles.UserProfileTypes.sysAdmim,
+					MenuN1Item.MenuN1ItemParameters.LoggedUserViewModel,
+					true,
+					true,
+					true,
+					true,
+					true,
+					true
+					);
+				AllPersmissionsList.Add(vmp5);
+
+				ViewModelPermissions vmp6 = new ViewModelPermissions(
+					UserProfiles.UserProfileTypes.ordinaryUser,
+					MenuN1Item.MenuN1ItemParameters.LoggedUserViewModel,
+					true,
+					true,
+					true,
+					true,
+					true,
+					true
+				);
+				AllPersmissionsList.Add(vmp6);
+
+
+
+			}
+
+	
+
+			//instace logged user
+			loggedUser = new User();
+
+			// Menu request 
+			MenuItensList = new ObservableCollection<Models.MenuItens>();
+			var objMenu = CreateMainMenu("MainMenu");
+			MenuItensList.Add(objMenu);
+
+			//Collection to display itens in menu search items
+			MenuItensFoundInSearch = new ObservableCollection<MenuN1Item>();
 
 
 
 		}
 
-		//instace logged user
-		loggedUser = new User();
-
-		// Menu request 
-		MenuItensList = new ObservableCollection<Models.MenuItens>();
-		var objMenu = CreateMainMenu("MainMenu");
-		MenuItensList.Add(objMenu);
-
-		//Collection to display itens in menu search items
-		MenuItensFoundInSearch = new ObservableCollection<MenuN1Item>();
 
 
+		#region Commands
 
+		//Commands usin "SimpleCommand" base class, that use Action implementation
 
-
-	}
-
-
-
-
-
-
-	#region Commands
-
-	//Commands usin "SimpleCommand" base class, that use Action implementation
-
-	//This one is used for open a menu item, originally its could be only in a tab, but can be implemented ther ways, like modal window.
-	public ICommand TestNewCommand { get; private set; }
-	private void TestNew(object open)
-	{
-		this.OpenNewViewInMainTab(open);
-		IsMenuOpen = false;
-	}
-
-	//This one is used for close a menu item in main tab
-	public ICommand RemoveIntemFromMainTabCommand { get; private set; }
-	private void RemoveIntemFromMainTab(object open)
-	{
-		this.RemoveItemInMainTabCollection(open);
-		IsMenuOpen = false;
-	}
-
-	//search engine for menu itens
-	public ICommand SearchMenuItemsCommand { get; private set; }
-	private void SearchMenuItems(string query = null)
-	{
-		MenuItensFoundInSearch.Clear();
-
-		if (!string.IsNullOrWhiteSpace(query))
+		//This one is used for open a menu item, originally its could be only in a tab, but can be implemented ther ways, like modal window.
+		public ICommand TestNewCommand { get; private set; }
+		private void TestNew(object open)
 		{
-			SearchMenuItemsNow(query);
+			this.OpenNewViewInMainTab(open);
+			IsMenuOpen = false;
 		}
 
-	}
-
-	//login action for win desktop app
-	public ICommand LoginDesktopWinAppCommand { get; private set; }
-	private void LoginDesktopWinApp(object user = null)
-	{
-
-		var result = LoginDesktopWinAppNow(user);
-		if (result) SelectedMainMaterialTransitionerIndex = (int)MainMaterialTransitioner.mainView;
-
-	}
-
-	//Command usin a class for each command. In this case nedd to use parameter to send the object to command,
-	//... it may be a problem in almost cases.
-	public class ExempleCommand : BaseCommand
-	{
-		public override bool CanExecute(object parameter)
+		//This one is used for close a menu item in main tab
+		public ICommand RemoveIntemFromMainTabCommand { get; private set; }
+		private void RemoveIntemFromMainTab(object open)
 		{
-			return true;
+			this.RemoveItemInMainTabCollection(open);
+			IsMenuOpen = false;
 		}
 
-		public override async void Execute(object parameter)
+		//search engine for menu itens
+		public ICommand SearchMenuItemsCommand { get; private set; }
+		private void SearchMenuItems(string query = null)
 		{
-			var viewModel = (MainWindowViewModel)parameter;
-			//if (viewModel.TesteBool == false) viewModel.TesteBool = true;
-			//else viewModel.TesteBool = true;
+			MenuItensFoundInSearch.Clear();
 
-			//using (var db = new DBL.db())
-			//{
-			//}
-			//viewModel.OpenNewViewInMainTab(parameter);
+			if (!string.IsNullOrWhiteSpace(query))
+			{
+				SearchMenuItemsNow(query);
+			}
+
 		}
+
+		//login action for win desktop app
+		public ICommand LoginDesktopWinAppCommand { get; private set; }
+		private void LoginDesktopWinApp(object user = null)
+		{
+
+			var result = LoginDesktopWinAppNow(user);
+			if (result) SelectedMainMaterialTransitionerIndex = (int)MainMaterialTransitioner.mainView;
+
+		}
+
+
+		//Close window
+		public ICommand CloseWindowCommand { get; private set; }
+		private void CloseWindow(object window = null)
+		{
+			CloseWindowNow(window);
+
+		}
+
+		//Command usin a class for each command. In this case nedd to use parameter to send the object to command,
+		//... it may be a problem in almost cases.
+		public class ExempleCommand : BaseCommand
+		{
+			public override bool CanExecute(object parameter)
+			{
+				return true;
+			}
+
+			public override async void Execute(object parameter)
+			{
+				var viewModel = (MainWindowViewModel)parameter;
+				//if (viewModel.TesteBool == false) viewModel.TesteBool = true;
+				//else viewModel.TesteBool = true;
+
+				//using (var db = new DBL.db())
+				//{
+				//}
+				//viewModel.OpenNewViewInMainTab(parameter);
+			}
+		}
+		public ExempleCommand DoExempleCommand { get; private set; } = new ExempleCommand();
+
+		//test to close window
+		public class CloseMainWindowCommand : BaseCommand
+		{
+			public override bool CanExecute(object parameter)
+			{
+				return true;
+			}
+
+			public override async void Execute(object parameter)
+			{
+				var window = (Window)parameter;
+				var dt = (MainWindowViewModel)window.DataContext;
+				var result = await dt.CreateGenericYesNoDialog(title: "Close?",
+					message: "All not saved data will be lost.", trueButton: "Yes, close!", falseButton: "Ops, cancel...");
+				if (result) window.Close();
+
+			}
+		}
+		public CloseMainWindowCommand CloseCommand { get; private set; } = new CloseMainWindowCommand();
+
+		#endregion
+
+
+
+
+
+
+
+
 	}
-	public ExempleCommand DoExempleCommand { get; private set; } = new ExempleCommand();
-
-	#endregion
-
-
-
-
-
-
-
-
-}
 }
 
 

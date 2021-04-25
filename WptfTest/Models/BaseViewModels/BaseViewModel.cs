@@ -126,6 +126,12 @@ namespace WptfTest.Models.BaseViewModels
 			set { SetField(ref _visibility, value); }
 		}
 
+		private bool _canCloseIt = true;
+		public bool CanCloseIt
+		{
+			get { return _canCloseIt; }
+			set { SetField(ref _canCloseIt, value); }
+		}
 
 		public ViewModelPermissions ViewModelPermissions { get; set; }
 

@@ -241,6 +241,7 @@ namespace WptfTest.Models
 			//Params about this item. It's applied as param in command that open the item
 			public enum MenuN1ItemParameters
 			{
+				LoggedUserViewModel =0,
 				TestViewModel = 1,
 				MainViewModel = 2
 			}

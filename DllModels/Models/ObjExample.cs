@@ -11,7 +11,7 @@ namespace DllModels.Models
 {
 
 
-    public class ObjectTest : BaseClass
+    public class ObjectTest : BaseClass, ICloneable
     {
         #region PROPERTIES
         public int id { get; set; }
@@ -21,17 +21,22 @@ namespace DllModels.Models
         //[MaxLength(14, ErrorMessage = "{0} não pode ter mais de 14 números.")]
         //[CPFCNPJValidation(ErrorMessage = "{0} tem que ser 123")] //ver Models/CustomValidations para mais informação
         //[NaoPodeVazio(ErrorMessage = "{0} nao pode vazio")] //ver Models/CustomValidations para mais informação
-        [MinLength(3, ErrorMessage = "{0} dígitos insuficientes.")]
-        [Display(Name = "Atributo 1")]
-        [Required(ErrorMessage = "{0} precisa ser informado.")]
-        public string Atrib1 { get; set; }
+        //[MinLength(3, ErrorMessage = "{0} dígitos insuficientes.")]
+        //[Display(Name = "Atributo 1")]
+        //[Required(ErrorMessage = "{0} precisa ser informado.")]
+        public string? Atrib1 { get; set; } = "";
 
-        public string Atrib2 { get; set; }
+        public string? Atrib2 { get; set; }
 
         public string? Atrib3 { get; set; }
 
-        [Required(ErrorMessage = "{0} precisa ser informado.")]
+        //[Required(ErrorMessage = "{0} precisa ser informado.")]
         public string? Atrib4 { get; set; }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
         #endregion
 
         #region METHODS

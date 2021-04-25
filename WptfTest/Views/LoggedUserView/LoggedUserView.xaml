@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="WptfTest.Views.MainView.TestView"
+﻿<UserControl x:Class="WptfTest.Views.LoggedUserView.LoggedUserView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,8 +10,8 @@
              xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
 			 xmlns:converters="clr-namespace:WptfTest.Converters"
 			 
-			 xmlns:viewModel="clr-namespace:WptfTest.ViewModels.MainView"
-			 d:DataContext="{d:DesignInstance Type=viewModel:TestViewModel, IsDesignTimeCreatable=True}"
+			 xmlns:viewModel="clr-namespace:WptfTest.ViewModels.LoggedUserViewModel"
+			 d:DataContext="{d:DesignInstance Type=viewModel:LoggedUserViewModel, IsDesignTimeCreatable=True}"
 			 VerticalAlignment="Stretch"
 			 HorizontalAlignment="Stretch"
 			 >
@@ -41,7 +41,7 @@
 							    Style="{StaticResource MaterialDesignHeadline5TextBlock}"
 							   HorizontalAlignment="Center"
 									  Margin="8"
-									  Text="Some text here that explains the objective of view." />
+									  Text="This will be there always. Cant be closed."/>
 
 
 				<ToggleButton Content="{materialDesign:PackIcon Kind=PencilOffOutline, Size=21}"
