@@ -7,17 +7,25 @@
              xmlns:system="clr-namespace:System;assembly=mscorlib"
 			 
 			 mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="300"
+             d:DesignHeight="300" d:DesignWidth="400"
+			 
+			 xmlns:converters="clr-namespace:WptfTest.Converters"
 			 
 			 xmlns:viewModel="clr-namespace:WptfTest.ViewModels.Dialogs"
 			 d:DataContext="{d:DesignInstance Type=viewModel:OneIconDialogViewModel, IsDesignTimeCreatable=True}"
-			 
-             MaxWidth="400">
+			 MaxHeight="300"
+             Width="400">
+
+
+	<UserControl.Resources>
+		<converters:ViewItemVisibility  x:Key="viewItemVisibility"/>
+	</UserControl.Resources>
+
 	<Grid Margin="8">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="0.5*"/>
 			<RowDefinition Height="auto"/>
-			<RowDefinition Height="*"/>
+			<RowDefinition Height="auto"/>
 			<RowDefinition Height="0.5*"/>
 		</Grid.RowDefinitions>
 		<materialDesign:PackIcon Kind="{Binding IconName}"
@@ -27,7 +35,8 @@
 								 Width="80"
 								 materialDesign:ShadowAssist.ShadowDepth="Depth5"
 								 VerticalAlignment="Center"
-								 HorizontalAlignment="Center" />
+								 HorizontalAlignment="Center"
+								 Visibility="{Binding IconVisibility, Converter={StaticResource viewItemVisibility}}"/>
 		<TextBlock x:Name="Title"
 				   TextWrapping="WrapWithOverflow"
 				   

@@ -8,12 +8,10 @@
 	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 	xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
 	xmlns:materialDesignExtensions="clr-namespace:MaterialDesignExtensions.Controls;assembly=MaterialDesignExtensions"
-		
-		
+			
 	xmlns:userControl="clr-namespace:WptfTest.Views.GeneralUserControls"
 	xmlns:MainView="clr-namespace:WptfTest.Views.MainView"
 	xmlns:converters="clr-namespace:WptfTest.Converters"
-
 	
 	xmlns:viewModel="clr-namespace:WptfTest"
 	xmlns:viewModel2="clr-namespace:WptfTest.ViewModels.MainView"
@@ -21,11 +19,9 @@
 	
 	xmlns:loggedUserVM="clr-namespace:WptfTest.ViewModels.LoggedUserViewModel"
 	xmlns:loggedUserView="clr-namespace:WptfTest.Views.LoggedUserView"
-	
-
-	
-	
+		
 	xmlns:UserLoginView="clr-namespace:WptfTest.Views.UserLoginView" x:Class="WptfTest.MainWindow"
+	
 	mc:Ignorable="d"
 
 	
@@ -42,77 +38,77 @@
 	>
 
 
-    <UserControl.Resources>
-        <converters:ViewItemVisibility  x:Key="viewItemVisibility"/>
-    </UserControl.Resources>
+	<UserControl.Resources>
+		<converters:ViewItemVisibility  x:Key="viewItemVisibility"/>
+	</UserControl.Resources>
 
 
-    <UserControl.DataContext>
-        <viewModel:MainWindowViewModel/>
-    </UserControl.DataContext>
+	<UserControl.DataContext>
+		<viewModel:MainWindowViewModel/>
+	</UserControl.DataContext>
 
 
-    <DockPanel>
+	<DockPanel>
 
-        <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding IsMenuOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+		<materialDesign:DrawerHost IsLeftDrawerOpen="{Binding IsMenuOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
 								   OpenMode="Default" MaxHeight="{Binding ActualHeight, ElementName=mainWindow}"
 								   VerticalContentAlignment="Top"
 								   materialDesign:ShadowAssist.ShadowDepth="Depth5"
 								   >
-            <materialDesign:DrawerHost.LeftDrawerContent>
+			<materialDesign:DrawerHost.LeftDrawerContent>
 
-                <StackPanel VerticalAlignment="Top" Width="300">
-                    <!--Menu title here-->
-                    <Grid Height="{Binding ActualHeight, ElementName=mainWindow}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" MaxWidth="300"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
+				<StackPanel VerticalAlignment="Top" Width="300">
+					<!--Menu title here-->
+					<Grid Height="{Binding ActualHeight, ElementName=mainWindow}">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*" MaxWidth="300"/>
+						</Grid.ColumnDefinitions>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="auto"/>
+							<RowDefinition Height="auto"/>
+							<RowDefinition Height="*"/>
+						</Grid.RowDefinitions>
 
-                        <TextBlock Text="MENU" 
+						<TextBlock Text="MENU" 
 								   Grid.Column="0" 
 								   Grid.ColumnSpan="2"
 								   Grid.Row="0"
 								   Style="{StaticResource MaterialDesignHeadline6TextBlock}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
 
-                        <ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"  
+						<ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}"  
 									  Grid.Column="0"
 									  Grid.Row="0"
 									  HorizontalAlignment="Left" 
 									  Margin="16"
 									  IsChecked="{Binding IsMenuOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                        <!--Menu itens here -->
-                        <!--Menu search -->
-                        <GroupBox Header="Search "
+						<!--Menu itens here -->
+						<!--Menu search -->
+						<GroupBox Header="Search "
 								  Grid.Row="1"
 								  Grid.Column="0"
 								  Style="{DynamicResource MaterialDesignHeaderedContentControl}"
 								  Margin="8"
 								  materialDesign:ShadowAssist.ShadowDepth="Depth3"
 								  BorderThickness="0">
-                            <GroupBox.HeaderTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon Kind="Search"
+							<GroupBox.HeaderTemplate>
+								<DataTemplate>
+									<StackPanel Orientation="Horizontal">
+										<materialDesign:PackIcon Kind="Search"
 																  Height="32"
 																  Width="32"
 																  VerticalAlignment="Center" />
-                                        <TextBlock Margin="8,0,0,0"
+										<TextBlock Margin="8,0,0,0"
 													  VerticalAlignment="Center"
 													  Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
 													  Text="{Binding}" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </GroupBox.HeaderTemplate>
-                            <StackPanel>
+									</StackPanel>
+								</DataTemplate>
+							</GroupBox.HeaderTemplate>
+							<StackPanel>
 
-                                <TextBox  Text="{Binding SearchKeyword, UpdateSourceTrigger=PropertyChanged}"
+								<TextBox 
 										  x:Name="MenuSearch"
 										  Margin="16"
 										  
@@ -123,36 +119,36 @@
 										  materialDesign:TextFieldAssist.HasOutlinedTextField="True"
 										  materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
 										  materialDesign:TextFieldAssist.TextFieldCornerRadius="3">
-                                    <TextBox.InputBindings>
-                                        <KeyBinding CommandParameter="{Binding Text, ElementName=MenuSearch}" 
+									<TextBox.InputBindings>
+										<KeyBinding CommandParameter="{Binding Text, ElementName=MenuSearch}" 
 													Command="{Binding SearchMenuItemsCommand}" 
 													Key="Return" />
 
-                                    </TextBox.InputBindings>
+									</TextBox.InputBindings>
 
-                                </TextBox>
+								</TextBox>
 
-                                <ItemsControl ItemsSource="{Binding MenuItensFoundInSearch, UpdateSourceTrigger=PropertyChanged}"
-										  Margin="{Binding Margin, ElementName=MenuSearch}"
-										  MaxWidth="{Binding Width, ElementName=MenuSearch}">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <Button Content="{Binding MenuN1ItemName}"
+								<ItemsControl ItemsSource="{Binding MenuItensFoundInSearch, UpdateSourceTrigger=PropertyChanged}"
+										  Margin="{Binding  ElementName=MenuSearch, Path=Margin}"
+										  MaxWidth="{Binding ElementName=MenuSearch, Path=Width}">
+									<ItemsControl.ItemTemplate>
+										<DataTemplate>
+											<Button Content="{Binding MenuN1ItemName}"
 													CommandParameter="{Binding}"
 													Command="{Binding DataContext.TestNewCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
 																		
 													Style="{StaticResource MaterialDesignRaisedAccentButton}"
 													ToolTip="{Binding MenuN1IToolTip}"/>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
+										</DataTemplate>
+									</ItemsControl.ItemTemplate>
+								</ItemsControl>
 
-                            </StackPanel>
+							</StackPanel>
 
-                        </GroupBox>
+						</GroupBox>
 
-                        <!--Menu collection -->
-                        <GroupBox Header="{Binding MenuItensList[0].MenuName}"
+						<!--Menu collection -->
+						<GroupBox Header="{Binding MenuItensList[0].MenuName}"
 								  Grid.Row="2"
 								  Style="{DynamicResource MaterialDesignGroupBox}"
 								  
@@ -161,58 +157,58 @@
 								  x:Name="GrouBoxMenuCollection"
 								  materialDesign:ShadowAssist.ShadowDepth="Depth3"
 								  BorderThickness="0">
-                            <GroupBox.HeaderTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <materialDesign:PackIcon Kind="ImageArea"
+							<GroupBox.HeaderTemplate>
+								<DataTemplate>
+									<StackPanel Orientation="Horizontal">
+										<materialDesign:PackIcon Kind="ImageArea"
 																  Height="32"
 																  Width="32"
 																  VerticalAlignment="Center" />
-                                        <TextBlock Margin="8,0,0,0"
+										<TextBlock Margin="8,0,0,0"
 													  VerticalAlignment="Center"
 													  Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
 													  Text="{Binding}" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </GroupBox.HeaderTemplate>
+									</StackPanel>
+								</DataTemplate>
+							</GroupBox.HeaderTemplate>
 
-                            <ScrollViewer Margin="0 0 -8 0">
-                                <StackPanel>
-                                    <ItemsControl ItemsSource="{Binding MenuItensList[0].MenuN1SubList}" 
+							<ScrollViewer Margin="0 0 -8 0">
+								<StackPanel>
+									<ItemsControl ItemsSource="{Binding MenuItensList[0].MenuN1SubList}" 
 												  x:Name="MyItems"
 												  Padding="0"
 												  Background="{x:Null}">
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
+										<ItemsControl.ItemTemplate>
+											<DataTemplate>
 
-                                                <Expander Header="{Binding MenuN1Name}" Background="{x:Null}"
+												<Expander Header="{Binding MenuN1Name}" Background="{x:Null}"
 														  Visibility="{Binding Visibility, Converter={StaticResource viewItemVisibility}}">
-                                                    <ItemsControl x:Name="MyItems2" 
+													<ItemsControl x:Name="MyItems2" 
 																  ItemsSource="{Binding MenuN1ItensList}" 
 																  Padding=" 10 0 0 0">
-                                                        <ItemsControl.ItemTemplate>
-                                                            <DataTemplate>
-                                                                <!-- i will keep it to remember me how to use, when i need to use an other instance of viewModel
+														<ItemsControl.ItemTemplate>
+															<DataTemplate>
+																<!-- i will keep it to remember me how to use, when i need to use an other instance of viewModel
 																and a in a paramether a new instance too-->
-                                                                <!--<Button Content="Button"  
+																<!--<Button Content="Button"  
 																		CommandParameter="{Binding Source={StaticResource mainDataContext}}"
 																		Command="{Binding DoExempleCommand, Source={StaticResource mainDataContext}}" >
 
 																</Button>-->
-                                                                <!--here i use a new instance of viewModel, but in parameter i send a relative source
+																<!--here i use a new instance of viewModel, but in parameter i send a relative source
 																it's not what i want too-->
-                                                                <!--<Button Margin="10"
+																<!--<Button Margin="10"
 																			Content="Funcionou, mas instancio outra viewmode"
 																			CommandParameter="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
 																			Command="{Binding DoExempleCommand, Source={StaticResource mainDataContext}}"
 																			/>-->
-                                                                <StackPanel>
-                                                                    <!-- HERE!! -->
-                                                                    <!-- It's what im look for. i use a command by relative source, 
+																<StackPanel>
+																	<!-- HERE!! -->
+																	<!-- It's what im look for. i use a command by relative source, 
 																	and the data context too!-->
 
 
-                                                                    <Button Margin="16 4 "
+																	<Button Margin="16 4 "
 																			Content="{Binding MenuN1ItemName}"
 																			IsEnabled="{Binding Visibility}"
 																			Visibility="{Binding Visibility, Converter={StaticResource viewItemVisibility}}"
@@ -224,68 +220,68 @@
 																			HorizontalContentAlignment="Stretch"
 																			/>
 
-                                                                </StackPanel>
+																</StackPanel>
 
-                                                            </DataTemplate>
+															</DataTemplate>
 
-                                                        </ItemsControl.ItemTemplate>
-                                                    </ItemsControl>
-                                                </Expander>
+														</ItemsControl.ItemTemplate>
+													</ItemsControl>
+												</Expander>
 
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
+											</DataTemplate>
+										</ItemsControl.ItemTemplate>
+									</ItemsControl>
 
-                                </StackPanel>
-                            </ScrollViewer>
+								</StackPanel>
+							</ScrollViewer>
 
-                        </GroupBox>
-
-
-                    </Grid>
-
-                </StackPanel>
-            </materialDesign:DrawerHost.LeftDrawerContent>
-
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="auto"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
+						</GroupBox>
 
 
-                <materialDesign:ColorZone Mode="Standard"
+					</Grid>
+
+				</StackPanel>
+			</materialDesign:DrawerHost.LeftDrawerContent>
+
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="auto"/>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="auto"/>
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="auto"/>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="auto"/>
+				</Grid.ColumnDefinitions>
+
+
+				<materialDesign:ColorZone Mode="Standard"
 										  Padding="16"
 										  Grid.ColumnSpan="99">
 
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <ToggleButton Grid.Column="0"
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="auto"/>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="auto"/>
+						</Grid.ColumnDefinitions>
+						<ToggleButton Grid.Column="0"
 									  Style="{DynamicResource MaterialDesignHamburgerToggleButton}"
 									  IsChecked="{Binding IsMenuOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
 
 
-                        <TextBlock Grid.Column="1" HorizontalAlignment="Center " VerticalAlignment="Center"
+						<TextBlock Grid.Column="1" HorizontalAlignment="Center " VerticalAlignment="Center"
 								   Style="{StaticResource MaterialDesignHeadline6TextBlock}"
 								   Text="{Binding SelectedViewToShow.ViewTitle, UpdateSourceTrigger=PropertyChanged}"/>
 
-                        <materialDesign:PopupBox Grid.Column="2" 
+						<materialDesign:PopupBox Grid.Column="2" 
 												 StaysOpen="True"
-												 IsEnabled="True" Padding="8">
-                            <StackPanel >
-                                <!--<Button Command="{x:Static materialDesign:Transitioner.MovePreviousCommand}" Content="voltar" />
+												 IsEnabled="True" Padding="8" HorizontalAlignment="Center" Height="37" VerticalAlignment="Top">
+							<StackPanel >
+								<!--<Button Command="{x:Static materialDesign:Transitioner.MovePreviousCommand}" Content="voltar" />
                                 <Button Command="{x:Static materialDesign:Transitioner.MoveNextCommand}" Content="avancar" />-->
 								<Button Command="{Binding CloseCommand}"
 										CommandParameter="{Binding Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserLoginView:UserLoginView}}}"
@@ -296,31 +292,31 @@
 										<TextBlock Text="Close"/>
 									</StackPanel>
 								</Button>
-								
-								<Button Command="{Binding CloseCommand}"
+
+								<Button Command="{Binding }"
 										CommandParameter="{Binding Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserLoginView:UserLoginView}}}"
 																
 										>
 									<StackPanel Orientation="Horizontal">
-										<materialDesign:PackIcon Kind="WindowClose"/>
-										<TextBlock Text="Close"/>
+										<materialDesign:PackIcon Kind="Clippy"/>
+										<TextBlock Text="Nothing"/>
 									</StackPanel>
 								</Button>
 
 							</StackPanel>
-                        </materialDesign:PopupBox>
+						</materialDesign:PopupBox>
 
 
 
-                    </Grid>
+					</Grid>
 
-                </materialDesign:ColorZone>
+				</materialDesign:ColorZone>
 
 
-                <Grid Grid.Row="1"
+				<Grid Grid.Row="1"
 					  Grid.ColumnSpan="99">
 
-                    <materialDesign:ColorZone>
+					<materialDesign:ColorZone>
 
 						<TabControl ItemsSource="{Binding ViewsToShow}"
 									SelectedItem="{Binding SelectedViewToShow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -336,72 +332,72 @@
 								<DataTemplate DataType="{x:Type loggedUserVM:LoggedUserViewModel}">
 									<loggedUserView:LoggedUserView/>
 								</DataTemplate>
-                                <DataTemplate DataType="{x:Type viewModel2:TestViewModel}">
-                                    <view2:TestView/>
-                                </DataTemplate>
-                                <DataTemplate DataType="{x:Type viewModel2:MainViewModel}">
-                                    <view2:MainView/>
-                                </DataTemplate>
+								<DataTemplate DataType="{x:Type viewModel2:TestViewModel}">
+									<view2:TestView/>
+								</DataTemplate>
+								<DataTemplate DataType="{x:Type viewModel2:MainViewModel}">
+									<view2:MainView/>
+								</DataTemplate>
 							</TabControl.Resources>
 
-                            <TabControl.Style>
-                                <StaticResource ResourceKey="MaterialDesignTabControl"/>
-                            </TabControl.Style>
+							<TabControl.Style>
+								<StaticResource ResourceKey="MaterialDesignTabControl"/>
+							</TabControl.Style>
 
-                            <TabControl.ItemTemplate>
-                                <DataTemplate >
-                                    <DockPanel>
-                                        <Button HorizontalAlignment="Right" Style="{StaticResource WindowCloseButtonStyle}"
+							<TabControl.ItemTemplate>
+								<DataTemplate >
+									<DockPanel>
+										<Button HorizontalAlignment="Right" Style="{StaticResource WindowCloseButtonStyle}"
 												CommandParameter="{Binding ''}"
 												Command="{Binding DataContext.RemoveIntemFromMainTabCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
 											    Visibility="{Binding CanCloseIt, Converter={StaticResource viewItemVisibility}}"
 										  					
 												Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}">
-                                            <materialDesign:PackIcon Kind="WindowClose"/>
-                                        </Button>
+											<materialDesign:PackIcon Kind="WindowClose"/>
+										</Button>
 
-                                        <TextBlock Text="{Binding ViewTitle}" Margin="8"
+										<TextBlock Text="{Binding ViewTitle}" Margin="8"
 										   Visibility="{Binding Visibility, Converter={StaticResource viewItemVisibility}}"
 										   />
-                                    </DockPanel>
-                                </DataTemplate>
-                            </TabControl.ItemTemplate>
+									</DockPanel>
+								</DataTemplate>
+							</TabControl.ItemTemplate>
 
 
-                        </TabControl>
-                    </materialDesign:ColorZone>
+						</TabControl>
+					</materialDesign:ColorZone>
 
 
 
 
-                </Grid>
+				</Grid>
 
 
-                <Grid Grid.Row="2"
+				<Grid Grid.Row="2"
 					  Grid.ColumnSpan="99">
-                    <materialDesign:ColorZone Mode="Inverted"
+					<materialDesign:ColorZone Mode="Inverted"
 											  Background="Black"
 											  Foreground="White"
 											  Padding="10"
 											  ClipToBounds="False">
 
-                        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Margin="16 0 16 0"
+						<StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Margin="16 0 16 0"
 									Orientation="Horizontal">
 
-                            <TextBlock><Run Text="USER:"/><Run Text=" "/><Run Text="{Binding loggedUser.UserName, UpdateSourceTrigger=PropertyChanged}"/><Run Text=" "/><Run Text="    |    PROFILE:"/><Run Text=" "/><Run Text="{Binding loggedUser.UserProfile, UpdateSourceTrigger=PropertyChanged}"/><Run Text=" "/><Run Text="    "/></TextBlock>
+							<TextBlock><Run Text="USER:"/><Run Text=" "/><Run Text="{Binding loggedUser.UserName, UpdateSourceTrigger=PropertyChanged}"/><Run Text=" "/><Run Text="    |    PROFILE:"/><Run Text=" "/><Run Text="{Binding loggedUser.UserProfile, UpdateSourceTrigger=PropertyChanged}"/><Run Text=" "/><Run Text="    "/></TextBlock>
 
 
-                            <materialDesign:Badged Badge="{Binding ViewsToShow.Count}"
+							<materialDesign:Badged Badge="{Binding ViewsToShow.Count}"
 													VerticalAlignment="Top">
-                                <Button Content="Some action" />
-                            </materialDesign:Badged>
-                        </StackPanel>
-                    </materialDesign:ColorZone>
-                </Grid>
+								<Button Content="Some action" />
+							</materialDesign:Badged>
+						</StackPanel>
+					</materialDesign:ColorZone>
+				</Grid>
 
 
-            </Grid>
+			</Grid>
 
-        </materialDesign:DrawerHost>
-    </DockPanel>
+		</materialDesign:DrawerHost>
+	</DockPanel>
 </UserControl>

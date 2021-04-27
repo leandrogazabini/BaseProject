@@ -27,9 +27,9 @@ namespace WptfTest
 	// [  ]	Dynamic menu generator relationed based on permissions, 
 	//		Maybe crete a new atribute in model "baseviewmodel" -> "canUsarOpenThis"
 	// [  ] Base view to default display in tab with headers, like "close", "save", "edit this" and some default actions.
-	// [  ] general user control for "quick search" to any collection/model
+	// [  ] general user control for "quick search itens" to any collection/model
 	// [x ] Dialogs
-	// [  ] context menu for main window
+	// [x ] context menu for main window -> close avaiable
 	// [X ] login screen
 	// [X ] splash screen
 	// [  ] auto update pattern
@@ -154,18 +154,23 @@ namespace WptfTest
 		#endregion
 
 		#region GenericDialogs
-		public async void CreateGenericOneIconDialog()
+		public async Task<bool> CreateGenericOneIconDialog(string title = null, string message = null, string okButton = null, bool hasIcon = true ,string icon = null, string iconColor = null)
 		{
 			var dialog = new OneIconDialog
 			{
 				DataContext = new OneIconDialogViewModel
 				{
-					TitleDialog = "Icon dialog test",
-					MessageDialog = "Message test here",
-					IconName = "LanguageCsharp",
+					TitleDialog = title,
+					MessageDialog = message,
+					OkButton = okButton,
+					IconVisibility= hasIcon,
+					IconName = icon,
+					IconForeground = iconColor
+
 				}
 			};
-			await DialogHost.Show(dialog, "MainDialog");
+			var dialogResult = await DialogHost.Show(dialog, "MainDialog");
+			return (bool)dialogResult;
 		}
 
 
@@ -224,7 +229,9 @@ namespace WptfTest
 					IconName = "Check",
 				}
 			};
-			await DialogHost.Show(dialog, "MainDialog");
+			await CreateGenericOneIconDialog("Done!", "Item closed ;)", "Ok...", true, "check", "");
+
+			//await DialogHost.Show(dialog, "MainDialog");
 
 
 			//

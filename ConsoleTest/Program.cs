@@ -158,8 +158,7 @@ namespace ConsoleTest
 
 			ComparisonResult result = compareLogic.Compare(MainList1, MainList2);
 			Console.WriteLine(result.AreEqual.ToString());
-
-
+	
 		}
 	}
 }

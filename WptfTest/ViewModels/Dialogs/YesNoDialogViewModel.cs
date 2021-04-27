@@ -13,7 +13,7 @@ namespace WptfTest.ViewModels.Dialogs
 		private string _titleDialog ="Title";
 		public string TitleDialog
 		{
-			get { return (string)_titleDialog.ToUpper(); }
+			get { return (string)_titleDialog; }
 			set { SetField(ref _titleDialog, value); }
 		}
 
@@ -21,21 +21,21 @@ namespace WptfTest.ViewModels.Dialogs
 		private string _messageDialog = "Message";
 		public string MessageDialog
 		{
-			get { return (string)_messageDialog.ToUpper(); }
+			get { return (string)_messageDialog; }
 			set { SetField(ref _messageDialog, value); }
 		}
 
 		private string _trueButtonDialog = "Ok";
 		public string TrueButtonDialog
 		{
-			get { return (string)_trueButtonDialog.ToUpper(); }
+			get { return (string)_trueButtonDialog; }
 			set { SetField(ref _trueButtonDialog, value); }
 		}
 
 		private string _falseButtonDialog = "Cancel";
 		public string FalseButtonDialog
 		{
-			get { return (string)_falseButtonDialog.ToUpper(); }
+			get { return (string)_falseButtonDialog; }
 			set { SetField(ref _falseButtonDialog, value); }
 		}
 

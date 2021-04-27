@@ -28,8 +28,8 @@
 	<Window.DataContext>
 		<viewModel:MainWindowViewModel/>
 	</Window.DataContext>
-	
-	
+
+
 	<!--<Window.Resources>
 
 		<DataTemplate DataType="{x:Type local:MainWindowViewModel}">
@@ -49,8 +49,10 @@
 				<KeyBinding Key="Right" Command="{x:Static materialDesign:Transitioner.MoveNextCommand}" />
 			</materialDesign:Transitioner.InputBindings>
 			<materialDesign:TransitionerSlide OpeningEffect="{materialDesign:TransitionEffect FadeIn}">
+
+
 				<Grid HorizontalAlignment="Center"
-		  VerticalAlignment="Center">
+					  VerticalAlignment="Center">
 
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="10"/>
@@ -68,103 +70,188 @@
 
 
 
+
+
+
 					<Grid Grid.Column="1" 
-				Grid.Row="2"
-				Grid.RowSpan="99">
-						<materialDesign:Card materialDesign:ShadowAssist.ShadowDepth="Depth5">
-							<Grid Height="250"
-					Width="200"
-					Margin="16 32 16 16" VerticalAlignment="Center">
+						  Grid.Row="2"
+							Grid.RowSpan="99">
+						<materialDesign:Flipper>
+							<materialDesign:Flipper.FrontContent>
+								<materialDesign:Card >
+									
+									<Grid Height="250"
+											Width="200"
+											Margin="16 32 16 16" VerticalAlignment="Center">
 
-								<Grid>
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="*"/>
-										<ColumnDefinition Width="*"/>
-									</Grid.ColumnDefinitions>
-									<Grid.RowDefinitions>
-										<RowDefinition Height="3*"/>
-										<RowDefinition Height="*"/>
-									</Grid.RowDefinitions>
+										<Grid HorizontalAlignment="Stretch">
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition Width="*"/>
+												<ColumnDefinition Width="*"/>
+											</Grid.ColumnDefinitions>
+											<Grid.RowDefinitions>
+												<RowDefinition Height="3*"/>
+												<RowDefinition Height="*"/>
+											</Grid.RowDefinitions>
 
-									<StackPanel VerticalAlignment="Center"
-									Grid.Row="0"
-									Grid.ColumnSpan="2">
+											
+											
+											<StackPanel VerticalAlignment="Center"
+														Grid.Row="0"
+														Grid.ColumnSpan="2">
 
-										<TextBox Margin="8 32 8 8" 
+											
+												<TextBox Margin="8 32 8 8" 
 											 Text="{Binding loggedUser.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 												Style="{StaticResource MaterialDesignFilledTextBox}"
 												materialDesign:TextFieldAssist.HasClearButton="True"
 												materialDesign:HintAssist.Hint="User Account"/>
 
-										<PasswordBox Margin="8"
+												<PasswordBox Margin="8"
 												 Style="{StaticResource MaterialDesignFilledPasswordBox}"
 												 materialDesign:TextFieldAssist.HasClearButton="True"
 												 materialDesign:HintAssist.Hint="Password"/>
 
-										<Button Margin="8" Style="{StaticResource MaterialDesignFlatButton}"
+												<Button Margin="8" Style="{StaticResource MaterialDesignFlatButton}"
 											Name="btnFortgotPassword"
 											ToolTip="MaterialDesignFlatButton"
-											Content="forgot password?" />
-									</StackPanel>
-									<StackPanel VerticalAlignment="Center"
+											Content="forgot password?"
+													Command="{x:Static materialDesign:Flipper.FlipCommand}"/>
+											</StackPanel>
+											<StackPanel VerticalAlignment="Center"
 											HorizontalAlignment="Center"
 											Orientation="Horizontal"
 											Grid.Row="1"
 											Grid.ColumnSpan="2">
 
-										<Button Style="{StaticResource MaterialDesignOutlinedButton}"
+												<Button Style="{StaticResource MaterialDesignOutlinedButton}"
 											ToolTip="Resource name: MaterialDesignRaisedAccentButton"
-											Margin="8">
-											<materialDesign:PackIcon Kind="Close" />
-										</Button>
+											Margin="8"
+												Command="{Binding CloseCommand}"
+												CommandParameter="{Binding ElementName=UserLoginWindow}"
+										>
+													<materialDesign:PackIcon Kind="Close" />
 
-										<Button Style="{StaticResource MaterialDesignRaisedAccentButton}"
+												</Button>
+
+												<Button Style="{StaticResource MaterialDesignRaisedAccentButton}"
 											Visibility="Collapsed" 
 											ToolTip="Resource name: MaterialDesignRaisedAccentButton"
 											Margin="8"
 											Width="100"
 											Command="{x:Static materialDesign:Transitioner.MoveNextCommand}">
-											<materialDesign:PackIcon Kind="Check" />
-										</Button>
-										<Button Style="{StaticResource MaterialDesignRaisedAccentButton}"
+													<materialDesign:PackIcon Kind="Check" />
+												</Button>
+												<Button Style="{StaticResource MaterialDesignRaisedAccentButton}"
 											ToolTip="Resource name: MaterialDesignRaisedAccentButton"
 											Margin="8"
 											Width="100"
 											Command="{Binding LoginDesktopWinAppCommand}">
-											<materialDesign:PackIcon Kind="Check" />
-										</Button>
+													<materialDesign:PackIcon Kind="Check" />
+												</Button>
 
-									</StackPanel>
+											</StackPanel>
+
+
+										</Grid>
+
+
+									</Grid>
+								</materialDesign:Card>
+								
+
+							</materialDesign:Flipper.FrontContent>
+
+							<materialDesign:Flipper.BackContent>
+								<materialDesign:Card>
+								<Grid Height="250"
+											Width="200"
+											Margin="16 32 16 16" VerticalAlignment="Center">
+
+									<Grid HorizontalAlignment="Stretch">
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="*"/>
+											<ColumnDefinition Width="*"/>
+										</Grid.ColumnDefinitions>
+										<Grid.RowDefinitions>
+											<RowDefinition Height="3*"/>
+											<RowDefinition Height="*"/>
+										</Grid.RowDefinitions>
+
+
+
+										<StackPanel VerticalAlignment="Center"
+														Grid.Row="0"
+														Grid.ColumnSpan="2">
+
+												<TextBlock Text="Please, type your e-mail adress here."/>
+
+												<TextBox Margin="8 32 8 8" 
+												 Text=""
+												Style="{StaticResource MaterialDesignFilledTextBox}"
+												materialDesign:TextFieldAssist.HasClearButton="True"
+												materialDesign:HintAssist.Hint="E-mail"/>
+
+										</StackPanel>
+										<StackPanel VerticalAlignment="Center"
+											HorizontalAlignment="Center"
+											Orientation="Horizontal"
+											Grid.Row="1"
+											Grid.ColumnSpan="2">
+
+												<Button Style="{StaticResource MaterialDesignOutlinedButton}"
+													ToolTip="Resource name: MaterialDesignRaisedAccentButton"
+													Margin="8"
+													Command="{x:Static materialDesign:Flipper.FlipCommand}"
+													CommandParameter="{Binding ElementName=UserLoginWindow}" >
+
+
+													<materialDesign:PackIcon Kind="ArrowLeft" />
+												
+
+												</Button>
+
+										
+											<Button Style="{StaticResource MaterialDesignRaisedAccentButton}"
+													ToolTip="Resource name: MaterialDesignRaisedAccentButton"
+													Margin="8"
+													Width="100"
+													Command="{Binding }">
+													<TextBlock Text="Recover"/>
+												</Button>
+
+										</StackPanel>
+
+
+									</Grid>
 
 
 								</Grid>
-
-
-							</Grid>
-						</materialDesign:Card>
-						<Grid VerticalAlignment="Top">
+								</materialDesign:Card>
+							</materialDesign:Flipper.BackContent>
+						</materialDesign:Flipper>
+						<Grid VerticalAlignment="Top" HorizontalAlignment="Center"  Margin="-64">
 
 							<Ellipse Height="100" Width="100" 
-						 materialDesign:ShadowAssist.ShadowDepth="Depth5" Margin="-64" Fill="{Binding ElementName=btnFortgotPassword, Path=Foreground}"/>
-							<materialDesign:PackIcon Kind="AccountCheck" Margin="-64"
-										  Height="80"
-										  Width="80"
-										 Foreground="White"
-										 materialDesign:ShadowAssist.ShadowDepth="Depth5"
-										  VerticalAlignment="Center"
-										  HorizontalAlignment="Center" />
+													Margin="0" Fill="{Binding ElementName=btnFortgotPassword, Path=Foreground}"/>
+							<materialDesign:PackIcon Kind="Account" Margin="0"
+													 Height="80"
+													 Width="80"
+													 Foreground="White"
+													 materialDesign:ShadowAssist.ShadowDepth="Depth5"
+													 VerticalAlignment="Center"
+													 HorizontalAlignment="Center" />
 
 
 
 						</Grid>
-
 					</Grid>
 
 
 
 
-
 				</Grid>
+
 			</materialDesign:TransitionerSlide>
 
 			<local:MainWindow DataContext="{Binding }">

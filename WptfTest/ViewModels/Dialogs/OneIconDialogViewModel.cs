@@ -7,7 +7,7 @@ namespace WptfTest.ViewModels.Dialogs
 		private string _titleDialog ="Title";
 		public string TitleDialog
 		{
-			get { return (string)_titleDialog.ToUpper(); }
+			get { return (string)_titleDialog; }
 			set { SetField(ref _titleDialog, value); }
 		}
 
@@ -16,12 +16,17 @@ namespace WptfTest.ViewModels.Dialogs
 		private string _messageDialog = "Message";
 		public string MessageDialog
 		{
-			get { return (string)_messageDialog.ToUpper(); }
+			get { return (string)_messageDialog; }
 			set { SetField(ref _messageDialog, value); }
 		}
 
 
-
+		private bool _iconVisibility = true;
+		public bool IconVisibility
+		{
+			get { return _iconVisibility; }
+			set { SetField(ref _iconVisibility, value); }
+		}
 		private string _iconName = "Cancel";
 		public string IconName
 		{
@@ -39,7 +44,7 @@ namespace WptfTest.ViewModels.Dialogs
 		private string _okButton = "Ok";
 		public string  OkButton
 		{
-			get { return (string)_okButton.ToUpper(); }
+			get { return (string)_okButton; }
 			set { SetField(ref _okButton, value); }
 		}
 
