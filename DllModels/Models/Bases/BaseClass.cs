@@ -18,6 +18,7 @@ namespace DllModels.Models.Bases
             {
                 field = value;
                 RaisePropertyChanged(propertyName);
+                if (propertyName != "CreatedAt") this._changedAt = DateTime.Now;
             }
         }
         protected void RaisePropertyChanged(string propertyName)
@@ -47,7 +48,43 @@ namespace DllModels.Models.Bases
             OnPropertyChanged(null);
         }
 
+        private DateTime _createdAt;
+        public DateTime CreatedAt
+		{
+            get { return _createdAt; }
+            protected set
+            {
+                SetField(ref _createdAt, (DateTime)value);
+                ValidateProperty(value);
+            }
+        }
 
+        private DateTime? _changedAt;
+        public DateTime? ChangedAt
+        {
+            get { return _changedAt; }
+            protected set
+            {
+                SetField(ref _changedAt, (DateTime)value);
+                ValidateProperty(value);
+            }
+        }
+
+        private DateTime? _deletedAt;
+        public DateTime? DeletedAt
+        {
+            get { return _deletedAt; }
+            protected set
+            {
+                SetField(ref _deletedAt, (DateTime)value);
+                ValidateProperty(value);
+            }
+        }
+
+        public BaseClass()
+		{
+            CreatedAt = DateTime.Now;
+		}
 
     }
 }

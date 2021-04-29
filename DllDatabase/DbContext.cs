@@ -21,8 +21,9 @@ namespace DllDatabase
         //classe que vai gerar o log de auditoria do banco de dados
         public DbSet<Audit> Audits { get; set; }
         //models
-        public DbSet<DllModels.Models.ObjectTest> dbObjectTest { get; set; }
+       // public DbSet<DllModels.Models.PersonNatural> dbNaturalPerson { get; set; }
         public DbSet<DllModels.Models.Person> dbPerson { get; set; }
+        public DbSet<DllModels.Models.ObjectTest> dbObjectTest { get; set; }
 
         #endregion
 

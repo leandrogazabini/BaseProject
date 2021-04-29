@@ -4,6 +4,7 @@ using DllDatabase;
 using DllModels;
 using DllModels.Models;
 
+
 namespace BusinessLogic
 {
 
@@ -33,8 +34,8 @@ namespace BusinessLogic
 		{
 			var isConnectionOk = ctxDb1.ConfigureDbString(fileName: Db1fileName,
 												  fileFullPath: Db1fileFullPath,
-												  forceCreateFolder: false,
-												  forceCreateFile: false);
+												  forceCreateFolder: true,
+												  forceCreateFile: true);
 			return isConnectionOk;
 		}
 
@@ -52,12 +53,12 @@ namespace BusinessLogic
 
 		}
 
-		public Person FindPersonByName(string name)
-		{
+		//public Person FindPersonByName(string name)
+		//{
 
-			var result = ctxDb1.dbPerson.Where(p => p.OficialName == name).FirstOrDefault();
-			return result;
-		}
+		//	var result = ctxDb1.dbPerson.Where(p => p.OficialName == name).FirstOrDefault();
+		//	return result;
+		//}
 		#endregion
 	}
 }
