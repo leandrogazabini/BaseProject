@@ -46,11 +46,25 @@ namespace BusinessLogic
 		{
 
 			//var x = ConnectDb();
-			ctxDb1.dbPerson.Add(person);
+			ctxDb1.tbPerson.Add(person);
 			ctxDb1.SaveChangesAsync();
 			return person;
 
 
+		}
+
+		public Person FindPersonById(int PersonId = 0)
+		{
+			var result = ctxDb1.tbPerson.Find(PersonId);
+			return result;
+		}
+
+		public object ChangeDataPerson(DllModels.Models.Person person)
+		{
+			var find = ctxDb1.tbPerson.Find(person.PersonId);
+			find = (Person)person.Clone();
+			ctxDb1.SaveChangesAsync();
+			return find;
 		}
 
 		//public Person FindPersonByName(string name)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -8,9 +9,15 @@ using System.Threading.Tasks;
 
 namespace DllModels.Models.Bases
 {
-    public abstract class BaseClass : BaseValidation, INotifyPropertyChanged
+    public abstract class BaseClass : BaseValidation, INotifyPropertyChanged, ICloneable
     {
+
+  
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
 
         protected void SetField<T>(ref T field, T value, [System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
         {
@@ -47,7 +54,7 @@ namespace DllModels.Models.Bases
         {
             OnPropertyChanged(null);
         }
-
+        [Display(Name = "Created at")]
         private DateTime _createdAt;
         public DateTime CreatedAt
 		{
@@ -58,7 +65,7 @@ namespace DllModels.Models.Bases
                 ValidateProperty(value);
             }
         }
-
+        [Display(Name = "Changed at")]
         private DateTime? _changedAt;
         public DateTime? ChangedAt
         {
@@ -69,7 +76,7 @@ namespace DllModels.Models.Bases
                 ValidateProperty(value);
             }
         }
-
+        [Display(Name = "Deleted at")]
         private DateTime? _deletedAt;
         public DateTime? DeletedAt
         {
@@ -81,10 +88,43 @@ namespace DllModels.Models.Bases
             }
         }
 
+
+        //UUID
+        private string _Uuid;
+        [Display(Name = "UUID")]
+        public string Uuid
+        {
+            get { return _Uuid; }
+            private set
+            {
+                SetField(ref _Uuid, value);
+                ValidateProperty(value);
+            }
+        }
+
+
+        //VERSION
+        private int _Version = 1;
+        [Display(Name = "UUID")]
+        public int Version
+        {
+            get { return _Version; }
+            private set
+            {
+                SetField(ref _Version, value);
+                ValidateProperty(value);
+            }
+        }
+        public void IncrementVersion()
+        {
+            this.Version = this.Version +1;
+        }
+
         public BaseClass()
 		{
             CreatedAt = DateTime.Now;
-		}
+            this.Uuid = Guid.NewGuid().ToString();
+        }
 
     }
 }

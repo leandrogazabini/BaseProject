@@ -1,5 +1,6 @@
 ﻿using DllModels.Models.Bases;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -20,10 +21,21 @@ namespace DllModels.Models
 			Juridical = 2
 		}
 
+		public enum PersonSystemKindEnum
+		{ 
+			Empty = 0,
+			NotDefiniedYet = 999,
+			Employer = 1,
+			Client = 2,
+			Provider = 3                  
+
+		}
+
 		#region PROPERTIES
-		// Id
+
 		private int _personId;
-		private int PersonId
+		[KeyAttribute]
+		public int PersonId
 		{
 			get { return _personId; }
 			set
@@ -33,21 +45,6 @@ namespace DllModels.Models
 			}
 		}
 
-		//public int RegisterVersion { get; set; }
-
-		//UUID
-		private string _personUuid;
-		[KeyAttribute]
-		[Display(Name = "Person UUID")]
-		public string PersonUuid
-		{
-			get { return _personUuid; }
-			private set
-			{
-				SetField(ref _personUuid, value);
-				ValidateProperty(value);
-			}
-		}
 
 		//KIND OF PERSON
 		[Display(Name = "Legal kind of Person")]
@@ -65,8 +62,9 @@ namespace DllModels.Models
 			}
 		}
 
+
 		//OFFICIAL NAME
-		private string _oficialName = string.Empty;
+		private string _oficialName = null;
 		[Display(Name = "Official name")]
 		[MinLength(2, ErrorMessage = "{0} must have at least 2 caracters.")]
 		[Required(ErrorMessage = "{0} is required.")]
@@ -82,8 +80,9 @@ namespace DllModels.Models
 			}
 		}
 
+
 		//ALTERNATIVE NAME
-		private string _alternativeName = string.Empty;
+		private string _alternativeName = null;
 		[Display(Name = "Alternative name")]
 		[MinLength(2, ErrorMessage = "{0} must have at least 2 caracters.")]
 		//[Required(ErrorMessage = "{0} is required.")]
@@ -99,6 +98,7 @@ namespace DllModels.Models
 			}
 		}
 
+
 		//MAIN DOCUMENT
 		private string _mainDocumentNumber;
 		[Display(Name = "Main document number")]
@@ -112,14 +112,70 @@ namespace DllModels.Models
 		}
 
 
-		#region METHODS
-
-		public Person()
+		//SECOND DOCUMENT
+		private string _secondDocumentNumber;
+		[Display(Name = "Main document number")]
+		[MinLength(2, ErrorMessage = "{0} must have at least 2 caracters.")]
+		[Required(ErrorMessage = "{0} is required.")]
+		//[RequiredIf("PersonLegalKind", PersonLegalKindEnum.Juridical, ErrorMessage = "{0} is required for juridcal person.")]
+		public string SecondDocumentNumber
 		{
-			this.PersonUuid = Guid.NewGuid().ToString();
+			get { return _secondDocumentNumber; }
+			set { SetField(ref _secondDocumentNumber, value); }
+		}
+
+
+		#region RELATIONSHIP
+		// FK
+		//public PersonNaturalDetails PersonNaturalDetails { get; set; }
+		//public List<Adress> AdressList { get; set; }
+		#endregion
+
+
+		#region METHODS
+		public void CreateBasePeson()
+		{
 			this.PersonLegalKind = PersonLegalKindEnum.Empty;
 			this.OficialName = OficialName;
+			this.AlternativeName = AlternativeName;
+			this.MainDocumentNumber = MainDocumentNumber;
+			this.SecondDocumentNumber = SecondDocumentNumber;
+			//this.AdressList = new List<Adress>();
 			this.ForceValidation();
+		}
+		public void CreateNaturalPerson() {
+			CreateBasePeson();
+			this.PersonLegalKind = PersonLegalKindEnum.Natural;
+			//this.PersonNaturalDetails = new PersonNaturalDetails();
+
+		}
+		#endregion
+
+
+		#region CONSTRUCTORS
+		public Person()
+		{
+			CreateBasePeson();
+
+		}
+
+		public Person(PersonLegalKindEnum personLegalKindType = PersonLegalKindEnum.Empty)
+		{
+			switch (personLegalKindType)
+			{
+				case PersonLegalKindEnum.Empty:
+					CreateBasePeson();
+					break;
+				case PersonLegalKindEnum.Natural:
+					CreateNaturalPerson();
+					break;
+				case PersonLegalKindEnum.Juridical:
+					CreateBasePeson();
+					break;
+				default:
+					CreateBasePeson();
+					break;
+			}
 		}
 
 		#endregion

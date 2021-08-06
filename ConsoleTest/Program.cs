@@ -10,11 +10,12 @@ using DllModels.Models;
 using System.Reflection;
 using KellermanSoftware.CompareNetObjects;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Runtime.CompilerServices;
 
 namespace ConsoleTest
 {
-	
-		class Program
+
+	class Program
 	{
 
 		static void Main(string[] args)
@@ -63,20 +64,30 @@ namespace ConsoleTest
 			//ComparisonResult result = compareLogic.Compare(MainList1, MainList2);
 			//Console.WriteLine(result.AreEqual.ToString());
 
-			//var bllCtx = new BusinessLogic.Methods();
-			//bllCtx.ConnectDb();
+			var bllCtx = new BusinessLogic.Methods();
+			var x = bllCtx.ConnectDb();
 
 			//var list1 = new List<Person>();
-		
-			//var np = new PersonNatural();
-			var p = new Person();
-			p.PersonLegalKind = Person.PersonLegalKindEnum.Natural;
-			//p.PersonLegalKind = Person.PersonLegalKindEnum.Empty;
-			_ = p;
-			//list1.Add(np);
 
+			var teste = new Person();
+			teste.OficialName = "Leandro";
+			teste.AlternativeName = "PG";
+			teste.MainDocumentNumber = "123";
+			teste.SecondDocumentNumber= "123";
+			//teste.AdressList.Add(new Adress { FullAdress = "ad 1 here"});
+			//teste.AdressList.Add(new Adress { FullAdress = "ad 2 here" });
+
+
+			var qResult2 = bllCtx.AddPersonAsync(teste);
+			Console.WriteLine($"Pessoa salva no banco: {(teste.PersonId).ToString()}");
+			var qResult = bllCtx.FindPersonById(teste.PersonId);
+			qResult.OficialName = "troquei";
+			_ = bllCtx.ChangeDataPerson(qResult);
 
 
 		}
+
+
+
 	}
 }

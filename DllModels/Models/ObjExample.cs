@@ -11,7 +11,7 @@ namespace DllModels.Models
 {
 
 
-    public class ObjectTest : BaseClass, ICloneable
+    public class ObjectTest : BaseClass
     {
         #region PROPERTIES
         public int id { get; set; }
@@ -33,10 +33,7 @@ namespace DllModels.Models
         //[Required(ErrorMessage = "{0} precisa ser informado.")]
         public string? Atrib4 { get; set; }
 
-        public object Clone()
-        {
-            return this.MemberwiseClone();
-        }
+ 
         #endregion
 
         #region METHODS
