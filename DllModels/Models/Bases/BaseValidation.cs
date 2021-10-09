@@ -42,7 +42,7 @@ namespace DllModels.Models.Bases
 
 
 
-        public bool IsValid { get { return this.HasErrors; } }
+        public bool IsValid { get { return !this.HasErrors; } }
 
         public IEnumerable GetErrors(string propertyName)
         {

@@ -42,12 +42,16 @@ namespace DllModels.Models
 				ValidateProperty(value);
 			}
 		}
+
+
+		#region CONSTRUCTOR
+
 		public Adress()
 		{
 
 		}
 
-
+		#endregion CONSTRUCTOR
 
 
 

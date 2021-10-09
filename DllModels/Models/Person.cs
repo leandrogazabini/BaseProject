@@ -142,6 +142,7 @@ namespace DllModels.Models
 			this.SecondDocumentNumber = SecondDocumentNumber;
 			//this.AdressList = new List<Adress>();
 			this.ForceValidation();
+			
 		}
 		public void CreateNaturalPerson() {
 			CreateBasePeson();
@@ -156,6 +157,7 @@ namespace DllModels.Models
 		public Person()
 		{
 			CreateBasePeson();
+			NotifyDataChange(false);
 
 		}
 
