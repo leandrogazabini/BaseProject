@@ -1,18 +1,14 @@
 ﻿using DllModels.Models.Bases;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.Reflection;
 using static DllModels.Models.CustomValidations.CustomValidations;
 
 namespace DllModels.Models
 {
 
-	public class Person : BaseClass
+	public abstract class PersonModel : BaseClass
 	{
 
+		#region PROPERTIES
 
 		public enum PersonLegalKindEnum //https://en.wikipedia.org/wiki/Legal_person
 		{
@@ -22,16 +18,13 @@ namespace DllModels.Models
 		}
 
 		public enum PersonSystemKindEnum
-		{ 
+		{
 			Empty = 0,
 			NotDefiniedYet = 999,
 			Employer = 1,
 			Client = 2,
-			Provider = 3                  
-
+			Provider = 3
 		}
-
-		#region PROPERTIES
 
 		private int _personId;
 		[KeyAttribute]
@@ -58,7 +51,6 @@ namespace DllModels.Models
 			{
 				SetField(ref _personLegalKind, value);
 				ValidateProperty(value);
-				this.OficialName = this.OficialName; // i do this to force validation "required if"
 			}
 		}
 
@@ -66,17 +58,15 @@ namespace DllModels.Models
 		//OFFICIAL NAME
 		private string _oficialName = null;
 		[Display(Name = "Official name")]
+		[TesteValidation]
 		[MinLength(2, ErrorMessage = "{0} must have at least 2 caracters.")]
 		[Required(ErrorMessage = "{0} is required.")]
-		//[RequiredIf("PersonLegalKind", PersonLegalKindEnum.Empty, ErrorMessage ="{0} is required for")]
 		public string OficialName
 		{
 			get { return _oficialName; }
 			set
 			{
 				SetField(ref _oficialName, value);
-				ValidateProperty(value);
-
 			}
 		}
 
@@ -85,7 +75,6 @@ namespace DllModels.Models
 		private string _alternativeName = null;
 		[Display(Name = "Alternative name")]
 		[MinLength(2, ErrorMessage = "{0} must have at least 2 caracters.")]
-		//[Required(ErrorMessage = "{0} is required.")]
 		[RequiredIf("PersonLegalKind", PersonLegalKindEnum.Juridical, ErrorMessage = "{0} is required for juridical person.")]
 		public string AlternativeName
 		{
@@ -94,7 +83,6 @@ namespace DllModels.Models
 			{
 				SetField(ref _alternativeName, value);
 				ValidateProperty(value);
-
 			}
 		}
 
@@ -124,6 +112,15 @@ namespace DllModels.Models
 			set { SetField(ref _secondDocumentNumber, value); }
 		}
 
+		private string _test;
+		[Display(Name = "Teste")]
+		[MinLength(2, ErrorMessage = "{0} must have at least 2 caracters.")]
+		public string Teste
+		{
+			get { return _test; }
+			set { SetField(ref _test, value); }
+		}
+
 
 		#region RELATIONSHIP
 		// FK
@@ -133,35 +130,45 @@ namespace DllModels.Models
 
 
 		#region METHODS
-		public void CreateBasePeson()
+		public PersonModel CreateBasePeson()
 		{
-			this.PersonLegalKind = PersonLegalKindEnum.Empty;
-			this.OficialName = OficialName;
-			this.AlternativeName = AlternativeName;
-			this.MainDocumentNumber = MainDocumentNumber;
-			this.SecondDocumentNumber = SecondDocumentNumber;
+			//this.PersonLegalKind = PersonLegalKindEnum.Empty;
+			//this.OficialName = OficialName;
+			//this.AlternativeName = AlternativeName;
+			//this.MainDocumentNumber = MainDocumentNumber;
+			//this.SecondDocumentNumber = SecondDocumentNumber;
 			//this.AdressList = new List<Adress>();
-			this.ForceValidation();
-			
+			this.ValidateObject();
+			return this;
+
 		}
-		public void CreateNaturalPerson() {
+		public void CreateNaturalPerson()
+		{
 			CreateBasePeson();
 			this.PersonLegalKind = PersonLegalKindEnum.Natural;
 			//this.PersonNaturalDetails = new PersonNaturalDetails();
+
+		}
+
+
+		private void MakeItJuridicalPeson()
+		{
+			PersonLegalKind = PersonLegalKindEnum.Juridical;
+			ValidateObject();
 
 		}
 		#endregion
 
 
 		#region CONSTRUCTORS
-		public Person()
-		{
-			CreateBasePeson();
-			NotifyDataChange(false);
+		//public Person()
+		//{
+		//	CreateBasePeson();
+		//	NotifyDataChange(false);
 
-		}
+		//}
 
-		public Person(PersonLegalKindEnum personLegalKindType = PersonLegalKindEnum.Empty)
+		public PersonModel(PersonLegalKindEnum personLegalKindType = PersonLegalKindEnum.Empty)
 		{
 			switch (personLegalKindType)
 			{
@@ -169,16 +176,19 @@ namespace DllModels.Models
 					CreateBasePeson();
 					break;
 				case PersonLegalKindEnum.Natural:
-					CreateNaturalPerson();
+					CreateBasePeson();
 					break;
 				case PersonLegalKindEnum.Juridical:
 					CreateBasePeson();
+					MakeItJuridicalPeson();
 					break;
 				default:
 					CreateBasePeson();
 					break;
 			}
 		}
+
+
 
 		#endregion
 	}

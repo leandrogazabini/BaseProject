@@ -1,18 +1,7 @@
-﻿using System;
-using System.ComponentModel;
-using DllModels;
-using DllDatabase;
-using BusinessLogic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Collections.Generic;
-using DllModels.Models;
-using System.Reflection;
-using KellermanSoftware.CompareNetObjects;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Runtime.CompilerServices;
+﻿using BusinessLogic;
+using BusinessLogic.BLLs;
 
-namespace ConsoleTest
+namespace ConsoleApp
 {
 
 	class Program
@@ -69,11 +58,33 @@ namespace ConsoleTest
 
 			//////var list1 = new List<Person>();
 
-			var teste = new Person();
-			teste.OficialName = "Leandro";
-			teste.AlternativeName = "PG";
-			teste.MainDocumentNumber = "123";
-			teste.SecondDocumentNumber= "123";
+			var testeBasePerson = new Person();
+			testeBasePerson.OficialName = "123";
+			testeBasePerson.AlternativeName = "PG1";
+			testeBasePerson.MainDocumentNumber = "123";
+			testeBasePerson.SecondDocumentNumber = "123";
+			if (testeBasePerson.IsValid && testeBasePerson.ErrorList.Count < 1)
+			{
+				_ = "ok";
+			}
+			else
+			{
+				_ = "Erro";
+			}
+			//var testeJuridicalPerson = new Person(Person.PersonLegalKindEnum.Juridical);
+			//testeJuridicalPerson.MainDocumentNumber = "456";
+			//testeJuridicalPerson.SecondDocumentNumber = "456";
+			//testeJuridicalPerson.OficialName = "liandro";
+			//testeJuridicalPerson.AlternativeName = "gz";
+			//if (testeJuridicalPerson.IsValid && testeJuridicalPerson.ErrorList.Count < 1)
+			//{
+			//	_ = "ok";
+			//}
+			//else
+			//{
+			//	_ = "Erro";
+			//}
+
 
 			//teste.AdressList.Add(new Adress { FullAdress = "ad 1 here"});
 			//teste.AdressList.Add(new Adress { FullAdress = "ad 2 here" });

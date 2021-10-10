@@ -44,34 +44,39 @@
 				<TextBlock Margin="30"
 					   Text="{Binding ViewModelPermissions.canWrite}">
 				</TextBlock>
-				<TextBox Text="{Binding Test, Mode=TwoWay,
+				
+				<TextBox Text="{Binding Person.OficialName, Mode=TwoWay,
 					UpdateSourceTrigger=PropertyChanged, 
 					ValidatesOnNotifyDataErrors=True}"></TextBox>
-				<TextBlock Margin="30"
+				
+				<!--<TextBlock Margin="30"
 					   Text="{Binding Person.OficialName, Mode=TwoWay}">
 
 
-				</TextBlock>
-				<TextBox Text="{Binding Person.OficialName , Mode=TwoWay,
+				</TextBlock>-->
+				<!--<TextBox Text="{Binding Person.OficialName , Mode=TwoWay,
 					UpdateSourceTrigger=PropertyChanged, 
 					ValidatesOnNotifyDataErrors=True}">
 
 
-				</TextBox>
+				</TextBox>-->
 
-				<TextBox
+				<!--<TextBox
 					  materialDesign:HintAssist.Hint="Floating Hint"
 					  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-					  VerticalAlignment="Center" />
+					  VerticalAlignment="Center"
+					Text="{Binding Person.OficialName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+					/>
 
 				<TextBox
+					Text="{Binding Person.AlternativeName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 					Style="{StaticResource MaterialDesignOutlinedTextBox}"
 					VerticalAlignment="Top"
 					AcceptsReturn="True"
 					TextWrapping="Wrap"
 					VerticalScrollBarVisibility="Auto"
 					materialDesign:HintAssist.Hint="This is a text area"
-					IsEnabled="True" />
+					IsEnabled="True" />-->
 
 			</StackPanel>
 

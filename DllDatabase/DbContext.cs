@@ -23,7 +23,7 @@ namespace DllDatabase
 
 		//models
 		public DbSet<DllModels.Models.PersonNaturalDetails> tbPersonNaturalDetails { get; set; }
-		public DbSet<DllModels.Models.Person> tbPerson { get; set; }
+		public DbSet<DllModels.Models.PersonModel> tbPerson { get; set; }
 		public DbSet<DllModels.Models.Adress> tbAdress { get; set; }
 		//public DbSet<DllModels.Models.ObjectTest> dbObjectTest { get; set; }
 

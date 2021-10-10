@@ -13,7 +13,7 @@ namespace DllModels.Models
 	public class PersonNaturalDetails : BaseClass
 	{
 		//FK
-		public Person Person { get; set; }
+		public PersonModel Person { get; set; }
 		public int PersonId { get; set; }
 
 		#region PROPERTIES

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Update;
+using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -25,17 +27,21 @@ namespace DllModels.Models.Bases
 			if (!EqualityComparer<T>.Default.Equals(field, value))
 			{
 				field = value;
-				RaisePropertyChanged(propertyName);
-				if (propertyName == "CreatedAt" || propertyName == "isModified")
+				try
 				{
-			
+					ValidateProperty(value, propertyName);
+
 				}
+				catch { }
+				RaisePropertyChanged(propertyName);
+				if (propertyName == "CreatedAt" || propertyName == "isModified") { }
 				else
 				{
 					this._changedAt = DateTime.Now;
 					this.NotifyDataChange();
+					//this.ForceValidation();
 				}
-			
+
 
 			}
 		}

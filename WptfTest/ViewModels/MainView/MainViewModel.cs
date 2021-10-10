@@ -1,4 +1,5 @@
 ﻿using DllModels.Models;
+using System.Drawing;
 using WptfTest.Models;
 using WptfTest.Models.BaseViewModels;
 
@@ -18,7 +19,7 @@ namespace WptfTest.ViewModels.MainView
 		}
 
 
-		public Person Person { get; set; }
+		public PersonModel Person { get; set; }
 
 
 		private string _selectedMenuItem;
@@ -36,6 +37,7 @@ namespace WptfTest.ViewModels.MainView
 			SetViewModelPermissions(viewModelPermissions);
 			this.Visibility = visibility;
 			this.MenuN1ItemParameter = MenuItens.MenuN1Item.MenuN1ItemParameters.MainViewModel;
+			Person = new PersonModel();
 		}
 
 

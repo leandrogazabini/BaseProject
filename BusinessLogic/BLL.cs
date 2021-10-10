@@ -1,9 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using BusinessLogic.BLLs;
 using DllDatabase;
-using DllModels;
 using DllModels.Models;
-
 
 namespace BusinessLogic
 {
@@ -40,39 +37,44 @@ namespace BusinessLogic
 		}
 
 		#endregion
-
-		#region PERSON METHODS
-		public object AddPersonAsync(DllModels.Models.Person person)
+		
+		public void teste()
 		{
-
-			//var x = ConnectDb();
-			ctxDb1.tbPerson.Add(person);
-			ctxDb1.SaveChangesAsync();
-			return person;
-
-
 		}
-
-		public Person FindPersonById(int PersonId = 0)
-		{
-			var result = ctxDb1.tbPerson.Find(PersonId);
-			return result;
-		}
-
-		public object ChangeDataPerson(DllModels.Models.Person person)
-		{
-			var find = ctxDb1.tbPerson.Find(person.PersonId);
-			find = (Person)person.Clone();
-			ctxDb1.SaveChangesAsync();
-			return find;
-		}
-
-		//public Person FindPersonByName(string name)
+		//#region PERSON METHODS
+		//public object AddPersonAsync(DllModels.Models.Person person)
 		//{
 
-		//	var result = ctxDb1.dbPerson.Where(p => p.OficialName == name).FirstOrDefault();
-		//	return result;
+		//	//var x = ConnectDb();
+		//	ctxDb1.tbPerson.Add(person);
+		//	ctxDb1.SaveChangesAsync();
+		//	return person;
+
+
 		//}
-		#endregion
+
+		//public void FindPersonById(int PersonId = 0)
+		//{
+		//	var result = ctxDb1.tbPerson.Find(PersonId);
+		//	//return result;
+		//}
+
+		//public object ChangeDataPerson(DllModels.Models.Person person)
+		//{
+		//	var find = ctxDb1.tbPerson.Find(person.PersonId);
+		//	find = (Person)person.Clone();
+		//	ctxDb1.SaveChangesAsync();
+		//	return find;
+		//}
+
+		////public Person FindPersonByName(string name)
+		////{
+
+		////	var result = ctxDb1.dbPerson.Where(p => p.OficialName == name).FirstOrDefault();
+		////	return result;
+		////}
+		//#endregion
 	}
+
+
 }

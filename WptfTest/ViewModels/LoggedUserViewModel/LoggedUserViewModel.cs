@@ -18,7 +18,7 @@ namespace WptfTest.ViewModels.LoggedUserViewModel
 		}
 
 
-		public Person Person { get; set; }
+		public PersonModel Person { get; set; }
 
 
 		private string _selectedMenuItem;

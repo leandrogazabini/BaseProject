@@ -15,7 +15,7 @@ namespace DllModels.Models
 
 		#region PROPERTIES
 		//FK
-		public Person Person { get; set; }
+		public PersonModel Person { get; set; }
 		public int PersonId { get; set; }
 
 		private int _adressId;
