@@ -5,32 +5,52 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DllDatabase;
 
 namespace BusinessLogic.BLLs
 {
-	public class Person : DllModels.Models.PersonModel, IBaseInterface
+	public class Person : DllDatabase.Models.Person, IBaseInterface
 	{
-		Responses.Response IBaseInterface.dbCreate(Object obj)
+		
+		public Responses.Response dbCreate(Object obj = null)
 		{
 			var result = new Responses();
+			Person person = null;
+			
 			try
 			{
-				var person = (Person)obj;
+				obj = obj ?? this;
+				try
+				{
+					person = (Person)obj;
+				}
+				catch
+				{
+					return result.ReturnError(message: result.getDefaultMessages("001"),
+										reference: $"Expected: {this.GetType()}.");
+				}
+
+				if (HasErrorObject)
+				{
+					return result.ReturnError(message: result.getDefaultMessages("002"),
+										reference: $"{String.Join(" | " + Environment.NewLine, ErrorList)}");
+				}
+
+				using (var db = new DllDatabase.DbContext())
+				{
+					db.ConfigureDbString(forceCreateFile: true, forceCreateFolder: true);
+					person.CreatedAt = DateTime.Now;
+					var teste = db.tbPerson.Add(person);
+					db.SaveChanges();
+				}
+				return result.ReturnSuccess(message: result.getDefaultMessages("003"),
+									  reference: $"Person UUID: {person.Uuid}");
 			}
-			catch
+			catch (Exception ex)
 			{
-				return result.Error(message: $"Object is not a Person");
+				return result.ReturnError(message: $"Unexpected error occurred.",
+										reference: $"{ex.ToString()}");
 			}
-
-			if (!HasErrorObject)
-			{
-				return result.Error(message: $"Validation rules have {ErrorList.Count()} error(s).",
-									reference: $"{String.Join("|", ErrorList)}");
-			}
-
-
-			return result.Success(message: $"Person created",
-								  reference: $"UUID: {this.Uuid}");
 		}
 
 		Responses.Response IBaseInterface.dbDelete()

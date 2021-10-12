@@ -102,7 +102,7 @@ namespace DllModels.Models
 
 		//SECOND DOCUMENT
 		private string _secondDocumentNumber;
-		[Display(Name = "Main document number")]
+		[Display(Name = "Second document number")]
 		[MinLength(2, ErrorMessage = "{0} must have at least 2 caracters.")]
 		[Required(ErrorMessage = "{0} is required.")]
 		//[RequiredIf("PersonLegalKind", PersonLegalKindEnum.Juridical, ErrorMessage = "{0} is required for juridcal person.")]
@@ -120,13 +120,6 @@ namespace DllModels.Models
 			get { return _test; }
 			set { SetField(ref _test, value); }
 		}
-
-
-		#region RELATIONSHIP
-		// FK
-		//public PersonNaturalDetails PersonNaturalDetails { get; set; }
-		//public List<Adress> AdressList { get; set; }
-		#endregion
 
 
 		#region METHODS
@@ -168,6 +161,9 @@ namespace DllModels.Models
 
 		//}
 
+		/// <summary>
+		///		This constructor create a person.
+		/// </summary>
 		public PersonModel(PersonLegalKindEnum personLegalKindType = PersonLegalKindEnum.Empty)
 		{
 			switch (personLegalKindType)

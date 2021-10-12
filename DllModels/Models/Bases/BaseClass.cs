@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Update;
-using Microsoft.VisualBasic;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -37,7 +35,7 @@ namespace DllModels.Models.Bases
 				if (propertyName == "CreatedAt" || propertyName == "isModified") { }
 				else
 				{
-					this._changedAt = DateTime.Now;
+					//this._changedAt = DateTime.Now; use when record in db
 					this.NotifyDataChange();
 					//this.ForceValidation();
 				}
@@ -99,8 +97,8 @@ namespace DllModels.Models.Bases
 
 
 		[Display(Name = "Created at")]
-		private DateTime _createdAt;
-		public DateTime CreatedAt
+		private DateTime? _createdAt;
+		public DateTime? CreatedAt
 		{
 			get { return _createdAt; }
 			protected set
@@ -168,9 +166,11 @@ namespace DllModels.Models.Bases
 
 		public BaseClass()
 		{
-			CreatedAt = DateTime.Now;
+			//CreatedAt = DateTime.Now; just set created when recorded in db
 			this.Uuid = Guid.NewGuid().ToString();
 			NotifyDataChange(false);
+
+
 		}
 
 	}

@@ -38,12 +38,14 @@ namespace DllModels.Models.Bases
 		//    }
 		//}
 
-
+		[System.ComponentModel.DefaultValue(false)]
 		public bool HasErrorObject { get { return ErrorList.Any(); } }
 
-
+		[System.ComponentModel.DefaultValue(false)]
 		public bool IsValid { get { return !this.HasErrors; } }
-		public bool IsValidObject { get { return !this.HasErrorObject; } }
+
+		[System.ComponentModel.DefaultValue(false)]
+		public bool IsValidObject { get { return !this.HasErrorObject; }} 
 
 		public IEnumerable GetErrors(string propertyName)
 		{

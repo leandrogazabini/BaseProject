@@ -5,15 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0-preview.2.21154.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.0-preview.2.21154.2" />
-  </ItemGroup>
-
-
-	
-  <ItemGroup>
     <ProjectReference Include="..\DllDatabase\DllDatabase.csproj" />
-    <ProjectReference Include="..\DllModels\DllModels.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,7 @@
-﻿using BusinessLogic;
+﻿
 using BusinessLogic.BLLs;
+using System;
+using System.Collections.Generic;
 
 namespace ConsoleApp
 {
@@ -59,11 +61,12 @@ namespace ConsoleApp
 			//////var list1 = new List<Person>();
 
 			var testeBasePerson = new Person();
-			testeBasePerson.OficialName = "123";
+			testeBasePerson.OficialName = "";
 			testeBasePerson.AlternativeName = "PG1";
-			testeBasePerson.MainDocumentNumber = "123";
-			testeBasePerson.SecondDocumentNumber = "123";
-			if (testeBasePerson.IsValid && testeBasePerson.ErrorList.Count < 1)
+			testeBasePerson.MainDocumentNumber = "doc1";
+			testeBasePerson.SecondDocumentNumber = "doc2";
+			testeBasePerson.ValidateObject();
+			if (testeBasePerson.IsValidObject && testeBasePerson.ErrorList.Count < 1)
 			{
 				_ = "ok";
 			}
@@ -71,6 +74,11 @@ namespace ConsoleApp
 			{
 				_ = "Erro";
 			}
+			
+			var result = testeBasePerson.dbCreate();
+			Console.WriteLine(result.ResponseStatus);
+			Console.WriteLine(result.ResponseMessage);
+			Console.WriteLine(result.Reference);
 			//var testeJuridicalPerson = new Person(Person.PersonLegalKindEnum.Juridical);
 			//testeJuridicalPerson.MainDocumentNumber = "456";
 			//testeJuridicalPerson.SecondDocumentNumber = "456";

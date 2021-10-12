@@ -3,28 +3,25 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Enumeration;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using DllModels;
-using DllModels.Models.Bases;
+//using DllModels.Models;
 
 namespace DllDatabase
 {
 	public class DbContext : Microsoft.EntityFrameworkCore.DbContext
 	{
-
 		#region MAPPED CLASSES
 		//classe que vai gerar o log de auditoria do banco de dados
 		public DbSet<Audit> Audits { get; set; }
 
 		//models
-		public DbSet<DllModels.Models.PersonNaturalDetails> tbPersonNaturalDetails { get; set; }
-		public DbSet<DllModels.Models.PersonModel> tbPerson { get; set; }
-		public DbSet<DllModels.Models.Adress> tbAdress { get; set; }
+		//public DbSet<DllModels.Models.PersonNaturalDetails> tbPersonNaturalDetails { get; set; }
+		public DbSet<Models.Person> tbPerson { get; set; }
+		//public DbSet<DllModels.Models.Adress> tbAdress { get; set; }
 		//public DbSet<DllModels.Models.ObjectTest> dbObjectTest { get; set; }
 
 		#endregion
@@ -169,38 +166,36 @@ namespace DllDatabase
 						auditEntry.NewValues[prop.Metadata.Name] = prop.CurrentValue;
 					}
 				}
-
 				// Save the Audit entry
 				Audits.Add(auditEntry.ToAudit());
 			}
-
 			return SaveChangesAsync();
 		}
 
 		#endregion
 
 		#region PRIVATE VARIABLES
-		private string DatabaseLocation { get; set; }
+		private string DatabaseLocation { get; set; }  
 		private string dbType { get; set; }
 		#endregion
 
 		#region PUBLIC METHODS
-		public bool ConfigureDbString(string fileFullPath = @"", string fileName = @"", bool forceCreateFolder = false, bool forceCreateFile = false)
+		public bool ConfigureDbString(string fileFullPath = @"D:\sources\BaseSolution\BaseProject\Database\SQLite",
+									  string fileName = @"banco.db",
+									  bool forceCreateFolder = false,
+									  bool forceCreateFile = false)
+
 		{
-
-
 			// se não informou o nome do arquivo, retorna falso.
 			if (String.IsNullOrWhiteSpace(fileName))
 			{
 				return false;
 			}
-
 			else
 			{
 				// se existe nome de paste, acrescenta "\"
 				if (!String.IsNullOrWhiteSpace(fileFullPath))
 				{
-
 					StringBuilder sb = new StringBuilder();
 					sb.Append(fileFullPath);
 					sb.Append(@"\");
@@ -218,7 +213,6 @@ namespace DllDatabase
 				//caso tenha que criar a pasta
 				if (forceCreateFolder)
 				{
-
 					if (!fileFullPathExists) Directory.CreateDirectory(fileFullPath);
 				}
 				//caso tenha que criar pasta e banco e arquivo não existe.
@@ -226,18 +220,12 @@ namespace DllDatabase
 
 				if (forceCreateFile && fileFullPathExists && !DatabaseLocationExists)
 				{
+
 					var result = Database.EnsureCreated();
 					return result;
 				}
-
-
 				else return DatabaseLocationExists;
-
-
-
-
 			}
-
 		}
 
 		public string GetDatabaseLocation()
@@ -255,14 +243,12 @@ namespace DllDatabase
 			else { }
 		}
 
+
+
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			//modelBuilder.Entity<Produto>().HasIndex(i => i.ProdutoSKU).IsUnique();
 			//modelBuilder.Entity<Pedido>().Property(i => i.PedidoId).ValueGeneratedOnAdd();
-
-
-
-
 		}
 		#endregion
 

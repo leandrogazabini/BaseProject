@@ -10,10 +10,10 @@ namespace BusinessLogic.Interfaces
 {
 	interface IBaseInterface
 	{
-		Responses.Response dbCreate(Object obj);
-		Responses.Response dbRead();
-		Responses.Response dbUpdate();
-		Responses.Response dbDelete();
-		Responses.Response dbDeleteFull();
+		public Responses.Response dbCreate(Object obj);
+		public Responses.Response dbRead();
+		public Responses.Response dbUpdate();
+		public Responses.Response dbDelete();
+		public Responses.Response dbDeleteFull();
 	}
 }

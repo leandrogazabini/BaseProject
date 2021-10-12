@@ -8,6 +8,41 @@ namespace DllModels.Models.Util
 {
 	public class Responses
 	{
+		public Responses()
+		{
+			string moreInformation = " See reference for more information.";
+			DefaultMessages = new SortedDictionary<string, string>()
+			{ 
+				{ "0", $"Report the developer: Reponse need to be configured (cod:000)." + moreInformation},
+			    { "00", $"Succes" + moreInformation},
+				{ "99", $"Error" + moreInformation},
+				{ "001", $"Object is not of expected type." + moreInformation},
+				{ "002", $"Validation rule have error." + moreInformation},
+				{ "003", $"Item created in database!" + moreInformation },
+				{ "004", $"" },
+				{ "005", $"" },
+				{ "006", $"" },
+				{ "007", $"" },
+				{ "008", $"" },
+				{ "009", $"" },
+				{ "999", $"Unexpected error occurred." }
+			};
+		}
+		public string getDefaultMessages(string? req = null)
+		{
+			var result = "";
+			if (req != null)
+			{
+				result = DefaultMessages[req ?? "0"];
+			}
+			else
+			{
+				result = DefaultMessages["0"] ?? "?";
+			}
+			return result;
+		}
+		private SortedDictionary<string, string> DefaultMessages { get; set; }
+
 		public enum ResponseStatus
 		{
 			Ok = 00,
@@ -21,14 +56,24 @@ namespace DllModels.Models.Util
 			public string? Reference { get; internal set; } = "";
 		}
 
-		public Response Success(string message = "", string reference = "")
+		public Response ReturnSuccess(string message = null, string reference = "")
 		{
-			return new Response{ ResponseStatus = ResponseStatus.Ok };
+			return new Response
+			{
+				ResponseStatus = ResponseStatus.Ok,
+				ResponseMessage = message ?? getDefaultMessages("1"),
+				Reference = reference
+			};
 		}
 
-		public Response Error(string message = "", string reference = "")
+		public Response ReturnError(string message = null, string reference = "")
 		{
-			return new Response { ResponseStatus = ResponseStatus.Error };
+			return new Response
+			{
+				ResponseStatus = ResponseStatus.Error,
+				ResponseMessage = message ?? getDefaultMessages("99"),
+				Reference = reference
+			};
 		}
 	}
 }
