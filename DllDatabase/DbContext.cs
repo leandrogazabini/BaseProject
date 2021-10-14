@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using System.Reflection;
 //using DllModels.Models;
 
 namespace DllDatabase
@@ -63,21 +64,20 @@ namespace DllDatabase
 
 		public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default(CancellationToken))
 		{
-			// test for increment version when saving
 			var entriesList = ChangeTracker.Entries();
-
-			//         foreach (var entry in entriesList)
-			//{
-			//             var das = entry.Entity.GetType();
-			//             if (entry.Entity.GetType() is not null) { }
-
-			//	var saveEntity = (BaseClass)entry.Entity;
-			//	saveEntity.IncrementVersion();
-			//}
-			//
-
 			var auditEntries = OnBeforeSaveChanges();
+			foreach (var entry in entriesList.Where(x=>x.State != Microsoft.EntityFrameworkCore.EntityState.Unchanged ))
+			{
+				var obj = entry.Entity;
+				PropertyInfo prop = obj.GetType().GetProperty("Version", BindingFlags.Public | BindingFlags.Instance);
+				if (null != prop && prop.CanWrite)
+				{
+					int v = (int)prop.GetValue(obj)+1;
+					prop.SetValue(obj, v, null);
+				}
+			}
 			var result = await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+			
 			await OnAfterSaveChanges(auditEntries);
 			return result;
 		}
@@ -175,7 +175,7 @@ namespace DllDatabase
 		#endregion
 
 		#region PRIVATE VARIABLES
-		private string DatabaseLocation { get; set; }  
+		private string DatabaseLocation { get; set; }
 		private string dbType { get; set; }
 		#endregion
 

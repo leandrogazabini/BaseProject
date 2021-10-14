@@ -6,17 +6,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DllDatabase;
+using System.Threading;
 
 namespace BusinessLogic.BLLs
 {
 	public class Person : DllDatabase.Models.Person, IBaseInterface
 	{
-		
+
 		public Responses.Response dbCreate(Object obj = null)
 		{
 			var result = new Responses();
 			Person person = null;
-			
+
 			try
 			{
 				obj = obj ?? this;
@@ -41,7 +42,23 @@ namespace BusinessLogic.BLLs
 					db.ConfigureDbString(forceCreateFile: true, forceCreateFolder: true);
 					person.CreatedAt = DateTime.Now;
 					var teste = db.tbPerson.Add(person);
-					db.SaveChanges();
+					CancellationTokenSource tokenSource = new CancellationTokenSource();
+					CancellationToken token = tokenSource.Token;
+					var dbResult = db.SaveChangesAsync(tokenSource.Token).Wait(10000);
+					if (!dbResult)
+					{
+						if (token.CanBeCanceled || !token.IsCancellationRequested)
+						{
+							try
+							{
+								//tokenSource.Cancel();
+								return result.ReturnError(message: $"Time out.",
+														  reference: $"10 seconds.");
+							}
+							catch { }
+						}
+					}
+
 				}
 				return result.ReturnSuccess(message: result.getDefaultMessages("003"),
 									  reference: $"Person UUID: {person.Uuid}");

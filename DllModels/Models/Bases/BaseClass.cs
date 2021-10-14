@@ -148,12 +148,12 @@ namespace DllModels.Models.Bases
 
 
 		//VERSION
-		private int _Version = 1;
+		private int _Version = 0;
 		[Display(Name = "Version")]
 		public int Version
 		{
 			get { return _Version; }
-			private set
+			protected set
 			{
 				SetField(ref _Version, value);
 				ValidateProperty(value);

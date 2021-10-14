@@ -61,10 +61,10 @@ namespace ConsoleApp
 			//////var list1 = new List<Person>();
 
 			var testeBasePerson = new Person();
-			testeBasePerson.OficialName = "";
-			testeBasePerson.AlternativeName = "PG1";
-			testeBasePerson.MainDocumentNumber = "doc1";
-			testeBasePerson.SecondDocumentNumber = "doc2";
+			testeBasePerson.OficialName = "123";
+			testeBasePerson.AlternativeName = "123";
+			testeBasePerson.MainDocumentNumber = "doc12";
+			testeBasePerson.SecondDocumentNumber = "doc23";
 			testeBasePerson.ValidateObject();
 			if (testeBasePerson.IsValidObject && testeBasePerson.ErrorList.Count < 1)
 			{
