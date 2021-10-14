@@ -74,11 +74,21 @@ namespace ConsoleApp
 			{
 				_ = "Erro";
 			}
-			
-			var result = testeBasePerson.dbCreate();
-			Console.WriteLine(result.ResponseStatus);
-			Console.WriteLine(result.ResponseMessage);
-			Console.WriteLine(result.Reference);
+
+			for (int i = 0; i < 222; i++)
+			{
+				Console.WriteLine($"-----------------  {i}  -----------------");
+				var result = testeBasePerson.dbCreate();
+				Console.WriteLine(result.ResponseStatus);
+				Console.WriteLine(result.ResponseMessage);
+				Console.WriteLine(result.Reference);
+				testeBasePerson = new Person();
+				testeBasePerson.OficialName = "123";
+				testeBasePerson.AlternativeName = "123";
+				testeBasePerson.MainDocumentNumber = "doc12";
+				testeBasePerson.SecondDocumentNumber = "doc23";
+			}
+
 			//var testeJuridicalPerson = new Person(Person.PersonLegalKindEnum.Juridical);
 			//testeJuridicalPerson.MainDocumentNumber = "456";
 			//testeJuridicalPerson.SecondDocumentNumber = "456";

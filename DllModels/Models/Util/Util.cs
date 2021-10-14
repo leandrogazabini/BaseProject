@@ -19,7 +19,7 @@ namespace DllModels.Models.Util
 				{ "001", $"Object is not of expected type." + moreInformation},
 				{ "002", $"Validation rule have error." + moreInformation},
 				{ "003", $"Item created in database!" + moreInformation },
-				{ "004", $"" },
+				{ "004", $"This item already existis in our base." },
 				{ "005", $"" },
 				{ "006", $"" },
 				{ "007", $"" },

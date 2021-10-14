@@ -180,12 +180,15 @@ namespace DllDatabase
 		#endregion
 
 		#region PUBLIC METHODS
-		public bool ConfigureDbString(string fileFullPath = @"D:\sources\BaseSolution\BaseProject\Database\SQLite",
+		public bool ConfigureDb1String(string fileFullPath = @"D:\sources\BaseSolution\BaseProject\Database\SQLite",
 									  string fileName = @"banco.db",
 									  bool forceCreateFolder = false,
 									  bool forceCreateFile = false)
 
 		{
+			var config = new Configs.Config();
+			fileFullPath = config.GetDb1fileFullPath();
+			fileName = config.GetxDb1fileName();
 			// se não informou o nome do arquivo, retorna falso.
 			if (String.IsNullOrWhiteSpace(fileName))
 			{

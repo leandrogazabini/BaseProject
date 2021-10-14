@@ -17,10 +17,10 @@ namespace BusinessLogic.BLLs
 		{
 			var result = new Responses();
 			Person person = null;
-
+			obj = obj ?? this;
 			try
 			{
-				obj = obj ?? this;
+				// verifying the type of object
 				try
 				{
 					person = (Person)obj;
@@ -28,45 +28,50 @@ namespace BusinessLogic.BLLs
 				catch
 				{
 					return result.ReturnError(message: result.getDefaultMessages("001"),
-										reference: $"Expected: {this.GetType()}.");
+											  reference: $"Expected: {this.GetType()}.");
 				}
 
 				if (HasErrorObject)
 				{
 					return result.ReturnError(message: result.getDefaultMessages("002"),
-										reference: $"{String.Join(" | " + Environment.NewLine, ErrorList)}");
+											  reference: $"{String.Join(" | " + Environment.NewLine, ErrorList)}");
 				}
-
+				//data base validation start
 				using (var db = new DllDatabase.DbContext())
 				{
-					db.ConfigureDbString(forceCreateFile: true, forceCreateFolder: true);
-					person.CreatedAt = DateTime.Now;
-					var teste = db.tbPerson.Add(person);
-					CancellationTokenSource tokenSource = new CancellationTokenSource();
-					CancellationToken token = tokenSource.Token;
-					var dbResult = db.SaveChangesAsync(tokenSource.Token).Wait(10000);
-					if (!dbResult)
+					//is this new item?
+					if (person.PersonId != 0)
 					{
-						if (token.CanBeCanceled || !token.IsCancellationRequested)
+						return result.ReturnError(message: result.getDefaultMessages("004"),
+													  reference: $"Person UUID: {person.Uuid}");
+					}
+					else
+					{
+						try
 						{
-							try
-							{
-								//tokenSource.Cancel();
-								return result.ReturnError(message: $"Time out.",
-														  reference: $"10 seconds.");
-							}
-							catch { }
+							db.ConfigureDb1String(forceCreateFile: true, forceCreateFolder: true);
+							person.CreatedAt = DateTime.Now;
+							db.tbPerson.Add(person);
+							var dbResult = db.SaveChangesAsync().Wait(5000);
+						}
+						catch (Exception ex)
+						{
+							return result.ReturnError(message: $"Database Error.",
+													  reference: $"{ex.ToString()}");
 						}
 					}
 
+					//data base validation end
 				}
+				//Success
 				return result.ReturnSuccess(message: result.getDefaultMessages("003"),
-									  reference: $"Person UUID: {person.Uuid}");
+											reference: $"Person UUID: {person.Uuid}");
 			}
+			//Generic Error
 			catch (Exception ex)
 			{
-				return result.ReturnError(message: $"Unexpected error occurred.",
-										reference: $"{ex.ToString()}");
+				return result.ReturnError(message: result.getDefaultMessages("999"),
+										  reference: $"{ex.ToString()}");
 			}
 		}
 
