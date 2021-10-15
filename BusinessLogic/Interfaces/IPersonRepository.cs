@@ -8,7 +8,7 @@ using DllModels.Models.Util;
 
 namespace BusinessLogic.Interfaces
 {
-	public interface IBaseInterface
+	public interface IPersonRepository : IBaseInterface
 	{
 		public Responses.Response dbCreate(Object obj = null);
 		//public Responses.Response dbCreate(Object obj);

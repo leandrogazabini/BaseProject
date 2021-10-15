@@ -74,7 +74,7 @@ namespace DllModels.Models
 		//ALTERNATIVE NAME
 		private string _alternativeName = null;
 		[Display(Name = "Alternative name")]
-		[MinLength(2, ErrorMessage = "{0} must have at least 2 caracters.")]
+		//[MinLength(2, ErrorMessage = "{0} must have at least 2 caracters.")]
 		[RequiredIf("PersonLegalKind", PersonLegalKindEnum.Juridical, ErrorMessage = "{0} is required for juridical person.")]
 		public string AlternativeName
 		{

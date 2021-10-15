@@ -17,7 +17,7 @@ namespace DllModels.Models.Bases
 		private Dictionary<string, List<string>> _errors = new Dictionary<string, List<string>>();
 
 		[NotMapped]
-		public ObservableCollection<string> ErrorList { get; set; } = new ObservableCollection<string>();
+		public ObservableCollection<string> ErrorList { get; protected set; } = new ObservableCollection<string>();
 
 		//public void ClearErrorList()
 		//{

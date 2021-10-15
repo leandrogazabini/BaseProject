@@ -13,8 +13,12 @@ using System.Reflection;
 
 namespace DllDatabase
 {
-	public class DbContext : Microsoft.EntityFrameworkCore.DbContext
+	public class AppDbContext : Microsoft.EntityFrameworkCore.DbContext
 	{
+		public AppDbContext()
+		{
+			var r = ConfigureDb1String(forceCreateFile: true, forceCreateFolder: true);
+		}
 		#region MAPPED CLASSES
 		//classe que vai gerar o log de auditoria do banco de dados
 		public DbSet<Audit> Audits { get; set; }
@@ -227,7 +231,11 @@ namespace DllDatabase
 					var result = Database.EnsureCreated();
 					return result;
 				}
-				else return DatabaseLocationExists;
+				else
+				{
+					//DatabaseLocation = "";
+					return DatabaseLocationExists;
+				}
 			}
 		}
 

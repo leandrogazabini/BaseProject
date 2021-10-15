@@ -10,7 +10,7 @@ using System.Threading;
 
 namespace BusinessLogic.BLLs
 {
-	public class Person : DllDatabase.Models.Person, IBaseInterface
+	public class Person : DllDatabase.Models.Person, IPersonRepository
 	{
 
 		public Responses.Response dbCreate(Object obj = null)
@@ -37,7 +37,7 @@ namespace BusinessLogic.BLLs
 											  reference: $"{String.Join(" | " + Environment.NewLine, ErrorList)}");
 				}
 				//data base validation start
-				using (var db = new DllDatabase.DbContext())
+				using (var db = new DllDatabase.AppDbContext())
 				{
 					//is this new item?
 					if (person.PersonId != 0)
@@ -47,11 +47,11 @@ namespace BusinessLogic.BLLs
 					}
 					else
 					{
-						try
+						try // try access data base
 						{
-							db.ConfigureDb1String(forceCreateFile: true, forceCreateFolder: true);
+							//db.ConfigureDb1String(forceCreateFile: true, forceCreateFolder: true);
 							person.CreatedAt = DateTime.Now;
-							db.tbPerson.Add(person);
+							var t = db.tbPerson.Add(person);
 							var dbResult = db.SaveChangesAsync().Wait(5000);
 						}
 						catch (Exception ex)
@@ -75,22 +75,22 @@ namespace BusinessLogic.BLLs
 			}
 		}
 
-		Responses.Response IBaseInterface.dbDelete()
+		public Responses.Response dbDelete()
 		{
 			throw new NotImplementedException();
 		}
 
-		Responses.Response IBaseInterface.dbDeleteFull()
+		public Responses.Response dbDeleteFull()
 		{
 			throw new NotImplementedException();
 		}
 
-		Responses.Response IBaseInterface.dbRead()
+		public Responses.Response dbRead()
 		{
 			throw new NotImplementedException();
 		}
 
-		Responses.Response IBaseInterface.dbUpdate()
+		public Responses.Response dbUpdate()
 		{
 			throw new NotImplementedException();
 		}
