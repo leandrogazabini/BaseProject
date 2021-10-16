@@ -44,44 +44,43 @@ namespace Api.Controllers
 		}
 	}
 
-	//[ApiController]
-	//[Route("api")]
-	//public class apiController : ControllerBase
-	//{
-	//	[HttpGet]
-	//	public api()
-	//	{
-	//		return StatusCode(StatusCodes.Status200OK, resultGet);
+	[ApiController]
+	[Route("api")]
+	public class apiController : ControllerBase
+	{
+		[HttpGet]
+		public async Task<ActionResult> api()
+		{
+			return StatusCode(StatusCodes.Status200OK, $"ok - {DateTime.Now.ToLongTimeString()}");
 
-	//	}
-	//}
+		}
+	}
 
 
 	[ApiController]
 	[Route("api/[controller]")]
 	public class CreatePersonController : ControllerBase
 	{
-		private readonly IPersonRepository personRepository;
+		private readonly Person personRepository;
 		public CreatePersonController()
 		{
-			
+			this.personRepository = new Person();
 		}
-
+		
 		[HttpPost]
 		public async Task<ActionResult> SavePerson(Person obj)
 		{
-			var result = StatusCode(204);
+			//var result = StatusCode(204);
 			try
 			{
 				var resultGet = personRepository.dbCreate(obj);
-				if (resultGet.ResponseStatus == ResponseStatus.Ok)
-					return StatusCode(StatusCodes.Status200OK, resultGet);
+				//if (resultGet.ResponseStatus == ResponseStatus.Ok)
+				return StatusCode(StatusCodes.Status200OK, resultGet);
 			}
 			catch (Exception)
 			{
 				return StatusCode(StatusCodes.Status500InternalServerError, "Error!");
 			}
-			return result;
 		}
 
 	}

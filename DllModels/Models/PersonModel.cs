@@ -31,7 +31,7 @@ namespace DllModels.Models
 		public int PersonId
 		{
 			get { return _personId; }
-			set
+			protected set 
 			{
 				SetField(ref _personId, value);
 				ValidateProperty(value);
@@ -112,13 +112,12 @@ namespace DllModels.Models
 			set { SetField(ref _secondDocumentNumber, value); }
 		}
 
-		private string _test;
-		[Display(Name = "Teste")]
-		[MinLength(2, ErrorMessage = "{0} must have at least 2 caracters.")]
-		public string Teste
+		private string _freeField;
+		[Display(Name = "Free Field")]
+		public string FreeField
 		{
-			get { return _test; }
-			set { SetField(ref _test, value); }
+			get { return _freeField; }
+			set { SetField(ref _freeField, value); }
 		}
 
 

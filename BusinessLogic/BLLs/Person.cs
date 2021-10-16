@@ -24,14 +24,15 @@ namespace BusinessLogic.BLLs
 				try
 				{
 					person = (Person)obj;
+					person.ValidateObject();
 				}
 				catch
 				{
 					return result.ReturnError(message: result.getDefaultMessages("001"),
 											  reference: $"Expected: {this.GetType()}.");
 				}
-
-				if (HasErrorObject)
+				
+				if (person.HasErrorObject)
 				{
 					return result.ReturnError(message: result.getDefaultMessages("002"),
 											  reference: $"{String.Join(" | " + Environment.NewLine, ErrorList)}");

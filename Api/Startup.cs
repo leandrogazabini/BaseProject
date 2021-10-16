@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Net.Mime;
 
 namespace Api
 {
@@ -26,13 +27,31 @@ namespace Api
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			//
+			//services.AddControllers().ConfigureApiBehaviorOptions(options =>
+			//{
+			//	options.InvalidModelStateResponseFactory = context =>
+			//	{
+			//		var result = new BadRequestObjectResult(context.ModelState);
+
+			//		// TODO: add `using System.Net.Mime;` to resolve MediaTypeNames
+			//		result.ContentTypes.Add(MediaTypeNames.Application.Json);
+			//		result.ContentTypes.Add(MediaTypeNames.Application.Xml);
+
+			//		return result;
+			//	};
+			//});
+			//
+			services.Configure<ApiBehaviorOptions>(options =>
+			{
+				options.SuppressModelStateInvalidFilter = true;
+			});
 
 			services.AddControllers();
 			services.AddSwaggerGen(c =>
 			{
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "Api", Version = "v1" });
 			});
-
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +63,11 @@ namespace Api
 				app.UseSwagger();
 				app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api v1"));
 			}
+			else
+			{
+				//app.UseExceptionHandler("/error"); // implement https://docs.microsoft.com/pt-br/aspnet/core/web-api/handle-errors?view=aspnetcore-5.0
+			}
+
 
 			app.UseHttpsRedirection();
 
@@ -52,12 +76,18 @@ namespace Api
 			app.UseAuthorization();
 
 			//middleware to resolve object return in api in validations.
+			app.Use(async (context, next) =>
+			{
+				context.Response.Headers.Clear();
+				await next();
+			});
 			app.UseMiddleware<ErrorMiddleware>();
 
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllers();
 			});
+
 		}
 	}
 }

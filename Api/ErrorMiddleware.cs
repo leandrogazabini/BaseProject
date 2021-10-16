@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Abstractions;
+using Microsoft.AspNetCore.Routing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,31 +11,26 @@ using System.Threading.Tasks;
 
 namespace Api
 {
-	public class ErrorMiddleware
+	public class ErrorMiddleware : ControllerBase
 	{
-		private readonly RequestDelegate _next;
+		private RequestDelegate _next;
 		public ErrorMiddleware(RequestDelegate next)
 		{
 			this._next = next;
 		}
-		public async Task Invoke(HttpContext httpContext)
+		public async Task Invoke(HttpContext context)
 		{
 			try
 			{
-
-				await _next(httpContext);
-				if (httpContext.Response.StatusCode == 400)
-				{
-					//httpContext.Response.Clear();
-					await httpContext.Response.WriteAsync("aaaaaa");
-
-				}
+				//try { context.Request.EnableBuffering(); } catch { }
+				await _next(context);
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
 
-				throw;
 			}
 		}
 	}
+
+
 }
