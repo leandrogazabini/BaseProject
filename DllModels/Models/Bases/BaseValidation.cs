@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,28 +8,27 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace DllModels.Models.Bases
 {
 	public class BaseValidation : INotifyDataErrorInfo
 	{
-		private Dictionary<string, List<string>> _errors = new Dictionary<string, List<string>>();
 
+		private Dictionary<string, List<string>> _errors { get; set; } = new Dictionary<string, List<string>>();
+
+		[JsonIgnore] // reason: not be listed in swagger
 		[NotMapped]
 		public ObservableCollection<string> ErrorList { get; protected set; } = new ObservableCollection<string>();
-
-		//public void ClearErrorList()
-		//{
-		//    _errors.Clear();
-		//}
-
 
 		public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
 
 		private object _lock = new object();
 
+		[JsonIgnore]
 		public bool HasErrors { get { return _errors.Any(propErrors => propErrors.Value != null && propErrors.Value.Count > 0); } }
 		//public bool HasErrors
 		//{
@@ -37,15 +37,17 @@ namespace DllModels.Models.Bases
 		//        return GetErrors(null).OfType<object>().Any();
 		//    }
 		//}
-
+		[JsonIgnore]
 		[System.ComponentModel.DefaultValue(false)]
 		public bool HasErrorObject { get { return ErrorList.Any(); } }
 
+		[JsonIgnore]
 		[System.ComponentModel.DefaultValue(false)]
 		public bool IsValid { get { return !this.HasErrors; } }
 
+		[JsonIgnore]
 		[System.ComponentModel.DefaultValue(false)]
-		public bool IsValidObject { get { return !this.HasErrorObject; }} 
+		public bool IsValidObject { get { return !this.HasErrorObject; } }
 
 		public IEnumerable GetErrors(string propertyName)
 		{
@@ -104,12 +106,12 @@ namespace DllModels.Models.Bases
 				var validationContext = new ValidationContext(this, null, null);
 				var validationResults = new List<ValidationResult>();
 				Validator.TryValidateObject(this, validationContext, validationResults);
-				
+
 				//clear previous _errors from tested property  
 				ErrorList.Clear();
 				foreach (var item in validationResults)
 				{
-					if(!ErrorList.Contains(item.ErrorMessage)) ErrorList.Add(item.ErrorMessage.ToString());
+					if (!ErrorList.Contains(item.ErrorMessage)) ErrorList.Add(item.ErrorMessage.ToString());
 				}
 				if (ErrorList.Any()) return false;
 				else return true;

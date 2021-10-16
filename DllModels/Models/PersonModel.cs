@@ -1,5 +1,6 @@
 ﻿using DllModels.Models.Bases;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using static DllModels.Models.CustomValidations.CustomValidations;
 
 namespace DllModels.Models
@@ -28,6 +29,7 @@ namespace DllModels.Models
 
 		private int _personId;
 		[KeyAttribute]
+		[JsonIgnore]
 		public int PersonId
 		{
 			get { return _personId; }
