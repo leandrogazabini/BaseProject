@@ -75,17 +75,22 @@ namespace Api
 
 			app.UseAuthorization();
 
+			//app.Use(async (context, next) =>
+			//{
+			//	context.Response.Headers.Clear();
+			//	await next();
+			//});
 			//middleware to resolve object return in api in validations.
-			app.Use(async (context, next) =>
-			{
-				context.Response.Headers.Clear();
-				await next();
-			});
-			app.UseMiddleware<GenericMiddleware>();
+			//app.UseMiddleware<GenericMiddleware>();
 
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllers();
+				endpoints.MapControllerRoute(name: "api",
+											 pattern: "/api/{controller=api}/");
+
+
+				//
 			});
 
 		}

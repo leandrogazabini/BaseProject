@@ -13,18 +13,18 @@ namespace DllModels.Models.Util
 			string moreInformation = " See reference for more information.";
 			DefaultMessages = new SortedDictionary<string, string>()
 			{ 
-				{ "0", $"⚠ Report the developer: Reponse need to be configured (cod:0)." + moreInformation },
-			    { "00", $"✔ Succes!" + moreInformation },
-				{ "99", $"❌ Error!" + moreInformation },
-				{ "001", $"❗ Object is not of expected type." + moreInformation },
-				{ "002", $"❗ Validation rule have error." + moreInformation },
-				{ "003", $"✔ Item created in database!" + moreInformation },
-				{ "004", $"❗ This is not a new item. Try to edit it instead." + moreInformation },
-				{ "005", $"❗ A field has the content not allowed." + moreInformation },
-				{ "006", $"" },
-				{ "007", $"" },
-				{ "008", $"" },
-				{ "009", $"" },
+				{ "0", $"[⚠] Report the developer: Reponse need to be configured (cod:0)." + moreInformation },
+			    { "00", $"[✔] Succes!" + moreInformation },
+				{ "99", $"[❌] Error!" + moreInformation },
+				{ "001", $"[❗] Object is not of expected type." + moreInformation },
+				{ "002", $"[❗] Validation rule have error." + moreInformation },
+				{ "003", $"[✔] Item created in database!" + moreInformation },
+				{ "004", $"[❗] This is not a new item. Try to edit it instead." + moreInformation },
+				{ "005", $"[❗] A field has the content not allowed." + moreInformation },
+				{ "006", $"[]" },
+				{ "007", $"[]" },
+				{ "008", $"[]" },
+				{ "009", $"[]" },
 				{ "999", $"Unexpected error occurred." }
 			};
 		}

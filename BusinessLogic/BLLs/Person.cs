@@ -12,7 +12,6 @@ namespace BusinessLogic.BLLs
 {
 	public class Person : DllDatabase.Models.Person, IPersonRepository
 	{
-
 		public Responses.Response dbCreate(Object obj= null)
 		{
 			obj = obj ?? this;
@@ -37,6 +36,7 @@ namespace BusinessLogic.BLLs
 					return result.ReturnError(message: result.getDefaultMessages("002"),
 											  reference: $"{String.Join(" | ", person.ErrorList)}");
 				}
+
 				//data base validation start
 				using (var db = new DllDatabase.AppDbContext())
 				{

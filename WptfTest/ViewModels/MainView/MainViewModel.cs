@@ -37,7 +37,7 @@ namespace WptfTest.ViewModels.MainView
 			SetViewModelPermissions(viewModelPermissions);
 			this.Visibility = visibility;
 			this.MenuN1ItemParameter = MenuItens.MenuN1Item.MenuN1ItemParameters.MainViewModel;
-			Person = new PersonModel();
+			Person = new BusinessLogic.BLLs.Person();
 		}
 
 
