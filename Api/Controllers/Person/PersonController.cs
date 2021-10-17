@@ -11,13 +11,14 @@ using Microsoft.AspNetCore.Http;
 using static DllModels.Models.Util.Responses;
 using DllModels.Models;
 using System.Text.Json;
-
+using Api.Bases;
 
 namespace Api.Controllers
 {
+	[ApiExplorerSettings(IgnoreApi = false)]
 	[ApiController]
 	[Route("api/[controller]")]
-	public class CreatePersonController : ControllerBase
+	public class CreatePersonController : AppControllerBase
 	{
 		private readonly Person personRepository;
 		public CreatePersonController()
@@ -43,10 +44,10 @@ namespace Api.Controllers
 
 	}
 
-
+	[ApiExplorerSettings(IgnoreApi = false)]
 	[ApiController]
 	[Route("api/[controller]")]
-	public class RequestPersonController : Controller
+	public class RequestPersonController : AppControllerBase
 	{
 		private readonly IPersonRepository personRepository;
 		public RequestPersonController()

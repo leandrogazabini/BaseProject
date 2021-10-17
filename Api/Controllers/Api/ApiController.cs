@@ -11,20 +11,22 @@ using Microsoft.AspNetCore.Http;
 using static DllModels.Models.Util.Responses;
 using DllModels.Models;
 using System.Text.Json;
-
+using Api.Bases;
 
 namespace Api.Controllers
 {
+	/// <summary>
+	/// If the endpoint is ok return 200 + Messagem: "Ok, date and time,"
+	/// </summary>
 	[ApiExplorerSettings(IgnoreApi = false)]
 	[ApiController]
 	[Route("/")]
-
-	public class StatusController : ControllerBase
+	public class StatusController : AppControllerBase
 	{
 		[HttpGet]
-		public async Task<ActionResult> api()
+		public async Task<ActionResult> Response()
 		{
-			return StatusCode(StatusCodes.Status200OK, $"ok: {DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString()}");
+			return StatusCode(StatusCodes.Status200OK, $"Visit: thisurl + /swagger/index.html");
 		}
 
 	}

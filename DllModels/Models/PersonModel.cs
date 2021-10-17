@@ -47,21 +47,21 @@ namespace DllModels.Models
 		}
 
 
-		private int _personId;
-		/// <summary>
-		/// Person ID used as unique key in database.
-		/// Uses JsonIgnore.
-		/// </summary>
-		[KeyAttribute]
-		[JsonIgnore]
-		public int PersonId
-		{
-			get { return _personId; }
-			protected set
-			{
-				SetField(ref _personId, value);
-			}
-		}
+		//private int _personId;
+		///// <summary>
+		///// Person ID used as unique key in database.
+		///// Uses JsonIgnore.
+		///// </summary>
+		//[KeyAttribute]
+		//[JsonIgnore]
+		//public int PersonId
+		//{
+		//	get { return _personId; }
+		//	protected set
+		//	{
+		//		SetField(ref _personId, value);
+		//	}
+		//}
 
 
 		/// <summary>

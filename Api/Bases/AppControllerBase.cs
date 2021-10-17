@@ -7,11 +7,17 @@ using System.Threading.Tasks;
 
 namespace Api.Bases
 {
-	public class AppControllerBase : ControllerBase, IAppControllerBase
+	/// <summary>
+	/// If the endpoint is ok return Status 200 + Message: "Online:, date + time,"
+	/// </summary>
+	[ApiExplorerSettings(IgnoreApi = true)]
+	public class AppControllerBase : ControllerBase
 	{
-		public virtual async Task<ActionResult> IsOnline()
+		[HttpGet("IsOnline")]
+		public async Task<ActionResult> IsOnline()
 		{
-			return StatusCode(StatusCodes.Status200OK, $"ok: {DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString()}");
+			return StatusCode(StatusCodes.Status200OK, $"Online: {DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString()}");
 		}
+
 	}
 }

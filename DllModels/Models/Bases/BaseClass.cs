@@ -33,7 +33,7 @@ namespace DllModels.Models.Bases
 		/// </summary>
 		public BaseClass()
 		{
-			this.GUID = Guid.NewGuid().ToString().ToUpper();
+			this.GUID = Guid.NewGuid().ToString();
 			NotifyDataChange(false);
 
 
@@ -41,6 +41,25 @@ namespace DllModels.Models.Bases
 		#endregion CONSTRUCTORS
 
 		#region PROPERTIES
+		private int _Id;
+		/// <summary>
+		/// ID used as unique key in database.
+		/// Uses JsonIgnore.
+		/// </summary>
+		[KeyAttribute]
+		[JsonIgnore]
+		public int Id
+		{
+			get { return _Id; }
+			protected set
+			{
+				SetField(ref _Id, value);
+			}
+		}
+
+
+
+
 		private Boolean _isModified = false;
 		/// <summary>
 		/// Return if this object have they properties changed. 

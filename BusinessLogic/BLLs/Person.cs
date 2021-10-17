@@ -41,7 +41,7 @@ namespace BusinessLogic.BLLs
 				using (var db = new DllDatabase.AppDbContext())
 				{
 					//is this new item?
-					if (person.PersonId != 0)
+					if (person.Id != 0)
 					{
 						return result.ReturnError(message: "004",
 												  reference: $"Person GUID: {person.GUID}");
