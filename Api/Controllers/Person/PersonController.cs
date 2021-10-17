@@ -42,4 +42,33 @@ namespace Api.Controllers
 		}
 
 	}
+
+
+	[ApiController]
+	[Route("api/[controller]")]
+	public class RequestPersonController : Controller
+	{
+		private readonly IPersonRepository personRepository;
+		public RequestPersonController()
+		{
+			personRepository = new Person();
+		}
+
+		[HttpGet("guid")]
+		public ActionResult Response(string guid)
+		{
+			try
+			{
+				var resultGet = personRepository.dbRead(guid);
+				//if (resultGet.ResponseStatus == ResponseStatus.Ok)
+				return StatusCode(StatusCodes.Status200OK, resultGet);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, "Error!");
+			}
+		}
+
+
+	}
 }

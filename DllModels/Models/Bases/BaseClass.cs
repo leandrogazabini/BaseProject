@@ -33,7 +33,7 @@ namespace DllModels.Models.Bases
 		/// </summary>
 		public BaseClass()
 		{
-			this.Uuid = Guid.NewGuid().ToString().ToUpper();
+			this.GUID = Guid.NewGuid().ToString().ToUpper();
 			NotifyDataChange(false);
 
 
@@ -109,17 +109,17 @@ namespace DllModels.Models.Bases
 		}
 
 
-		private string _Uuid;
+		private string _guid;
 		/// <summary>
-		/// The UUID is generated when create the instance of object. This can not be changed.
+		/// The GUID is generated when create the instance of object. This can not be changed.
 		/// </summary>
-		[Display(Name = "UUID")]
-		public string Uuid
+		[Display(Name = "GUID")]
+		public string GUID
 		{
-			get { return _Uuid; }
+			get { return _guid; }
 			private set
 			{
-				SetField(ref _Uuid, value);
+				SetField(ref _guid, value);
 			}
 		}
 

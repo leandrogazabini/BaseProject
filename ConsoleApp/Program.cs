@@ -49,7 +49,7 @@ namespace ConsoleApp
 				
 				Console.WriteLine(result.ResponseStatus);
 				Console.WriteLine(result.ResponseMessage);
-				Console.WriteLine(result.Reference);
+				Console.WriteLine(result.ReferenceMessage);
 
 				//System.Threading.Thread.Sleep(3000);
 				//Console.ReadLine();

@@ -12,7 +12,7 @@ namespace BusinessLogic.BLLs
 {
 	public class Person : DllDatabase.Models.Person, IPersonRepository
 	{
-		public Responses.Response dbCreate(Object obj= null)
+		public Responses.Response dbCreate(Object obj = null)
 		{
 			obj = obj ?? this;
 			var result = new Responses();
@@ -27,13 +27,13 @@ namespace BusinessLogic.BLLs
 				}
 				catch
 				{
-					return result.ReturnError(message: result.getDefaultMessages("001"),
+					return result.ReturnError(message: "001",
 											  reference: $"Expected: {this.GetType()}.");
 				}
 
 				if (person.HasErrorObject)
 				{
-					return result.ReturnError(message: result.getDefaultMessages("002"),
+					return result.ReturnError(message: "002",
 											  reference: $"{String.Join(" | ", person.ErrorList)}");
 				}
 
@@ -43,15 +43,15 @@ namespace BusinessLogic.BLLs
 					//is this new item?
 					if (person.PersonId != 0)
 					{
-						return result.ReturnError(message: result.getDefaultMessages("004"),
-											      reference: $"Person UUID: {person.Uuid}");
+						return result.ReturnError(message: "004",
+												  reference: $"Person GUID: {person.GUID}");
 					}
 					//main doc exists?
 					var verify = db.tbPerson.Where(p => p.MainDocumentNumber == person.MainDocumentNumber
-												     && p.DeletedAt.Equals(null));
+													 && p.DeletedAt.Equals(null));
 					if (db.tbPerson.Where(p => p.MainDocumentNumber == person.MainDocumentNumber).Any())
 					{
-						return result.ReturnError(message: result.getDefaultMessages("005"),
+						return result.ReturnError(message: "005",
 												  reference: $"{nameof(this.MainDocumentNumber)}");
 					}
 
@@ -74,35 +74,57 @@ namespace BusinessLogic.BLLs
 					//data base validation end
 				}
 				//Success
-				return result.ReturnSuccess(message: result.getDefaultMessages("003"),
-											reference: $"Person UUID: {person.Uuid}");
+				return result.ReturnSuccess(message: "003",
+											reference: $"Person GUID: {person.GUID}");
 			}
 			//Generic Error
 			catch (Exception ex)
 			{
-				return result.ReturnError(message: result.getDefaultMessages("999"),
+				return result.ReturnError(message: "999",
 										  reference: $"{ex.ToString()}");
 			}
 		}
 
-		public Responses.Response dbDelete()
+		public Responses.Response dbRead(string guid = null)
 		{
-			throw new NotImplementedException();
-		}
+			var result = new Responses();
+			Person resultPerson = null;
+			try
+			{
+				if (!String.IsNullOrEmpty(guid))
+				{
+					using (var db = new DllDatabase.AppDbContext())
+					{
+						var qResult = db.tbPerson.Where(p => p.GUID == guid.ToString()).FirstOrDefault() ?? null;
+						bool isNull = qResult == null;
+						if (!isNull)
+						{
+							resultPerson = new Person()
+							{
+								OfficialName = qResult.OfficialName,
+								AlternativeName = qResult.AlternativeName,
+								PersonLegalKind = qResult.PersonLegalKind,
+								MainDocumentNumber = qResult.MainDocumentNumber,
+								SecondDocumentNumber = qResult.SecondDocumentNumber
+							};
+							return result.ReturnSuccess(message: "00",
+													  reference: $"{guid}",
+													  obj: resultPerson);
+						}
+					}
+				}
+				return result.ReturnError(message: "99",
+										  reference: $"GUID invalid: {guid}.");
+			}
+			catch (Exception ex)
+			{
+				return result.ReturnError(message: "999",
+										  reference: $"{ex.ToString()}");
+			}
 
-		public Responses.Response dbDeleteFull()
-		{
-			throw new NotImplementedException();
-		}
 
-		public Responses.Response dbRead()
-		{
-			throw new NotImplementedException();
-		}
-
-		public Responses.Response dbUpdate()
-		{
-			throw new NotImplementedException();
 		}
 	}
+
+
 }

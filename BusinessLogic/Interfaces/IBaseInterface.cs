@@ -12,9 +12,9 @@ namespace BusinessLogic.Interfaces
 	{
 		public Responses.Response dbCreate(Object obj = null);
 		//public Responses.Response dbCreate(Object obj);
-		public Responses.Response dbRead();
-		public Responses.Response dbUpdate();
-		public Responses.Response dbDelete();
-		public Responses.Response dbDeleteFull();
+		public Responses.Response dbRead(string guid = null);
+		//public Responses.Response dbUpdate();
+		//public Responses.Response dbDelete();
+		//public Responses.Response dbDeleteFull();
 	}
 }
