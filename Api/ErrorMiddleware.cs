@@ -11,10 +11,10 @@ using System.Threading.Tasks;
 
 namespace Api
 {
-	public class ErrorMiddleware : ControllerBase
+	public class GenericMiddleware : ControllerBase
 	{
 		private RequestDelegate _next;
-		public ErrorMiddleware(RequestDelegate next)
+		public GenericMiddleware(RequestDelegate next)
 		{
 			this._next = next;
 		}

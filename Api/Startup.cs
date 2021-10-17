@@ -81,7 +81,7 @@ namespace Api
 				context.Response.Headers.Clear();
 				await next();
 			});
-			app.UseMiddleware<ErrorMiddleware>();
+			app.UseMiddleware<GenericMiddleware>();
 
 			app.UseEndpoints(endpoints =>
 			{

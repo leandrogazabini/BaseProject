@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
+using System.Text.RegularExpressions;
 using DllModels.Models.Bases;
 
 namespace DllModels.Models.CustomValidations
@@ -31,6 +32,32 @@ namespace DllModels.Models.CustomValidations
 				}
 				else
 				return ValidationResult.Success;
+			}
+
+		}
+
+		public class OnlyLetterAndNumbers : ValidationAttribute
+		{
+			public override bool IsValid(object value)
+			{
+				var r = @"^[a-zA-Z0-9_.-]*$";
+				var match = Regex.IsMatch(value.ToString(),r);
+
+				if (match) return true;
+				else return false;
+			}
+
+			protected override ValidationResult IsValid(object value, ValidationContext context)
+			{
+				ValidationResult result = base.IsValid(value, context) ?? null;
+				if (result != null)
+				{
+					if (String.IsNullOrEmpty(ErrorMessage)) result.ErrorMessage = $"{context.DisplayName} is not 123.";
+					return result;
+
+				}
+				else
+					return ValidationResult.Success;
 			}
 
 		}

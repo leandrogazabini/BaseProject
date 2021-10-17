@@ -51,8 +51,7 @@ namespace Api.Controllers
 		[HttpGet]
 		public async Task<ActionResult> api()
 		{
-			return StatusCode(StatusCodes.Status200OK, $"ok - {DateTime.Now.ToLongTimeString()}");
-
+			return StatusCode(StatusCodes.Status200OK, $"ok: {DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString()}");
 		}
 	}
 

@@ -61,9 +61,9 @@ namespace ConsoleApp
 			//////var list1 = new List<Person>();
 
 			var testeBasePerson = new Person();
-			testeBasePerson.OficialName = "123";
+			testeBasePerson.OfficialName = "";
 			testeBasePerson.AlternativeName = "123";
-			testeBasePerson.MainDocumentNumber = "doc12";
+			testeBasePerson.MainDocumentNumber = "doc@@@@12";
 			testeBasePerson.SecondDocumentNumber = "doc23";
 			testeBasePerson.ValidateObject();
 			if (testeBasePerson.IsValidObject && testeBasePerson.ErrorList.Count < 1)
@@ -78,15 +78,16 @@ namespace ConsoleApp
 			for (int i = 0; i < 222; i++)
 			{
 				Console.WriteLine($"-----------------  {i}  -----------------");
+				testeBasePerson = new Person();
+				testeBasePerson.OfficialName = "123";
+				testeBasePerson.AlternativeName = "123";
+				testeBasePerson.MainDocumentNumber = "doc12@";
+				testeBasePerson.SecondDocumentNumber = "doc23";
+				testeBasePerson.ValidateObject();
 				var result = testeBasePerson.dbCreate();
 				Console.WriteLine(result.ResponseStatus);
 				Console.WriteLine(result.ResponseMessage);
 				Console.WriteLine(result.Reference);
-				testeBasePerson = new Person();
-				testeBasePerson.OficialName = "123";
-				testeBasePerson.AlternativeName = "123";
-				testeBasePerson.MainDocumentNumber = "doc12";
-				testeBasePerson.SecondDocumentNumber = "doc23";
 			}
 
 			//var testeJuridicalPerson = new Person(Person.PersonLegalKindEnum.Juridical);

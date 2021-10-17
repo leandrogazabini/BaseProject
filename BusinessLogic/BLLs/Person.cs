@@ -13,11 +13,11 @@ namespace BusinessLogic.BLLs
 	public class Person : DllDatabase.Models.Person, IPersonRepository
 	{
 
-		public Responses.Response dbCreate(Object obj = null)
+		public Responses.Response dbCreate(Object obj= null)
 		{
-			var result = new Responses();
-			Person person = null;
 			obj = obj ?? this;
+			var result = new Responses();
+			Person person;
 			try
 			{
 				// verifying the type of object
@@ -31,11 +31,11 @@ namespace BusinessLogic.BLLs
 					return result.ReturnError(message: result.getDefaultMessages("001"),
 											  reference: $"Expected: {this.GetType()}.");
 				}
-				
+
 				if (person.HasErrorObject)
 				{
 					return result.ReturnError(message: result.getDefaultMessages("002"),
-											  reference: $"{String.Join(" | " + Environment.NewLine, ErrorList)}");
+											  reference: $"{String.Join(" | ", person.ErrorList)}");
 				}
 				//data base validation start
 				using (var db = new DllDatabase.AppDbContext())
@@ -44,8 +44,17 @@ namespace BusinessLogic.BLLs
 					if (person.PersonId != 0)
 					{
 						return result.ReturnError(message: result.getDefaultMessages("004"),
-													  reference: $"Person UUID: {person.Uuid}");
+											      reference: $"Person UUID: {person.Uuid}");
 					}
+					//main doc exists?
+					var verify = db.tbPerson.Where(p => p.MainDocumentNumber == person.MainDocumentNumber
+												     && p.DeletedAt.Equals(null));
+					if (db.tbPerson.Where(p => p.MainDocumentNumber == person.MainDocumentNumber).Any())
+					{
+						return result.ReturnError(message: result.getDefaultMessages("005"),
+												  reference: $"{nameof(this.MainDocumentNumber)}");
+					}
+
 					else
 					{
 						try // try access data base

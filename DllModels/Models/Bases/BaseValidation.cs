@@ -18,108 +18,86 @@ namespace DllModels.Models.Bases
 	public class BaseValidation : INotifyDataErrorInfo
 	{
 
+		#region CONSTRUCTORS
+		#endregion CONSTRUCTORS
+
+		#region PROPERTIES
+		/// <summary>
+		/// Dictionary used to list the errors of property validation.
+		/// </summary>
 		private Dictionary<string, List<string>> _errors { get; set; } = new Dictionary<string, List<string>>();
 
-		[JsonIgnore] // reason: not be listed in swagger
+
+		/// <summary>
+		/// List of error(s) of last object validation.
+		/// This use JsonIgnore.
+		/// </summary>
+		//[JsonIgnore]
 		[NotMapped]
 		public ObservableCollection<string> ErrorList { get; protected set; } = new ObservableCollection<string>();
 
-		public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
 
-		private object _lock = new object();
-
-		[JsonIgnore]
+		/// <summary>
+		///	Return if this object have any validation error while validation last property.
+		/// This use JsonIgnore.
+		/// </summary>
+		//[JsonIgnore]
 		public bool HasErrors { get { return _errors.Any(propErrors => propErrors.Value != null && propErrors.Value.Count > 0); } }
-		//public bool HasErrors
-		//{
-		//    get
-		//    {
-		//        return GetErrors(null).OfType<object>().Any();
-		//    }
-		//}
-		[JsonIgnore]
+
+
+		/// <summary>
+		///	Return if this object have any validation error in all properties.
+		/// This use JsonIgnore.
+		/// </summary>
+		//[JsonIgnore]
 		[System.ComponentModel.DefaultValue(false)]
 		public bool HasErrorObject { get { return ErrorList.Any(); } }
 
-		[JsonIgnore]
+
+		/// <summary>
+		///	Return the status of the last property validation
+		/// This use JsonIgnore.
+		/// </summary>
+		//[JsonIgnore]
 		[System.ComponentModel.DefaultValue(false)]
 		public bool IsValid { get { return !this.HasErrors; } }
 
-		[JsonIgnore]
+		/// <summary>
+		///	Return the status of the object validation
+		/// This use JsonIgnore.
+		/// </summary>
+		//[JsonIgnore]
 		[System.ComponentModel.DefaultValue(false)]
 		public bool IsValidObject { get { return !this.HasErrorObject; } }
 
-		public IEnumerable GetErrors(string propertyName)
-		{
-			if (!string.IsNullOrEmpty(propertyName))
-			{
-				if (_errors.ContainsKey(propertyName) && (_errors[propertyName] != null) && _errors[propertyName].Count > 0)
-				{
-					return _errors[propertyName].ToList();
-				}
-				else
-					return null;
-			}
-			else
-			{
-				return _errors.SelectMany(err => err.Value.ToList());
-			}
-		}
 
+		/// <summary>
+		/// This is used to create validation process.
+		/// </summary>
+		private object _lock = new object();
+
+		#endregion PROPERTIES
+
+
+		#region METHODS
+		public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+
+
+		/// <summary>
+		/// Used in validation process.
+		/// </summary>
+		/// <param name="propertyName">Property name.</param>
 		public void OnErrorsChanged(string propertyName)
 		{
 			if (ErrorsChanged != null)
 				ErrorsChanged(this, new DataErrorsChangedEventArgs(propertyName));
 		}
 
-		public void ValidateProperty(object value, [CallerMemberName] string propertyName = null)
-		{
-			lock (_lock)
-			{
-				var validationContext = new ValidationContext(this, null, null);
-				validationContext.MemberName = propertyName;
-				var validationResults = new List<ValidationResult>();
-				Validator.TryValidateProperty(value, validationContext, validationResults);
 
-				//clear previous _errors from tested property  
-				if (_errors.ContainsKey(propertyName))
-					_errors.Remove(propertyName);
-				OnErrorsChanged(propertyName);
-				HandleValidationResults(validationResults);
-			}
-
-			//add to listo que a viewmodel usa para exibir
-			ErrorList.Clear();
-			foreach (var x in _errors)
-			{
-
-				foreach (var y in x.Value)
-				{
-					ErrorList.Add(y.ToString());
-				}
-			}
-		}
-		public bool ValidateObject()
-		{
-			lock (_lock)
-			{
-				var validationContext = new ValidationContext(this, null, null);
-				var validationResults = new List<ValidationResult>();
-				Validator.TryValidateObject(this, validationContext, validationResults);
-
-				//clear previous _errors from tested property  
-				ErrorList.Clear();
-				foreach (var item in validationResults)
-				{
-					if (!ErrorList.Contains(item.ErrorMessage)) ErrorList.Add(item.ErrorMessage.ToString());
-				}
-				if (ErrorList.Any()) return false;
-				else return true;
-			}
-
-		}
-
-
+		/// <summary>
+		/// Used in validation proccess.
+		/// </summary>
+		/// <param name="validationResults">Result.</param>
 		private void HandleValidationResults(List<ValidationResult> validationResults)
 		{
 			//Group validation results by property names  
@@ -137,52 +115,96 @@ namespace DllModels.Models.Bases
 		}
 
 
-		//private void AddError(string propertyName, string error)
-		//{
-		//    if (!_errors.ContainsKey(propertyName))
-		//        _errors[propertyName] = new List<string>();
-
-		//    if (!_errors[propertyName].Contains(error))
-		//    {
-		//        _errors[propertyName].Add(error);
-		//        OnErrorsChanged(propertyName);
-		//    }
-		//}
-
-		//protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-		//{
-		//    OnPropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-		//}
-
-
-		//protected virtual void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
-		//{
-		//    var handler = PropertyChanged;
-		//    if (handler != null)
-		//    {
-		//        handler(sender, e);
-		//    }
-		//}
-
-		//public virtual void ForceValidation()
-		//{
-		//    OnPropertyChanged(null);
-		//}
-
-		//protected override IEnumerable<BaseValidation> GetValidableProperties()
-		//{
-		//    yield return SomeProperty; // a Validable property
-		//    yield return SomeOtherProperty; // this too
-		//    foreach (var prop in SomeCollectionProperty) // collection of Validable
-		//        yield return prop;
-		//}
+		/// <summary>
+		/// Gets the error of a property validation.
+		/// </summary>
+		/// <param name="propertyName">Property name</param>
+		/// <returns>Return a List</returns>
+		public IEnumerable GetErrors(string propertyName)
+		{
+			if (!string.IsNullOrEmpty(propertyName))
+			{
+				if (_errors.ContainsKey(propertyName) && (_errors[propertyName] != null) && _errors[propertyName].Count > 0)
+				{
+					return _errors[propertyName].ToList();
+				}
+				else
+					return null;
+			}
+			else
+			{
+				return _errors.SelectMany(err => err.Value.ToList());
+			}
+		}
 
 
+		/// <summary>
+		/// Validade a only one property by validation rules.
+		/// </summary>
+		/// <param name="value">New value.</param>
+		/// <param name="propertyName">Property name.</param>
+		public void ValidateProperty(object value, [CallerMemberName] string propertyName = null)
+		{
+			lock (_lock)
+			{
+				var validationContext = new ValidationContext(this, null, null);
+				validationContext.MemberName = propertyName;
+				var validationResults = new List<ValidationResult>();
+				Validator.TryValidateProperty(value, validationContext, validationResults);
+
+				//clear previous _errors from tested property  
+				if (_errors.ContainsKey(propertyName))
+					_errors.Remove(propertyName);
+				OnErrorsChanged(propertyName);
+				HandleValidationResults(validationResults);
+			}
+			ErrorList.Clear();
+			foreach (var x in _errors)
+			{
+
+				foreach (var y in x.Value)
+				{
+					ErrorList.Add(y.ToString());
+				}
+			}
+		}
 
 
+		/// <summary>
+		/// Use this to validate all object validation rules.
+		/// </summary>
+		/// <returns>Return true if all validations is ok.</returns>
+		public bool ValidateObject()
+		{
+			lock (_lock)
+			{
+				var validationContext = new ValidationContext(this, null, null);
+				var validationResults = new List<ValidationResult>();
+				try
+				{
+					var r = Validator.TryValidateObject(this, validationContext, validationResults,true);
+
+				}
+				catch (Exception)
+				{
+
+					throw;
+				}
+
+				//clear previous _errors from tested property  
+				ErrorList.Clear();
+				foreach (var item in validationResults)
+				{
+					if (!ErrorList.Contains(item.ErrorMessage)) ErrorList.Add(item.ErrorMessage.ToString());
+				}
+				if (ErrorList.Any()) return false;
+				else return true;
+			}
+
+		}
 
 
-
+		#endregion METHODS
 
 	}
 }
