@@ -1,0 +1,23 @@
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->
+<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
+<!-- * * * * * * * * * * and can be replaced. * * * * * * * * * * * -->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!-- * * * * * * * * * Delete the template below * * * * * * * * * * -->
+<!-- * * * * * * * to get started with your project! * * * * * * * * -->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<input type="text"
+placeholder="user"
+[(ngModel)]="userObject.name">
+
+<input type="text"
+placeholder="user"
+[(ngModel)]="userObject.age">
+
+<input type="text"
+placeholder="user"
+[(ngModel)]="userObject.id">
+
+
+
+<app-user [user] = "userObject" (userEvent)="handleUserEvent($event)"></app-user>

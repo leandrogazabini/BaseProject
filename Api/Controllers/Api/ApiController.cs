@@ -12,17 +12,19 @@ using static DllModels.Models.Util.Responses;
 using DllModels.Models;
 using System.Text.Json;
 using Api.Bases;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Api.Controllers
 {
 	/// <summary>
 	/// If the endpoint is ok return 200 + Messagem: "Ok, date and time,"
 	/// </summary>
-	[ApiExplorerSettings(IgnoreApi = false)]
+	[AllowAnonymous]
 	[ApiController]
 	[Route("/")]
 	public class StatusController : AppControllerBase
 	{
+		[ApiExplorerSettings(IgnoreApi = false)]
 		[HttpGet]
 		public async Task<ActionResult> Response()
 		{
