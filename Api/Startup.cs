@@ -32,6 +32,12 @@ namespace Api
 
 			//AutoMapper
 			services.AddAutoMapper(typeof(Startup));
+			services.AddControllersWithViews();
+
+			//Configuration of dependency injection
+			services.AddScoped<IPersonRepository, Person>();
+			//end
+			services.AddControllers();
 			//Autentication
 			var key = Encoding.ASCII.GetBytes(BusinessLogic.Settings.JwtKey);
 			services.AddAuthentication(x =>
@@ -39,30 +45,34 @@ namespace Api
 				x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
 				x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 			})
-					.AddJwtBearer(x =>
-					{
-						x.RequireHttpsMetadata = false;
-						x.SaveToken = true;
-						x.TokenValidationParameters = new TokenValidationParameters
-						{
-							ValidateLifetime = true,
-							ValidateIssuerSigningKey = true,
-							IssuerSigningKey = new SymmetricSecurityKey(key),
-							ValidateIssuer = false,
-							ValidateAudience = false,
-						};
-					});
+			.AddJwtBearer(x =>
+			{
+				x.RequireHttpsMetadata = false;
+				x.SaveToken = true;
+				x.TokenValidationParameters = new TokenValidationParameters
+				{
+					ValidateLifetime = true,
+					ValidateIssuerSigningKey = true,
+					IssuerSigningKey = new SymmetricSecurityKey(key),
+					ValidateIssuer = false,
+					ValidateAudience = false,
+				};
+			});
 			//end
-			services.AddControllersWithViews();
-
-			//Configuration of dependency injection
-			services.AddScoped<IPersonRepository, Person>();
-			//end
-			services.AddControllers();
 			services.AddSwaggerGen(c =>
 			{
-				c.SwaggerDoc("v1", new OpenApiInfo { Title = "Api", Version = "v1" });
-
+				
+				c.SwaggerDoc("v1", new OpenApiInfo
+				{
+					Title = "Api",
+					Version = "v1",
+					Description = "A simple api.",
+					Contact = new OpenApiContact
+					{
+						Name = "Leandro Gazabini",
+						Email = "leandro.pg@uol.com.br"
+					},
+				});
 				//JWT configuration
 				c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
 				{
@@ -118,7 +128,7 @@ namespace Api
 			//middleware to resolve object return in api in validations.
 			//app.UseMiddleware<GenericMiddleware>();
 
-			//app.UseAuthentication();
+			app.UseAuthentication();
 			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>

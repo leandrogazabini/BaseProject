@@ -18,6 +18,13 @@ namespace Api.Controllers.Api
 	[Route("/auth")]
 	public class AuthController : AppControllerBase
 	{
+		/// <summary>
+		/// Authenticate the user.
+		/// </summary>
+		/// <param name="username"></param>
+		/// <param name="password"></param>
+		/// <returns>Return a new token.</returns>
+		/// <response code="200">Return token.</response>
 		[ApiExplorerSettings(IgnoreApi = false)]
 		[HttpPost]
 		public async Task<ActionResult> Login(string username, string password)

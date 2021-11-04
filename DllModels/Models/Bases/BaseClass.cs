@@ -56,8 +56,22 @@ namespace DllModels.Models.Bases
 				SetField(ref _Id, value);
 			}
 		}
-
-
+		private Boolean _isActive = false;
+		/// <summary>
+		/// Return if this object is active in database. 
+		/// The propoerty must use "SetField".
+		/// </summary>
+		[JsonIgnore]
+		[NotMapped]
+		[Display(Name = "Is this modified?")]
+		public bool IsActive
+		{
+			get { return _isActive; }
+			protected set
+			{
+				SetField(ref _isActive, value);
+			}
+		}
 
 
 		private Boolean _isModified = false;

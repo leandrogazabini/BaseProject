@@ -9,9 +9,9 @@ namespace BusinessLogic.Interfaces
 {
 	public interface IUserRepository : IBaseInterface
 	{
-		public Responses.Response dbCreate(Object obj = null);
+		public DefaultResponses.Response dbCreateOne(Object obj = null);
 		//public Responses.Response dbCreate(Object obj);
-		public Responses.Response dbRead(string guid = null);
+		public DefaultResponses.Response dbReadOne(string guid = null);
 
 		//public Responses.Response dbUpdate();
 		//public Responses.Response dbDelete();

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace DllModels.Models.Util
 {
-	public class Responses
+	public class DefaultResponses
 	{
-		public Responses()
+		public DefaultResponses()
 		{
 			string moreInformation = " See reference for more information.";
 			DefaultMessages = new SortedDictionary<string, string>()
@@ -28,6 +28,7 @@ namespace DllModels.Models.Util
 				{ "009", $"[]" },
 				{ "999", $"Unexpected error occurred." }
 			};
+
 		}
 		private string getDefaultMessages(string? req = null)
 		{

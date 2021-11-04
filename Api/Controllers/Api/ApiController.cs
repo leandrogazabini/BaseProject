@@ -8,7 +8,7 @@ using BusinessLogic.BLLs;
 using BusinessLogic.Interfaces;
 using DllModels.Models.Util;
 using Microsoft.AspNetCore.Http;
-using static DllModels.Models.Util.Responses;
+using static DllModels.Models.Util.DefaultResponses;
 using DllModels.Models;
 using System.Text.Json;
 using Api.Bases;

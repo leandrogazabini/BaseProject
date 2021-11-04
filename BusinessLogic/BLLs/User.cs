@@ -10,15 +10,21 @@ namespace BusinessLogic.BLLs
 {
 	public class User : DllDatabase.Models.User, IUserRepository
 	{
-		public Responses.Response dbCreate(object obj = null)
+		public DefaultResponses.Response dbCreateOne(object obj = null)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Responses.Response dbRead(string guid = null)
+		public bool dbIsActive(object obj = null)
 		{
 			throw new NotImplementedException();
 		}
+
+		public DefaultResponses.Response dbReadOne(string guid = null)
+		{
+			throw new NotImplementedException();
+		}
+
 	}
 
 }

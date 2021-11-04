@@ -1,4 +1,4 @@
-﻿	using BusinessLogic.Interfaces;
+﻿using BusinessLogic.Interfaces;
 using DllModels.Models.Util;
 using System;
 using System.Collections.Generic;
@@ -12,10 +12,23 @@ namespace BusinessLogic.BLLs
 {
 	public class Person : DllDatabase.Models.Person, IPersonRepository
 	{
-		public Responses.Response dbCreate(Object obj = null)
+		public Person(int? kindPerson = 1,
+			string name = null,
+			string alterName = null,
+			string mainDoc = null,
+			string alterDoc = null)
+		{
+			this.PersonLegalKind = (PersonLegalKindEnum)kindPerson;
+			this.OfficialName = name;
+			this.AlternativeName = alterName;
+			this.MainDocumentNumber = mainDoc;
+			this.SecondDocumentNumber = alterDoc;
+
+		}
+		public DefaultResponses.Response dbCreateOne(Object obj = null)
 		{
 			obj = obj ?? this;
-			var result = new Responses();
+			var result = new DefaultResponses();
 			Person person;
 			try
 			{
@@ -23,7 +36,7 @@ namespace BusinessLogic.BLLs
 				try
 				{
 					person = (Person)obj;
-					person.ValidateObject();
+					//person.ValidateObject();
 				}
 				catch
 				{
@@ -31,7 +44,8 @@ namespace BusinessLogic.BLLs
 											  reference: $"Expected: {this.GetType()}.");
 				}
 
-				if (person.HasErrorObject)
+				//if (person.HasErrorObject)
+				if (!person.ValidateObject())
 				{
 					return result.ReturnError(message: "002",
 											  reference: $"{String.Join(" | ", person.ErrorList)}");
@@ -41,28 +55,37 @@ namespace BusinessLogic.BLLs
 				using (var db = new DllDatabase.AppDbContext())
 				{
 					//is this new item?
-					if (person.Id != 0)
+					if (!IsThisNewItem(person))
 					{
 						return result.ReturnError(message: "004",
 												  reference: $"Person GUID: {person.GUID}");
 					}
-					//main doc exists?
-					var verify = db.tbPerson.Where(p => p.MainDocumentNumber == person.MainDocumentNumber
-													 && p.DeletedAt.Equals(null));
-					if (db.tbPerson.Where(p => p.MainDocumentNumber == person.MainDocumentNumber).Any())
+					////main doc exists?
+					//var verify = db.tbPerson.Where(p => p.MainDocumentNumber == person.MainDocumentNumber
+					//								 && p.DeletedAt.Equals(null));
+
+					if (dbIsActive(person))
 					{
-						return result.ReturnError(message: "005",
-												  reference: $"{nameof(this.MainDocumentNumber)}");
+						if (dbMainDocExists(person.MainDocumentNumber))
+						{
+							return result.ReturnError(message: "005",
+														 reference: $"{nameof(this.MainDocumentNumber)}");
+						}
 					}
+					//if (db.tbPerson.Where(p => p.MainDocumentNumber == person.MainDocumentNumber).Any())
+					//{
+					//	return result.ReturnError(message: "005",
+					//							  reference: $"{nameof(this.MainDocumentNumber)}");
+					//}
 
 					else
 					{
-						try // try access data base
+						try // try rec data base
 						{
 							//db.ConfigureDb1String(forceCreateFile: true, forceCreateFolder: true);
 							person.CreatedAt = DateTime.Now;
 							var t = db.tbPerson.Add(person);
-							var dbResult = db.SaveChangesAsync().Wait(5000);
+							//var dbResult = db.SaveChangesAsync().Wait(5000);
 						}
 						catch (Exception ex)
 						{
@@ -85,9 +108,9 @@ namespace BusinessLogic.BLLs
 			}
 		}
 
-		public Responses.Response dbRead(string guid = null)
+		public DefaultResponses.Response dbReadOne(string guid = null)
 		{
-			var result = new Responses();
+			var result = new DefaultResponses();
 			Person resultPerson = null;
 			try
 			{
@@ -123,6 +146,35 @@ namespace BusinessLogic.BLLs
 			}
 
 
+		}
+
+		private bool dbMainDocExists(string doc)
+		{
+			using (var db = new DllDatabase.AppDbContext())
+			{
+				var verify = db.tbPerson.Where(p => p.MainDocumentNumber == doc);
+				if (verify.Any()) return true;
+			}
+			return false;
+		}
+
+		public bool dbIsActive(Object obj)
+		{
+			var person = (Person)obj;
+
+			if (!IsThisNewItem(person))
+				using (var db = new DllDatabase.AppDbContext())
+				{
+					var verify = db.tbPerson.Where(p => p.Id == person.Id && p.DeletedAt.Equals(null) && p.IsActive == true);
+					if (verify.Any()) return true;
+				}
+			return false;
+		}
+
+		private bool IsThisNewItem(Person person)
+		{
+			if (person.Id != 0) return false;
+			else return true;
 		}
 	}
 

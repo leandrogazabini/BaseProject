@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace Api.Bases
 {
@@ -11,6 +13,7 @@ namespace Api.Bases
 	/// If the endpoint is ok return Status 200 + Message: "Online:, date + time,"
 	/// </summary>
 	[ApiExplorerSettings(IgnoreApi = true)]
+	[Authorize]
 	public class AppControllerBase : ControllerBase
 	{
 		[HttpGet("IsOnline")]

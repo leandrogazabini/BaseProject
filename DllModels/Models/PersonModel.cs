@@ -8,6 +8,10 @@ namespace DllModels.Models
 {
 	public abstract class PersonModel : BaseClass
 	{
+		public PersonModel()
+		{
+		}
+
 		#region CONSTRUCTORS
 		/// <summary>
 		/// Construct to create a Person and also validate all rules.
