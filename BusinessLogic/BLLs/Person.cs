@@ -7,111 +7,143 @@ using System.Text;
 using System.Threading.Tasks;
 using DllDatabase;
 using System.Threading;
+using AutoMapper;
 
 namespace BusinessLogic.BLLs
 {
 	public class Person : DllDatabase.Models.Person, IPersonRepository
 	{
-		public Person(int? kindPerson = 1,
-			string name = null,
-			string alterName = null,
-			string mainDoc = null,
-			string alterDoc = null)
+		public DefaultResponses.Response dbCreateOne(Object objCreate = null)
 		{
-			this.PersonLegalKind = (PersonLegalKindEnum)kindPerson;
-			this.OfficialName = name;
-			this.AlternativeName = alterName;
-			this.MainDocumentNumber = mainDoc;
-			this.SecondDocumentNumber = alterDoc;
-
-		}
-		public DefaultResponses.Response dbCreateOne(Object obj = null)
-		{
-			obj = obj ?? this;
+			objCreate = objCreate ?? this;
 			var result = new DefaultResponses();
 			Person person;
 			try
 			{
-				// verifying the type of object
 				try
 				{
-					person = (Person)obj;
-					//person.ValidateObject();
+					person = (Person)objCreate;
 				}
 				catch
 				{
-					return result.ReturnError(message: "001",
-											  reference: $"Expected: {this.GetType()}.");
+					return result.ReturnError(message: "001", reference: $"Expected: {this.GetType().Name}.");
 				}
 
-				//if (person.HasErrorObject)
 				if (!person.ValidateObject())
 				{
-					return result.ReturnError(message: "002",
-											  reference: $"{String.Join(" | ", person.ErrorList)}");
+					return result.ReturnError(message: "002", reference: $"{String.Join(" | ", person.ErrorList)}");
 				}
 
-				//data base validation start
 				using (var db = new DllDatabase.AppDbContext())
 				{
-					//is this new item?
 					if (!IsThisNewItem(person))
 					{
-						return result.ReturnError(message: "004",
-												  reference: $"Person GUID: {person.GUID}");
+						return result.ReturnError(message: "004", reference: $"Person GUID: {person.GUID}");
 					}
-					////main doc exists?
-					//var verify = db.tbPerson.Where(p => p.MainDocumentNumber == person.MainDocumentNumber
-					//								 && p.DeletedAt.Equals(null));
 
-					if (dbIsActive(person))
+					if (dbIsActive(person.Id))
 					{
 						if (dbMainDocExists(person.MainDocumentNumber))
 						{
-							return result.ReturnError(message: "005",
-														 reference: $"{nameof(this.MainDocumentNumber)}");
+							return result.ReturnError(message: "005", reference: $"{nameof(this.MainDocumentNumber)}");
 						}
 					}
-					//if (db.tbPerson.Where(p => p.MainDocumentNumber == person.MainDocumentNumber).Any())
-					//{
-					//	return result.ReturnError(message: "005",
-					//							  reference: $"{nameof(this.MainDocumentNumber)}");
-					//}
 
 					else
 					{
 						try // try rec data base
 						{
-							//db.ConfigureDb1String(forceCreateFile: true, forceCreateFolder: true);
-							person.CreatedAt = DateTime.Now;
-							var t = db.tbPerson.Add(person);
-							//var dbResult = db.SaveChangesAsync().Wait(5000);
+							db.tbPerson.Add(person);
+							person.SetCreatedAt(); ;
+							db.SaveChangesAsync();
 						}
 						catch (Exception ex)
 						{
-							return result.ReturnError(message: $"Database Error.",
-													  reference: $"{ex.ToString()}");
+							return result.ReturnError(message: $"Database Error.", reference: $"{ex.ToString()}");
 						}
 					}
 
-					//data base validation end
 				}
+				var objOut = dbReadOne(person.GUID).ReferenceObject;
 				//Success
-				return result.ReturnSuccess(message: "003",
-											reference: $"Person GUID: {person.GUID}");
+				return result.ReturnSuccess(message: "003", reference: $"Person GUID: {person.GUID}", obj: objOut);
 			}
 			//Generic Error
 			catch (Exception ex)
 			{
-				return result.ReturnError(message: "999",
-										  reference: $"{ex.ToString()}");
+				return result.ReturnError(message: "999", reference: $"{ex.ToString()}");
 			}
 		}
 
+		public DefaultResponses.Response dbUpdateOne(Object objUpdate)
+		{
+
+			var result = new DefaultResponses();
+			Person personDataUpdate;
+			DllDatabase.Models.Person personDatabase;
+
+			try
+			{
+				personDataUpdate = (Person)objUpdate;
+				var qResult = this.dbReadOne(personDataUpdate.GUID);
+				if (qResult.ResponseStatus == DefaultResponses.ResponseStatus.Error)
+				{
+					return qResult;
+				}
+				personDatabase = (DllDatabase.Models.Person)qResult.ReferenceObject;
+				if (personDatabase.GUID != personDataUpdate.GUID) { return result.ReturnError(message: "007", reference: $" GUID: {personDataUpdate.GUID}"); }
+			}
+			catch (Exception ex)
+			{
+				return result.ReturnError(message: "001", reference: $"Expected: {this.GetType().Name}.");
+			}
+			try
+			{
+				{
+					if (!personDataUpdate.ValidateObject())
+					{
+						return result.ReturnError(message: "002", reference: $"{String.Join(" | ", personDataUpdate.ErrorList)}");
+					}
+
+					using (var db = new DllDatabase.AppDbContext())
+					{
+						try // try rec data base
+						{
+							if (true)
+							{
+								personDatabase = db.tbPerson.Find(dbIsActive(personDatabase.GUID));
+								var map = new Mapping.PersonMapping();
+								//personToUpdate = map.MapToDbPerson(personDataUpdate);
+								//personToUpdate = map._mapper.Map<DllDatabase.Models.Person>(personDataUpdate);
+								map._mapper.Map<Person, DllDatabase.Models.Person>(personDataUpdate, personDatabase);
+								personDatabase.SetChangedAt();
+								////erro no mapping
+								//asyncasd
+
+								db.SaveChangesAsync();
+							}
+							else
+							{ }
+						}
+						catch (Exception ex)
+						{
+							return result.ReturnError(message: $"Database Error.", reference: $"{ex.ToString()}");
+						}
+					}
+					var objOut = dbReadOne(personDatabase.GUID).ReferenceObject;
+					return result.ReturnSuccess(message: "008", reference: $"Person GUID: {personDatabase.GUID}", obj: objOut);
+				}
+			}
+			catch (Exception ex)
+			{
+				return result.ReturnError(message: "999", reference: $"{ex.ToString()}");
+			}
+		}
+		
 		public DefaultResponses.Response dbReadOne(string guid = null)
 		{
 			var result = new DefaultResponses();
-			Person resultPerson = null;
+			Person resultPerson = new Person();
 			try
 			{
 				if (!String.IsNullOrEmpty(guid))
@@ -119,17 +151,14 @@ namespace BusinessLogic.BLLs
 					using (var db = new DllDatabase.AppDbContext())
 					{
 						var qResult = db.tbPerson.Where(p => p.GUID == guid.ToString()).FirstOrDefault() ?? null;
-						bool isNull = qResult == null;
-						if (!isNull)
+						var map = new Mapping.PersonMapping();
+						map._mapper.Map<DllDatabase.Models.Person, Person >(qResult, resultPerson);
+
+						//resultPerson = map.MapToPerson(qResult);
+
+						if (qResult != null)
 						{
-							resultPerson = new Person()
-							{
-								OfficialName = qResult.OfficialName,
-								AlternativeName = qResult.AlternativeName,
-								PersonLegalKind = qResult.PersonLegalKind,
-								MainDocumentNumber = qResult.MainDocumentNumber,
-								SecondDocumentNumber = qResult.SecondDocumentNumber
-							};
+							
 							return result.ReturnSuccess(message: "00",
 													  reference: $"{guid}",
 													  obj: resultPerson);
@@ -148,6 +177,36 @@ namespace BusinessLogic.BLLs
 
 		}
 
+
+		public bool dbIsActive(int id)
+		{
+			if (id > 0 )
+				using (var db = new DllDatabase.AppDbContext())
+				{
+					var check = db.tbPerson.Find(id);
+					if (check.DeletedAt.HasValue) return false;
+					else return true;
+				}
+			return false;
+		}
+
+		public int dbIsActive(string guid)
+		{
+			if (!String.IsNullOrEmpty(guid))
+			{
+				using (var db = new DllDatabase.AppDbContext())
+				{
+					var check = db.tbPerson.Where(x=>x.GUID == guid);
+					if (check.Count() != 1) return 0;
+					if (check.FirstOrDefault().DeletedAt.HasValue) return 0;
+					else return check.FirstOrDefault().Id;
+				}
+
+			}
+			else return 0;
+		}
+
+
 		private bool dbMainDocExists(string doc)
 		{
 			using (var db = new DllDatabase.AppDbContext())
@@ -158,24 +217,12 @@ namespace BusinessLogic.BLLs
 			return false;
 		}
 
-		public bool dbIsActive(Object obj)
-		{
-			var person = (Person)obj;
-
-			if (!IsThisNewItem(person))
-				using (var db = new DllDatabase.AppDbContext())
-				{
-					var verify = db.tbPerson.Where(p => p.Id == person.Id && p.DeletedAt.Equals(null) && p.IsActive == true);
-					if (verify.Any()) return true;
-				}
-			return false;
-		}
-
 		private bool IsThisNewItem(Person person)
 		{
 			if (person.Id != 0) return false;
 			else return true;
 		}
+
 	}
 
 

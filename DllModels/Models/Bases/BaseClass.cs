@@ -47,11 +47,11 @@ namespace DllModels.Models.Bases
 		/// Uses JsonIgnore.
 		/// </summary>
 		[KeyAttribute]
-		[JsonIgnore]
+		//[JsonIgnore]
 		public int Id
 		{
 			get { return _Id; }
-			protected set
+			private set
 			{
 				SetField(ref _Id, value);
 			}
@@ -61,13 +61,13 @@ namespace DllModels.Models.Bases
 		/// Return if this object is active in database. 
 		/// The propoerty must use "SetField".
 		/// </summary>
-		[JsonIgnore]
+		//[JsonIgnore]
 		[NotMapped]
-		[Display(Name = "Is this modified?")]
+		[Display(Name = "Is this Active in DataBase?")]
 		public bool IsActive
 		{
 			get { return _isActive; }
-			protected set
+			private protected set
 			{
 				SetField(ref _isActive, value);
 			}
@@ -79,13 +79,13 @@ namespace DllModels.Models.Bases
 		/// Return if this object have they properties changed. 
 		/// The propoerty must use "SetField".
 		/// </summary>
-		[JsonIgnore]
+		//[JsonIgnore]
 		[NotMapped]
 		[Display(Name = "Is this modified?")]
 		public bool isModified
 		{
 			get { return _isModified; }
-			protected set
+			private protected set
 			{
 				SetField(ref _isModified, value);
 			}
@@ -96,12 +96,12 @@ namespace DllModels.Models.Bases
 		/// Date when object is saved in database.
 		/// This property have implemented JsonIgnore.
 		/// </summary>
-		[JsonIgnore]
+		//[JsonIgnore]
 		[Display(Name = "Created at")]
 		public DateTime? CreatedAt
 		{
 			get { return _createdAt; }
-			protected set
+			private protected set
 			{
 				SetField(ref _createdAt, (DateTime)value);
 			}
@@ -113,12 +113,12 @@ namespace DllModels.Models.Bases
 		/// Date when object is edited in database.
 		/// This property have implemented JsonIgnore.
 		/// </summary>
-		[JsonIgnore]
+		//[JsonIgnore]
 		[Display(Name = "Changed at")]
 		public DateTime? ChangedAt
 		{
 			get { return _changedAt; }
-			protected set
+			private protected set
 			{
 				SetField(ref _changedAt, (DateTime)value);
 			}
@@ -130,12 +130,12 @@ namespace DllModels.Models.Bases
 		/// Date when object is deleted (logic mode) in database.
 		/// This property have implemented JsonIgnore.
 		/// </summary>
-		[JsonIgnore]
+		//[JsonIgnore]
 		[Display(Name = "Deleted at")]
 		public DateTime? DeletedAt
 		{
 			get { return _deletedAt; }
-			protected set
+			private protected set
 			{
 				SetField(ref _deletedAt, (DateTime)value);
 			}
@@ -162,7 +162,7 @@ namespace DllModels.Models.Bases
 		/// The new object start with version 0. 
 		/// Every time when it have database changes, it increment +1.
 		/// </summary>
-		[JsonIgnore]
+		//[JsonIgnore]
 		[Display(Name = "Version")]
 		public int Version
 		{
@@ -177,6 +177,38 @@ namespace DllModels.Models.Bases
 		#endregion PROPERTIES
 
 		#region METHODS
+		/// <summary>
+		/// Set database creation DateTime.
+		/// </summary>
+		/// <param name="dateTime"></param>
+		/// <returns>CreatedAt</returns>
+		public DateTime? SetCreatedAt(DateTime? dateTime = null)
+		{
+			CreatedAt = dateTime ?? DateTime.Now;
+			return CreatedAt;
+		}
+
+		/// <summary>
+		/// Set database edited DateTime.
+		/// </summary>
+		/// <param name="dateTime"></param>
+		/// <returns>ChangedAt</returns>
+		public DateTime? SetChangedAt(DateTime? dateTime = null)
+		{
+			ChangedAt = dateTime ?? DateTime.Now;
+			return ChangedAt;
+		}
+
+		/// <summary>
+		/// Set database deleted DateTime.
+		/// </summary>
+		/// <param name="dateTime"></param>
+		/// <returns>DeletedAt</returns>
+		public DateTime? SetDeletedAt(DateTime? dateTime = null)
+		{
+			DeletedAt = dateTime ?? DateTime.Now;
+			return DeletedAt;
+		}
 		/// <summary>
 		/// ICloneable interface implementation.
 		/// </summary>

@@ -13,8 +13,8 @@ namespace BusinessLogic.Interfaces
 		public DefaultResponses.Response dbCreateOne(Object obj = null);
 		//public Responses.Response dbCreate(Object obj);
 		public DefaultResponses.Response dbReadOne(string guid = null);
-
-		public bool dbIsActive(Object obj = null);
+		public DefaultResponses.Response dbUpdateOne(Object obj);
+		public bool dbIsActive(int id);
 		//public Responses.Response dbUpdate();
 		//public Responses.Response dbDelete();
 		//public Responses.Response dbDeleteFull();

@@ -19,7 +19,7 @@ namespace ConsoleApp
 			person.MainDocumentNumber = "doc@@@@12";
 			person.SecondDocumentNumber = "doc23";
 			person.ValidateObject();
-			if (person.IsValidObject && person.ErrorList.Count < 1)
+			if (person.IsValidObject)
 			{
 				_ = "ok";
 			}
@@ -45,7 +45,7 @@ namespace ConsoleApp
 				Console.WriteLine("     MainDocumentNumber:" + person.MainDocumentNumber);
 				Console.WriteLine("     SecondDocumentNumber:" + person.SecondDocumentNumber);
 				
-				var result = person.dbCreate();
+				var result = person.dbCreateOne();
 				
 				Console.WriteLine(result.ResponseStatus);
 				Console.WriteLine(result.ResponseMessage);

@@ -15,7 +15,7 @@ namespace BusinessLogic.BLLs
 			throw new NotImplementedException();
 		}
 
-		public bool dbIsActive(object obj = null)
+		public bool dbIsActive(int id)
 		{
 			throw new NotImplementedException();
 		}
@@ -25,6 +25,10 @@ namespace BusinessLogic.BLLs
 			throw new NotImplementedException();
 		}
 
+		DefaultResponses.Response IBaseInterface.dbUpdateOne(object obj)
+		{
+			throw new NotImplementedException();
+		}
 	}
 
 }

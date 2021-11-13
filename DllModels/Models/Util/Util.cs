@@ -13,7 +13,7 @@ namespace DllModels.Models.Util
 			string moreInformation = " See reference for more information.";
 			DefaultMessages = new SortedDictionary<string, string>()
 			{
-				{ "", $"[⚠] Report the developer: Reponse need to be configured (cod:0)." + moreInformation },
+				{ "", $"[⚠] Report the developer: Reponse need to be configured (cod:)." + moreInformation },
 				{ "0", $"[⚠] Report the developer: Reponse need to be configured (cod:0)." + moreInformation },
 				{ "00", $"[✔] Succes!" + moreInformation },
 				{ "99", $"[❌] Error!" + moreInformation },
@@ -22,9 +22,9 @@ namespace DllModels.Models.Util
 				{ "003", $"[✔] Item created in database!" + moreInformation },
 				{ "004", $"[⚠] This is not a new item. Try to edit it instead." + moreInformation },
 				{ "005", $"[⚠] A field has the content not allowed." + moreInformation },
-				{ "006", $"[]" },
-				{ "007", $"[]" },
-				{ "008", $"[]" },
+				{ "006", $"[⚠] This is a new item. Try to create it instead." + moreInformation },
+				{ "007", $"[⚠] Invalid GUID." + moreInformation },
+				{ "008", $"[✔] Item updated in database!" + moreInformation },
 				{ "009", $"[]" },
 				{ "999", $"Unexpected error occurred." }
 			};

@@ -57,7 +57,7 @@ namespace DllModels.Models
 		///// Uses JsonIgnore.
 		///// </summary>
 		//[KeyAttribute]
-		//[JsonIgnore]
+		////[JsonIgnore]
 		//public int PersonId
 		//{
 		//	get { return _personId; }
@@ -68,12 +68,13 @@ namespace DllModels.Models
 		//}
 
 
+		private PersonLegalKindEnum _personLegalKind;
 		/// <summary>
 		/// Kind of legal person possible to use. See definiton in https://en.wikipedia.org/wiki/Legal_person
 		/// </summary>
 		[Display(Name = "Legal kind of Person")]
 		[Required(ErrorMessage = "{0} is required.")]
-		private PersonLegalKindEnum _personLegalKind;
+		[ValidKindPerson(ErrorMessage = "{0} invalid value.")]
 		public PersonLegalKindEnum PersonLegalKind
 		{
 			get { return _personLegalKind; }

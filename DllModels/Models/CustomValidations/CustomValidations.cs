@@ -31,7 +31,41 @@ namespace DllModels.Models.CustomValidations
 
 				}
 				else
-				return ValidationResult.Success;
+					return ValidationResult.Success;
+			}
+
+		}
+
+		public class ValidKindPerson : ValidationAttribute
+		{
+			public override bool IsValid(object value)
+			{
+				//DateTime dateTime = Convert.ToDateTime(value);
+				//return dateTime <= DateTime.Now;
+				try
+				{
+					var newValue = Convert.ToInt32(value);
+					if (Enum.IsDefined(typeof(PersonModel.PersonLegalKindEnum), newValue))
+						return true;
+					else return false;
+				}
+				catch (Exception ex)
+				{
+					return false;
+				}
+			}
+
+			protected override ValidationResult IsValid(object value, ValidationContext context)
+			{
+				ValidationResult result = base.IsValid(value, context) ?? null;
+				if (result != null)
+				{
+					if (String.IsNullOrEmpty(ErrorMessage)) result.ErrorMessage = $"{context.DisplayName} invalid value.";
+					return result;
+
+				}
+				else
+					return ValidationResult.Success;
 			}
 
 		}
@@ -41,7 +75,7 @@ namespace DllModels.Models.CustomValidations
 			public override bool IsValid(object value)
 			{
 				var r = @"^[a-zA-Z0-9_.-]*$";
-				var match = Regex.IsMatch(value.ToString(),r);
+				var match = Regex.IsMatch(value.ToString(), r);
 
 				if (match) return true;
 				else return false;

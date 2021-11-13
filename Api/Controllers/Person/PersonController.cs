@@ -12,7 +12,7 @@ using static DllModels.Models.Util.DefaultResponses;
 using DllModels.Models;
 using System.Text.Json;
 using Api.Bases;
-using Api.ViewModels;
+using BusinessLogic.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 
 
@@ -32,21 +32,14 @@ namespace Api.Controllers
 
 		[ApiExplorerSettings(IgnoreApi = false)]
 		[HttpPost]
-		public async Task<ActionResult> SavePerson(PersonViewModel obj)
+		public async Task<ActionResult> CreatePerson(NewPersonViewModel objNewPerson)
 		{
-			//var result = StatusCode(204);
 			try
 			{
-				//var person = new Person() { OfficialName = obj.Name };
-				var person = new Person(
-					kindPerson: 1,
-					alterDoc: obj.Name,
-					mainDoc:obj.Name,
-				    name: obj.Name,
-					alterName: obj.Name
-					) ;
+				var map = new BusinessLogic.Mapping.PersonViewModelMapping();
+				var person = map.MapToPerson(objNewPerson);
 				var resultGet = personRepository.dbCreateOne(person);
-				//if (resultGet.ResponseStatus == ResponseStatus.Ok)
+				
 				return StatusCode(StatusCodes.Status200OK, resultGet);
 			}
 			catch (Exception)
@@ -56,6 +49,49 @@ namespace Api.Controllers
 		}
 
 	}
+
+	//[Authorize]
+	[AllowAnonymous]
+	[ApiController]
+	[Route("api/[controller]")]
+	public class EditPersonController : AppControllerBase
+	{
+		private readonly IPersonRepository personRepository;
+		public EditPersonController(IPersonRepository _personRepository)
+		{
+			this.personRepository = _personRepository;
+		}
+		[AllowAnonymous]
+		[ApiExplorerSettings(IgnoreApi = false)]
+		[HttpPost]
+		public async Task<ActionResult> EditPerson(PersonViewModel obj)
+		{
+
+			try
+			{
+				//var person = new Person(
+				//	kindPerson: 1,
+				//	alterDoc: obj.OfficialName,
+				//	mainDoc: obj.OfficialName,
+				//	name: obj.OfficialName,
+				//	alterName: obj.OfficialName
+				//	);
+				var map = new BusinessLogic.Mapping.PersonViewModelMapping();
+				Person person;
+				person = map.MapToPerson(obj);
+
+				var resultGet = personRepository.dbUpdateOne(person);
+				//if (resultGet.ResponseStatus == ResponseStatus.Ok)
+				return StatusCode(StatusCodes.Status200OK, resultGet);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, "Error!");
+			}
+		}
+
+
+
 
 	[Authorize]
 	[ApiController]
@@ -67,7 +103,7 @@ namespace Api.Controllers
 		{
 			personRepository = new Person();
 		}
-		
+		[AllowAnonymous]
 		[ApiExplorerSettings(IgnoreApi = false)]
 		[HttpGet("guid")]
 		public ActionResult Response(string guid)
@@ -75,6 +111,9 @@ namespace Api.Controllers
 			try
 			{
 				var resultGet = personRepository.dbReadOne(guid);
+				var map = new BusinessLogic.Mapping.PersonViewModelMapping();
+				var vmResult = map.MapToPersonVM((BusinessLogic.BLLs.Person)resultGet.ReferenceObject); ;
+				//var resultPerson = new PersonViewModel() { Name = resultGet.};
 				//if (resultGet.ResponseStatus == ResponseStatus.Ok)
 				return StatusCode(StatusCodes.Status200OK, resultGet);
 			}
@@ -83,7 +122,7 @@ namespace Api.Controllers
 				return StatusCode(StatusCodes.Status500InternalServerError, "Error!");
 			}
 		}
-
+	}
 
 	}
 }

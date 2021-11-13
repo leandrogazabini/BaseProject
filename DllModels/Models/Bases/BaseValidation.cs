@@ -32,7 +32,7 @@ namespace DllModels.Models.Bases
 		/// List of error(s) of last object validation.
 		/// This use JsonIgnore.
 		/// </summary>
-		[JsonIgnore]
+		//[JsonIgnore]
 		[NotMapped]
 		protected ObservableCollection<string> ErrorList { get;  set; } = new ObservableCollection<string>();
 
@@ -41,7 +41,7 @@ namespace DllModels.Models.Bases
 		///	Return if this object have any validation error while validation last property.
 		/// This use JsonIgnore.
 		/// </summary>
-		[JsonIgnore]
+		//[JsonIgnore]
 		public bool HasErrors { get { return _errors.Any(propErrors => propErrors.Value != null && propErrors.Value.Count > 0); } }
 
 
@@ -49,7 +49,7 @@ namespace DllModels.Models.Bases
 		///	Return if this object have any validation error in all properties.
 		/// This use JsonIgnore.
 		/// </summary>
-		[JsonIgnore]
+		//[JsonIgnore]
 		[System.ComponentModel.DefaultValue(false)]
 		public bool HasErrorObject { get { return ErrorList.Any(); } }
 
@@ -58,7 +58,7 @@ namespace DllModels.Models.Bases
 		///	Return the status of the last property validation
 		/// This use JsonIgnore.
 		/// </summary>
-		[JsonIgnore]
+		//[JsonIgnore]
 		[System.ComponentModel.DefaultValue(false)]
 		public bool IsValid { get { return !this.HasErrors; } }
 
@@ -66,7 +66,7 @@ namespace DllModels.Models.Bases
 		///	Return the status of the object validation
 		/// This use JsonIgnore.
 		/// </summary>
-		[JsonIgnore]
+		//[JsonIgnore]
 		[System.ComponentModel.DefaultValue(false)]
 		public bool IsValidObject { get { return !this.HasErrorObject; } }
 
