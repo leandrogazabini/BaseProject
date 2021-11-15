@@ -1,5 +1,5 @@
 ﻿using BusinessLogic.Interfaces;
-using DllModels.Models.Util;
+//using DllModels.Models.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using DllDatabase;
 using System.Threading;
 using AutoMapper;
+using DefaultResponses = BusinessLogic.Default.ResponsesMessages.DefaultResponses;
+using Messages = BusinessLogic.Default.ResponsesMessages.Messages;
 
 namespace BusinessLogic.BLLs
 {
@@ -26,26 +28,26 @@ namespace BusinessLogic.BLLs
 				}
 				catch
 				{
-					return result.ReturnError(message: "001", reference: $"Expected: {this.GetType().Name}.");
+					return result.ReturnError(message: Messages.WrongTypeObjectSent, reference: $"{Messages.Expected} {this.GetType().Name}.");
 				}
 
 				if (!person.ValidateObject())
 				{
-					return result.ReturnError(message: "002", reference: $"{String.Join(" | ", person.ErrorList)}");
+					return result.ReturnError(message: Messages.ValidationRuleError, reference: $"{String.Join(" | ", person.ErrorList)}");
 				}
 
 				using (var db = new DllDatabase.AppDbContext())
 				{
 					if (!IsThisNewItem(person))
 					{
-						return result.ReturnError(message: "004", reference: $"Person GUID: {person.GUID}");
+						return result.ReturnError(message: Messages.NotNewItem, reference: $"{Messages.Guid} {person.GUID}");
 					}
 
 					if (dbIsActive(person.Id))
 					{
 						if (dbMainDocExists(person.MainDocumentNumber))
 						{
-							return result.ReturnError(message: "005", reference: $"{nameof(this.MainDocumentNumber)}");
+							return result.ReturnError(message: Messages.ContentNotAllowed, reference: $"{nameof(this.MainDocumentNumber)}");
 						}
 					}
 
@@ -59,19 +61,19 @@ namespace BusinessLogic.BLLs
 						}
 						catch (Exception ex)
 						{
-							return result.ReturnError(message: $"Database Error.", reference: $"{ex.ToString()}");
+							return result.ReturnError(message: Messages.DatabaseError, reference: $"{ex.ToString()}");
 						}
 					}
 
 				}
 				var objOut = dbReadOne(person.GUID).ReferenceObject;
 				//Success
-				return result.ReturnSuccess(message: "003", reference: $"Person GUID: {person.GUID}", obj: objOut);
+				return result.ReturnSuccess(message: Messages.CreatedDatabase, reference: $"{Messages.Guid} {person.GUID}", obj: objOut);
 			}
 			//Generic Error
 			catch (Exception ex)
 			{
-				return result.ReturnError(message: "999", reference: $"{ex.ToString()}");
+				return result.ReturnError(message: Messages.UnexpectedError, reference: $"{ex.ToString()}");
 			}
 		}
 
@@ -86,23 +88,23 @@ namespace BusinessLogic.BLLs
 			{
 				personDataUpdate = (Person)objUpdate;
 				var qResult = this.dbReadOne(personDataUpdate.GUID);
-				if (qResult.ResponseStatus == DefaultResponses.ResponseStatus.Error)
+				if (qResult.Status == false)
 				{
 					return qResult;
 				}
 				personDatabase = (DllDatabase.Models.Person)qResult.ReferenceObject;
-				if (personDatabase.GUID != personDataUpdate.GUID) { return result.ReturnError(message: "007", reference: $" GUID: {personDataUpdate.GUID}"); }
+				if (personDatabase.GUID != personDataUpdate.GUID) { return result.ReturnError(message: Messages.InvalidGuid, reference: $"{Messages.Guid} {personDataUpdate.GUID}"); }
 			}
 			catch (Exception ex)
 			{
-				return result.ReturnError(message: "001", reference: $"Expected: {this.GetType().Name}.");
+				return result.ReturnError(message: Messages.WrongTypeObjectSent, reference: $"{Messages.Expected} {this.GetType().Name}.");
 			}
 			try
 			{
 				{
 					if (!personDataUpdate.ValidateObject())
 					{
-						return result.ReturnError(message: "002", reference: $"{String.Join(" | ", personDataUpdate.ErrorList)}");
+						return result.ReturnError(message: Messages.ValidationRuleError, reference: $"{String.Join(" | ", personDataUpdate.ErrorList)}");
 					}
 
 					using (var db = new DllDatabase.AppDbContext())
@@ -127,16 +129,16 @@ namespace BusinessLogic.BLLs
 						}
 						catch (Exception ex)
 						{
-							return result.ReturnError(message: $"Database Error.", reference: $"{ex.ToString()}");
+							return result.ReturnError(message: Messages.DatabaseError, reference: $"{ex.ToString()}");
 						}
 					}
 					var objOut = dbReadOne(personDatabase.GUID).ReferenceObject;
-					return result.ReturnSuccess(message: "008", reference: $"Person GUID: {personDatabase.GUID}", obj: objOut);
+					return result.ReturnSuccess(message: Messages.UpdatedItem, reference: "{Messages.GUID} {personDatabase.GUID}", obj: objOut);
 				}
 			}
 			catch (Exception ex)
 			{
-				return result.ReturnError(message: "999", reference: $"{ex.ToString()}");
+				return result.ReturnError(message: Messages.UnexpectedError, reference: $"{ex.ToString()}");
 			}
 		}
 		
@@ -159,18 +161,16 @@ namespace BusinessLogic.BLLs
 						if (qResult != null)
 						{
 							
-							return result.ReturnSuccess(message: "00",
-													  reference: $"{guid}",
+							return result.ReturnSuccess( reference: $"{guid}",
 													  obj: resultPerson);
 						}
 					}
 				}
-				return result.ReturnError(message: "99",
-										  reference: $"GUID invalid: {guid}.");
+				return result.ReturnError( reference: $"{Messages.InvalidGuid}{guid}");
 			}
 			catch (Exception ex)
 			{
-				return result.ReturnError(message: "999",
+				return result.ReturnError(message: Messages.UnexpectedError,
 										  reference: $"{ex.ToString()}");
 			}
 

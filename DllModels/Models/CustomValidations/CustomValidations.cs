@@ -60,7 +60,12 @@ namespace DllModels.Models.CustomValidations
 				ValidationResult result = base.IsValid(value, context) ?? null;
 				if (result != null)
 				{
-					if (String.IsNullOrEmpty(ErrorMessage)) result.ErrorMessage = $"{context.DisplayName} invalid value.";
+					if (String.IsNullOrEmpty(ErrorMessage))
+					{
+						//result.ErrorMessage = $"{context.DisplayName} invalid value.";
+						result.ErrorMessage = $"{context.DisplayName} {Default.ValidationMessages.Messages.InvalidValue}";
+
+					}
 					return result;
 
 				}

@@ -6,14 +6,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using BusinessLogic.BLLs;
 using BusinessLogic.Interfaces;
-using DllModels.Models.Util;
+//using DllModels.Models.Util;
 using Microsoft.AspNetCore.Http;
-using static DllModels.Models.Util.DefaultResponses;
+//using static DllModels.Models.Util.DefaultResponses;
 using DllModels.Models;
 using System.Text.Json;
 using Api.Bases;
 using BusinessLogic.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using BusinessLogic;
 
 
 namespace Api.Controllers
@@ -36,15 +37,16 @@ namespace Api.Controllers
 		{
 			try
 			{
-				var map = new BusinessLogic.Mapping.PersonViewModelMapping();
-				var person = map.MapToPerson(objNewPerson);
+				var map = new BusinessLogic.Mapping.PersonMapping();
+				var person = map._mapper.Map<NewPersonViewModel,BusinessLogic.BLLs.Person> (objNewPerson);
 				var resultGet = personRepository.dbCreateOne(person);
-				
+				var result = map._mapper.Map<BusinessLogic.BLLs.Person, PersonViewModel>((Person)resultGet.ReferenceObject);
+				resultGet.SetReferenceObject<PersonViewModel>(result);
 				return StatusCode(StatusCodes.Status200OK, resultGet);
 			}
 			catch (Exception)
 			{
-				return StatusCode(StatusCodes.Status500InternalServerError, "Error!");
+				return StatusCode(StatusCodes.Status500InternalServerError);
 			}
 		}
 
@@ -76,17 +78,18 @@ namespace Api.Controllers
 				//	name: obj.OfficialName,
 				//	alterName: obj.OfficialName
 				//	);
-				var map = new BusinessLogic.Mapping.PersonViewModelMapping();
+				var map = new BusinessLogic.Mapping.PersonMapping();
 				Person person;
-				person = map.MapToPerson(obj);
-
+				person = map._mapper.Map<PersonViewModel,BusinessLogic.BLLs.Person> (obj);
 				var resultGet = personRepository.dbUpdateOne(person);
+				PersonViewModel personVM = map._mapper.Map<BusinessLogic.BLLs.Person, PersonViewModel>((BusinessLogic.BLLs.Person)resultGet.ReferenceObject);
+				resultGet.SetReferenceObject<PersonViewModel>(personVM);
 				//if (resultGet.ResponseStatus == ResponseStatus.Ok)
 				return StatusCode(StatusCodes.Status200OK, resultGet);
 			}
 			catch (Exception ex)
 			{
-				return StatusCode(StatusCodes.Status500InternalServerError, "Error!");
+				return StatusCode(StatusCodes.Status500InternalServerError);
 			}
 		}
 
@@ -111,15 +114,15 @@ namespace Api.Controllers
 			try
 			{
 				var resultGet = personRepository.dbReadOne(guid);
-				var map = new BusinessLogic.Mapping.PersonViewModelMapping();
-				var vmResult = map.MapToPersonVM((BusinessLogic.BLLs.Person)resultGet.ReferenceObject); ;
+				var map = new BusinessLogic.Mapping.PersonMapping();
+				var vmResult = map._mapper.Map<PersonViewModel, BusinessLogic.BLLs.Person>((PersonViewModel)resultGet.ReferenceObject); ;
 				//var resultPerson = new PersonViewModel() { Name = resultGet.};
 				//if (resultGet.ResponseStatus == ResponseStatus.Ok)
 				return StatusCode(StatusCodes.Status200OK, resultGet);
 			}
 			catch (Exception ex)
 			{
-				return StatusCode(StatusCodes.Status500InternalServerError, "Error!");
+				return StatusCode(StatusCodes.Status500InternalServerError);
 			}
 		}
 	}

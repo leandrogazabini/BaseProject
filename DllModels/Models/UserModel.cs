@@ -16,22 +16,7 @@ namespace DllModels.Models
 		{
 
 		}
-		//#endregion CONSTRUCTORS
 
-		//#region PROPERTIES
-
-		//private int _id;
-		//public int Id
-		//{
-		//	get
-		//	{
-		//		return _id;
-		//	}
-		//	set
-		//	{
-		//		SetField(ref _id, value);
-		//	}
-		//}
 		private string _username;
 		[Display(Name ="Username")]
 		public string Username

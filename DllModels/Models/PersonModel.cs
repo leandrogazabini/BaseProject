@@ -74,7 +74,7 @@ namespace DllModels.Models
 		/// </summary>
 		[Display(Name = "Legal kind of Person")]
 		[Required(ErrorMessage = "{0} is required.")]
-		[ValidKindPerson(ErrorMessage = "{0} invalid value.")]
+		[ValidKindPerson]
 		public PersonLegalKindEnum PersonLegalKind
 		{
 			get { return _personLegalKind; }

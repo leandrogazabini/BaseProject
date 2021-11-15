@@ -4,6 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CommonSettings;
+using System.Resources;
+using System.Threading;
+using System.Globalization;
 
 namespace ConsoleApp
 {
@@ -12,53 +16,74 @@ namespace ConsoleApp
 	{
 		static void Main(string[] args)
 		{
-			var t = new UtilConsole();
-			var person = new Person();
-			person.OfficialName = "";
-			person.AlternativeName = "123";
-			person.MainDocumentNumber = "doc@@@@12";
-			person.SecondDocumentNumber = "doc23";
-			person.ValidateObject();
-			if (person.IsValidObject)
-			{
-				_ = "ok";
-			}
-			else
-			{
-				_ = "Erro";
-			}
+			//var commonSettings = new CommonSettings.CommonSettings();
+			//var newCulture = commonSettings.GetCurrentCulture();
+			//Console.WriteLine(newCulture);
+			//Console.WriteLine(Res.res.String4);
+			//decimal dec = 10.99M;
+			//Console.WriteLine(dec);
+			//commonSettings.SetCurrentCulture("en-US");
+			//Console.WriteLine(dec);
+			//Console.WriteLine(Res.res.String1);
+			var bll = new BusinessLogic.Default.Responses.DefaultResponses();
+			var x = bll.ReturnError();
+			_ = "";
+			x = bll.ReturnSuccess();
+			_ = "";
+			x = bll.ReturnError("2");
+			_ = "";
+			 x = bll.ReturnError("5");
+			_ = "";
+			 x = bll.ReturnError("99");
+			_ = "";
 
-			for (int i = 0; i < 1000; i++)
-			{
-				Console.WriteLine($"START:-----------------  {i}  -----------------");
-				person = new Person()
-				{
-					OfficialName = t.RandomString(i),
-					AlternativeName = t.RandomString(i),
-					MainDocumentNumber = t.RandomString(i) + t.RandomMainDocTest(),
-					SecondDocumentNumber = t.RandomString(i)
-				};
-				person.ValidateObject();
+			//////////var t = new UtilConsole();
+			//////////var person = new Person();
+			//////////person.OfficialName = "";
+			//////////person.AlternativeName = "123";
+			//////////person.MainDocumentNumber = "doc@@@@12";
+			//////////person.SecondDocumentNumber = "doc23";
+			//////////person.ValidateObject();
+			//////////if (person.IsValidObject)
+			//////////{
+			//////////	_ = "ok";
+			//////////}
+			//////////else
+			//////////{
+			//////////	_ = "Erro";
+			//////////}
 
-				Console.WriteLine("     OfficialName:" + person.OfficialName);
-				Console.WriteLine("     AlternativeName:" + person.AlternativeName);
-				Console.WriteLine("     MainDocumentNumber:" + person.MainDocumentNumber);
-				Console.WriteLine("     SecondDocumentNumber:" + person.SecondDocumentNumber);
-				
-				var result = person.dbCreateOne();
-				
-				Console.WriteLine(result.ResponseStatus);
-				Console.WriteLine(result.ResponseMessage);
-				Console.WriteLine(result.ReferenceMessage);
+			//////////for (int i = 0; i < 1000; i++)
+			//////////{
+			//////////	Console.WriteLine($"START:-----------------  {i}  -----------------");
+			//////////	person = new Person()
+			//////////	{
+			//////////		OfficialName = t.RandomString(i),
+			//////////		AlternativeName = t.RandomString(i),
+			//////////		MainDocumentNumber = t.RandomString(i) + t.RandomMainDocTest(),
+			//////////		SecondDocumentNumber = t.RandomString(i)
+			//////////	};
+			//////////	person.ValidateObject();
 
-				//System.Threading.Thread.Sleep(3000);
-				//Console.ReadLine();
+			//////////	Console.WriteLine("     OfficialName:" + person.OfficialName);
+			//////////	Console.WriteLine("     AlternativeName:" + person.AlternativeName);
+			//////////	Console.WriteLine("     MainDocumentNumber:" + person.MainDocumentNumber);
+			//////////	Console.WriteLine("     SecondDocumentNumber:" + person.SecondDocumentNumber);
 
-				Console.WriteLine($"  END:-----------------  {i}  -----------------");
-				Console.WriteLine("");
-				Console.WriteLine("");
-				Console.WriteLine("");
-			}
+			//////////	var result = person.dbCreateOne();
+
+			//////////	Console.WriteLine(result.ResponseStatus);
+			//////////	Console.WriteLine(result.ResponseMessage);
+			//////////	Console.WriteLine(result.ReferenceMessage);
+
+			//////////	//System.Threading.Thread.Sleep(3000);
+			//////////	//Console.ReadLine();
+
+			//////////	Console.WriteLine($"  END:-----------------  {i}  -----------------");
+			//////////	Console.WriteLine("");
+			//////////	Console.WriteLine("");
+			//////////	Console.WriteLine("");
+			//////////}
 		}
 	}
 
