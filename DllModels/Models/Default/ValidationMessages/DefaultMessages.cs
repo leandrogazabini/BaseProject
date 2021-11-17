@@ -14,7 +14,8 @@ namespace DllModels.Models.Default.ValidationMessages
 		private readonly CultureInfo actualCulture;
 		public DefaultMessages()
 		{
-			actualCulture = Settings.CultureSettings.ActualCultureInfo;
+			var settings = new CommonSettings.Settings();
+			actualCulture = settings._cultureSetting.CurrentCultureInfo;
 		}
 		private string getMessagesFromResource(string? req = null, CultureInfo culture = null)
 		{

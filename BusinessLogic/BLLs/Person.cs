@@ -77,6 +77,7 @@ namespace BusinessLogic.BLLs
 			}
 		}
 
+
 		public DefaultResponses.Response dbUpdateOne(Object objUpdate)
 		{
 
@@ -142,6 +143,7 @@ namespace BusinessLogic.BLLs
 			}
 		}
 		
+
 		public DefaultResponses.Response dbReadOne(string guid = null)
 		{
 			var result = new DefaultResponses();
@@ -190,6 +192,7 @@ namespace BusinessLogic.BLLs
 			return false;
 		}
 
+
 		public int dbIsActive(string guid)
 		{
 			if (!String.IsNullOrEmpty(guid))
@@ -216,6 +219,7 @@ namespace BusinessLogic.BLLs
 			}
 			return false;
 		}
+
 
 		private bool IsThisNewItem(Person person)
 		{

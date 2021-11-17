@@ -10,14 +10,19 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Globalization;
+using Microsoft.AspNetCore.Mvc.Controllers;
+using System;
 
 namespace Api
 {
 	public class Startup
 	{
+		public static CommonSettings.Settings AppSettings;
 		public Startup(IConfiguration configuration)
 		{
 			Configuration = configuration;
+			AppSettings = new Settings();
 		}
 
 		public IConfiguration Configuration { get; }
@@ -25,6 +30,8 @@ namespace Api
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			
+
 			services.Configure<ApiBehaviorOptions>(options =>
 			{
 				options.SuppressModelStateInvalidFilter = true;
@@ -39,7 +46,7 @@ namespace Api
 			//end
 			services.AddControllers();
 			//Autentication
-			var key = Encoding.ASCII.GetBytes(BusinessLogic.Settings.JwtKey);
+			var key = Encoding.ASCII.GetBytes(AppSettings._jwtSettings.GetJwtKey());
 			services.AddAuthentication(x =>
 			{
 				x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -62,6 +69,7 @@ namespace Api
 			services.AddSwaggerGen(c =>
 			{
 				
+
 				c.SwaggerDoc("v1", new OpenApiInfo
 				{
 					Title = "Api",
@@ -73,6 +81,22 @@ namespace Api
 						Email = "leandro.pg@uol.com.br"
 					},
 				});
+				//TAG
+				c.TagActionsBy(api =>
+				{
+					if (api.GroupName != null)
+					{
+						return new[] { api.GroupName };
+					}
+
+					if (api.ActionDescriptor is ControllerActionDescriptor controllerActionDescriptor)
+					{
+						return new[] { controllerActionDescriptor.ControllerName };
+					}
+
+					throw new InvalidOperationException("Unable to determine tag for endpoint.");
+				});
+
 				//JWT configuration
 				c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
 				{

@@ -7,26 +7,27 @@ using System.Threading.Tasks;
 
 namespace DllModels
 {
-	public class Settings
+	public class Settings: CommonSettings.Settings
 	{
-		public class CultureSettings
-		{
-			public static CultureInfo ActualCultureInfo
-			{
-				get
-				{
-					var cs = new CommonSettings.CultureSettings();
-					return cs.GetCultureInfo();
-				}
-				protected set {; }
-			}
+		//public class CultureSettings
+		//{
+		//	public static CultureInfo ActualCultureInfo
+		//	{
+		//		get
+		//		{
+		//			var cs = new CommonSettings.Settings();
+		//			return cs.GetCurrentCulture().ToString(); ;
+		//		}
+		//		protected set {; }
+		//	}
 
-			public CultureSettings()
-			{
-				var cs = new CommonSettings.CultureSettings();
-				ActualCultureInfo = cs.GetCultureInfo();
-			}
-		}
 
+		//public CultureSettings()
+		//{
+		//	var cs = new CommonSettings.Settings();
+		//	ActualCultureInfo = cs.GetCurrentCulture();
+		//}
 	}
+
+
 }

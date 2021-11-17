@@ -14,10 +14,13 @@ namespace BusinessLogic.Services
 {
     public static class TokenService
     {
+
+        //private readonly Settings Config {get;set; }
         public static string GenerateToken(User user, int interval)
         {
+            var settings = new CommonSettings.Settings();
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(Settings.JwtKey);
+            var key = Encoding.ASCII.GetBytes(settings._jwtSettings.GetJwtKey());
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
