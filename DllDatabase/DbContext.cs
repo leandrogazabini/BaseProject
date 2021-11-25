@@ -9,35 +9,53 @@ using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Reflection;
+//using DllDatabase.Models;
 //using DllModels.Models;
 
 namespace DllDatabase
 {
 	public class AppDbContext : Microsoft.EntityFrameworkCore.DbContext
 	{
-		public AppDbContext()
+		
+
+		public AppDbContext(Settings.LoggedUser loggedUser = null)
 		{
+			//Guardar token nas settings
+			//if(!(loggedUser == null))
+				_loggedUser = loggedUser;
+			//
 			var r = ConfigureDb1String(forceCreateFile: true, forceCreateFolder: true);
 		}
+		//public class LoggedUser
+		//{
+		//	public string Name { get; set; }
+		//	public string Local { get; set; }
+		//	public string IP { get; set; }
+		//	public string Geolocation { get; set; }
+		//}
+
+		public Settings.LoggedUser _loggedUser { get; set; }
+
 		#region MAPPED CLASSES
 		//classe que vai gerar o log de auditoria do banco de dados
 		public DbSet<Audit> Audits { get; set; }
-
-		//models
-		//public DbSet<DllModels.Models.PersonNaturalDetails> tbPersonNaturalDetails { get; set; }
-		public DbSet<Models.Person> tbPerson { get; set; }
-		//public DbSet<DllModels.Models.Adress> tbAdress { get; set; }
-		//public DbSet<DllModels.Models.ObjectTest> dbObjectTest { get; set; }
+		public DbSet<Models.Person> dbPerson { get; set; }
+		public DbSet<Models.User> dbUsers { get; set; }
+		public DbSet<Models.UserRole> dbUserRole { get; set; }
 
 		#endregion
 
 		#region AUDIT CONFIGURATION
 		//https://www.meziantou.net/entity-framework-core-history-audit-table.htm
 
-		public class AuditEntry
+		public class AuditEntry 
 		{
+			
+			public Settings.LoggedUser _loggedUser { get; set; }
 			public AuditEntry(EntityEntry entry)
 			{
+
+				_ = this._loggedUser;
 				Entry = entry;
 			}
 
@@ -58,16 +76,24 @@ namespace DllDatabase
 				audit.KeyValues = JsonConvert.SerializeObject(KeyValues);
 				audit.OldValues = OldValues.Count == 0 ? null : JsonConvert.SerializeObject(OldValues); // In .NET Core 3.1+, you can use System.Text.Json instead of Json.NET
 				audit.NewValues = NewValues.Count == 0 ? null : JsonConvert.SerializeObject(NewValues);
-				audit.Username = "NoUsername";
-				audit.Local = "NoLocal";
-				audit.IP = "NoIpAdress";
-				audit.GeoLocation = "NoGeoLocation";
+				audit.Username = _loggedUser.Name ;
+				audit.Local = "";
+				audit.IP = "";
+				audit.GeoLocation = "";
 				return audit;
 			}
 		}
 
+		//public async Task<int> SaveChangesAndLogAsync(Settings.LoggedUser loggedUser)
+		//{
+		//	this._loggedUser = loggedUser;
+		//	var result = await base.SaveChangesAsync();
+		//	return result;
+		//}
+
 		public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default(CancellationToken))
 		{
+			
 			var entriesList = ChangeTracker.Entries();
 			var auditEntries = OnBeforeSaveChanges();
 			foreach (var entry in entriesList.Where(x=>x.State != Microsoft.EntityFrameworkCore.EntityState.Unchanged ))
@@ -98,6 +124,7 @@ namespace DllDatabase
 					continue;
 
 				var auditEntry = new AuditEntry(entry);
+				auditEntry._loggedUser = this._loggedUser;
 				auditEntry.TableName = entry.Metadata.GetTableName(); // EF Core 3.1: entry.Metadata.GetTableName();
 				auditEntries.Add(auditEntry);
 

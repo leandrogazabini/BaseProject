@@ -11,11 +11,13 @@ namespace BusinessLogic.Services
 	{
 		public AuthenticationService()
 		{ }
+
 		public dynamic Authenticate(string usr, string pwd, int interval = 10)
 		{
 
 			// Recupera o usuário
-			var user = new User() { Username = "username", Password = "password", Role = "adm" }; /*UserRepository.Get(model.Username, model.Password);*/
+			//var user = new User() { Username = "username", Password = "password", Role = "adm" }; /*UserRepository.Get(model.Username, model.Password);*/
+			var user = new User() { Username = "username", Password = "password", Role = new UserRole {RoleName = "role" } }; /*UserRepository.Get(model.Username, model.Password);*/
 
 			// Verifica se o usuário existe
 			if (user == null)
@@ -23,6 +25,8 @@ namespace BusinessLogic.Services
 
 			// Gera o Token
 			var token = TokenService.GenerateToken(user, interval:interval);
+			Settings.LoggedUserToken.token = token;
+
 
 			// Oculta a senha
 			user.Password = "";

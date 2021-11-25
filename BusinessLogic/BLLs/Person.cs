@@ -10,6 +10,7 @@ using System.Threading;
 using AutoMapper;
 using DefaultResponses = BusinessLogic.Default.ResponsesMessages.DefaultResponses;
 using Messages = BusinessLogic.Default.ResponsesMessages.Messages;
+using BusinessLogic.Services;
 
 namespace BusinessLogic.BLLs
 {
@@ -35,8 +36,11 @@ namespace BusinessLogic.BLLs
 				{
 					return result.ReturnError(message: Messages.ValidationRuleError, reference: $"{String.Join(" | ", person.ErrorList)}");
 				}
-
-				using (var db = new DllDatabase.AppDbContext())
+				////test
+				//var xx = new Settings.LoggedUser(Settings.LoggedUserToken.token);
+				//xx.Name	 = "aaaaaaaa";
+				////
+				using (var db = new CallAppDbContext(Settings.LoggedUserToken.token))
 				{
 					if (!IsThisNewItem(person))
 					{
@@ -55,9 +59,10 @@ namespace BusinessLogic.BLLs
 					{
 						try // try rec data base
 						{
-							db.tbPerson.Add(person);
+							db.dbPerson.Add(person);
 							person.SetCreatedAt(); ;
 							db.SaveChangesAsync();
+							//db.SaveChangesAndLogAsync(xx);
 						}
 						catch (Exception ex)
 						{
@@ -114,7 +119,7 @@ namespace BusinessLogic.BLLs
 						{
 							if (true)
 							{
-								personDatabase = db.tbPerson.Find(dbIsActive(personDatabase.GUID));
+								personDatabase = db.dbPerson.Find(dbIsActive(personDatabase.GUID));
 								var map = new Mapping.PersonMapping();
 								//personToUpdate = map.MapToDbPerson(personDataUpdate);
 								//personToUpdate = map._mapper.Map<DllDatabase.Models.Person>(personDataUpdate);
@@ -154,7 +159,7 @@ namespace BusinessLogic.BLLs
 				{
 					using (var db = new DllDatabase.AppDbContext())
 					{
-						var qResult = db.tbPerson.Where(p => p.GUID == guid.ToString()).FirstOrDefault() ?? null;
+						var qResult = db.dbPerson.Where(p => p.GUID == guid.ToString()).FirstOrDefault() ?? null;
 						var map = new Mapping.PersonMapping();
 						map._mapper.Map<DllDatabase.Models.Person, Person >(qResult, resultPerson);
 
@@ -185,7 +190,7 @@ namespace BusinessLogic.BLLs
 			if (id > 0 )
 				using (var db = new DllDatabase.AppDbContext())
 				{
-					var check = db.tbPerson.Find(id);
+					var check = db.dbPerson.Find(id);
 					if (check.DeletedAt.HasValue) return false;
 					else return true;
 				}
@@ -199,7 +204,7 @@ namespace BusinessLogic.BLLs
 			{
 				using (var db = new DllDatabase.AppDbContext())
 				{
-					var check = db.tbPerson.Where(x=>x.GUID == guid);
+					var check = db.dbPerson.Where(x=>x.GUID == guid);
 					if (check.Count() != 1) return 0;
 					if (check.FirstOrDefault().DeletedAt.HasValue) return 0;
 					else return check.FirstOrDefault().Id;
@@ -214,7 +219,7 @@ namespace BusinessLogic.BLLs
 		{
 			using (var db = new DllDatabase.AppDbContext())
 			{
-				var verify = db.tbPerson.Where(p => p.MainDocumentNumber == doc);
+				var verify = db.dbPerson.Where(p => p.MainDocumentNumber == doc);
 				if (verify.Any()) return true;
 			}
 			return false;

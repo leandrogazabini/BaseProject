@@ -11,6 +11,7 @@ namespace CommonSettings
 {
 	public class Settings
 	{
+		//public static LoggedUser _loggedUser;
 		public readonly JwtSettings _jwtSettings;
 		public readonly CultureSetting _cultureSetting;
 
@@ -21,6 +22,17 @@ namespace CommonSettings
 			_cultureSetting = new CultureSetting();
 		}
 
+		public class LoggedUser
+		{
+
+			public string Name { get; set; } = "NotConfigured";
+			public string Role { get; set; } = "NotConfigured";
+		}	
+		
+		public static class LoggedUserToken
+		{
+			public static string token { get; set; } = "NotConfigured";
+		}
 
 		public class JwtSettings
 		{

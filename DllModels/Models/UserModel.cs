@@ -16,6 +16,20 @@ namespace DllModels.Models
 		{
 
 		}
+		private string _name;
+		[Display(Name = "Name")]
+		public string Name
+		{
+			get
+			{
+				return _name;
+			}
+			set
+			{
+				SetField(ref _name, value);
+			}
+		}
+
 
 		private string _username;
 		[Display(Name ="Username")]
@@ -44,9 +58,9 @@ namespace DllModels.Models
 				SetField(ref _password, value);
 			}
 		}
-		private string _role;
+		private UserRoleModel _role;
 		[Display(Name ="Role")]
-		public string Role
+		public UserRoleModel Role
 		{
 			get
 			{
@@ -64,4 +78,5 @@ namespace DllModels.Models
 
 
 	}
+ 
 }

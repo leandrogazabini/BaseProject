@@ -9,6 +9,18 @@ namespace BusinessLogic
 {
 	public class Settings : CommonSettings.Settings
 	{
-		
+		public class LoggedUser : CommonSettings.Settings.LoggedUser
+		{
+			//public LoggedUser(string token = null)
+			//{
+			//	var result = Services.TokenService.GetDataFromToken(token);
+			//	this.Name = result.Name;
+			//	this.Role = result.Role;
+
+			//}
+
+		}
+
+
 	}
 }
